@@ -1,0 +1,37 @@
+<button
+  class="flex items-center gap-2 text-gray-700 font-medium py-2 rounded hover:bg-gray-100 hover:text-[#029fae] transition"
+  (click)="toggleLocation()"
+>
+  <lucide-icon name="map-pin" size="20" class="text-[#029fae]"></lucide-icon>
+  Add Address
+</button>
+
+@if(isLocationOpen()) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+  (click)="closeLocation()"
+>
+  <div
+    class="bg-white w-[90%] max-w-md rounded-2xl shadow-2xl p-6 relative"
+    (click)="$event.stopPropagation()"
+  >
+    <button
+      class="absolute top-3 right-3 text-gray-500 hover:text-red-500 transition"
+      (click)="closeLocation()"
+    >
+      <lucide-icon name="x" size="20"></lucide-icon>
+    </button>
+
+    <h1 class="font-semibold text-xl text-gray-800 mb-4">Change Location</h1>
+
+    <div class="flex flex-col gap-3">
+      <button
+        class="flex items-center justify-center gap-2 bg-[#029fae] text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-[#04b5c6] transition"
+      >
+        <lucide-icon name="crosshair" size="16"></lucide-icon>
+        Detect my location
+      </button>
+    </div>
+  </div>
+</div>
+}

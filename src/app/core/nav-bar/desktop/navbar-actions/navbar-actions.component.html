@@ -1,0 +1,43 @@
+<div class="hidden md:flex items-center gap-4">
+  <button class="btn relative">
+    <lucide-icon name="shopping-cart" size="22"></lucide-icon>
+    <span class="ml-1">Cart</span>
+    <span
+      class="badge absolute -top-2 -right-2 bg-[#029fae] text-white text-xs px-1.5 py-0.5 rounded-full"
+      >2</span
+    >
+  </button>
+
+  <button class="btn">
+    <lucide-icon name="heart" size="22"></lucide-icon>
+  </button>
+
+  <div
+    class="relative"
+    (mouseleave)="closeDropdown()"
+    [style]="isDropdownOpen() ? 'padding-bottom: 0.5rem' : ''"
+  >
+    <button (click)="toggleDropdown($event)" class="btn">
+      <lucide-icon name="user" size="22"></lucide-icon>
+    </button>
+    <ul
+      [hidden]="!isDropdownOpen()"
+      class="absolute right-0 w-48 bg-white shadow-md rounded p-2 z-10 mt-2"
+    >
+      <li>
+        <a
+          routerLink="/account"
+          class="block px-4 py-2 hover:bg-gray-100 rounded"
+          >Account</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/logout"
+          class="block px-4 py-2 hover:bg-gray-100 rounded"
+          >Logout</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
