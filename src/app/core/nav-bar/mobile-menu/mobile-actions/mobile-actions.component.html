@@ -1,22 +1,36 @@
-<div class="flex items-center justify-around gap-4 pt-5 border-t">
+<div
+  class="flex items-center justify-around gap-4 pt-5 border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900 transition-colors"
+>
+  <!-- Cart -->
   <button
-    class="flex flex-col items-center text-gray-600 hover:text-[#029fae] transition"
+    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
   >
     <lucide-icon name="shopping-cart" size="22"></lucide-icon>
     <span class="text-xs mt-1">Cart</span>
   </button>
 
+  <!-- Wishlist -->
   <button
-    class="flex flex-col items-center text-gray-600 hover:text-[#029fae] transition"
+    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
   >
     <lucide-icon name="heart" size="22"></lucide-icon>
     <span class="text-xs mt-1">Wishlist</span>
   </button>
 
+  <!-- Account -->
   <button
-    class="flex flex-col items-center text-gray-600 hover:text-[#029fae] transition"
+    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
   >
     <lucide-icon name="user" size="22"></lucide-icon>
     <span class="text-xs mt-1">Account</span>
+  </button>
+
+  <!-- Theme Toggle -->
+  <button
+    (click)="toggleTheme()"
+    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
+  >
+    <lucide-icon [name]="isDarkMode() ? 'sun' : 'moon'" size="22"></lucide-icon>
+    <span class="text-xs mt-1">{{ isDarkMode() ? "Light" : "Dark" }}</span>
   </button>
 </div>

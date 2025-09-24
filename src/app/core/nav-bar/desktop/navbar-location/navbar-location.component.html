@@ -1,6 +1,6 @@
 <!-- navbar-location.component.html -->
 <div
-  class="hidden md:flex gap-2 cursor-pointer text-gray-600 items-center hover:text-[#029fae] ml-4 relative"
+  class="hidden md:flex gap-2 cursor-pointer text-gray-600 dark:text-gray-300 items-center hover:text-[#029fae] ml-4 relative"
   (click)="toggleLocation()"
 >
   <lucide-icon
@@ -8,7 +8,9 @@
     size="20"
     class="w-5 h-5 text-[#029fae]"
   ></lucide-icon>
+
   <span class="font-medium">Add Address</span>
+
   <lucide-icon
     name="chevron-down"
     size="16"
@@ -18,22 +20,28 @@
 
   @if(isLocationOpen()) {
   <div
-    class="absolute top-full left-0 translate-x-10 mt-2 w-[320px] z-50 shadow-xl bg-white border border-gray-200 rounded-2xl p-5"
+    class="absolute top-full left-0 translate-x-10 mt-2 w-[320px] z-50 shadow-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-5"
     (click)="$event.stopPropagation()"
   >
-    <div class="flex justify-between items-center border-b pb-3 mb-4">
-      <h1 class="font-semibold text-lg text-gray-800">Change Location</h1>
+    <!-- Header -->
+    <div
+      class="flex justify-between items-center border-b border-gray-200 dark:border-gray-700 pb-3 mb-4"
+    >
+      <h1 class="font-semibold text-lg text-gray-800 dark:text-gray-100">
+        Change Location
+      </h1>
       <div
-        class="w-5 h-5 cursor-pointer text-gray-500 hover:text-red-500 transition"
+        class="w-5 h-5 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-red-500 transition"
         (click)="closeLocation()"
       >
         <lucide-icon name="x" size="20"></lucide-icon>
       </div>
     </div>
 
+    <!-- Buttons -->
     <div class="flex flex-col gap-3">
       <button
-        class="flex items-center justify-center gap-2 bg-[#029fae] text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-[#04b5c6] transition"
+        class="flex items-center justify-center gap-2 bg-[#029fae] hover:bg-[#04b5c6] text-white dark:text-gray-100 px-4 py-2 rounded-lg cursor-pointer transition"
       >
         <lucide-icon name="crosshair" size="16"></lucide-icon>
         Detect my location

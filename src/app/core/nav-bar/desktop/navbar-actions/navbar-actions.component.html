@@ -1,10 +1,12 @@
-<div class="hidden md:flex items-center gap-4">
+<div
+  class="hidden md:flex items-center gap-4 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg"
+>
   <!-- Cart -->
   <a
     routerLink="/cart"
     routerLinkActive="text-[#029fae]"
     [routerLinkActiveOptions]="{ exact: true }"
-    class="btn relative text-gray-600 dark:text-gray-300 hover:text-[#029fae]"
+    class="btn relative text-gray-700 dark:text-gray-200 hover:text-[#029fae]"
   >
     <lucide-icon name="shopping-cart" size="22"></lucide-icon>
     <span class="ml-1">Cart</span>
@@ -20,7 +22,7 @@
     routerLink="/wishlist"
     routerLinkActive="text-[#029fae]"
     [routerLinkActiveOptions]="{ exact: true }"
-    class="btn text-gray-600 dark:text-gray-300 hover:text-[#029fae]"
+    class="btn text-gray-700 dark:text-gray-200 hover:text-[#029fae]"
   >
     <lucide-icon name="heart" size="22"></lucide-icon>
   </a>
@@ -28,9 +30,9 @@
   <!-- Theme toggle -->
   <button
     (click)="toggleTheme()"
-    class="btn text-gray-600 dark:text-gray-300 hover:text-[#029fae]"
+    class="btn text-gray-700 dark:text-gray-200 hover:text-[#029fae]"
   >
-    <lucide-icon [name]="isDarkMode ? 'sun' : 'moon'" size="22"></lucide-icon>
+    <lucide-icon [name]="isDarkMode() ? 'sun' : 'moon'" size="22"></lucide-icon>
   </button>
 
   <!-- User dropdown -->
@@ -41,27 +43,29 @@
   >
     <button
       (click)="toggleDropdown($event)"
-      class="btn text-gray-600 dark:text-gray-300 hover:text-[#029fae]"
+      class="btn text-gray-700 dark:text-gray-200 hover:text-[#029fae]"
     >
       <lucide-icon name="user" size="22"></lucide-icon>
     </button>
     <ul
       [hidden]="!isDropdownOpen()"
-      class="absolute right-0 w-48 bg-white dark:bg-gray-800 shadow-md rounded p-2 z-10 mt-2"
+      class="absolute right-0 w-48 bg-white dark:bg-gray-800 shadow-md rounded p-2 z-10 mt-2 border border-gray-200 dark:border-gray-700"
     >
       <li>
         <a
           routerLink="/account"
-          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-          >Account</a
+          class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
         >
+          Account
+        </a>
       </li>
       <li>
         <a
           routerLink="/logout"
-          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-          >Logout</a
+          class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
         >
+          Logout
+        </a>
       </li>
     </ul>
   </div>
