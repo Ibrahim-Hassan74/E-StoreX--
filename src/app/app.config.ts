@@ -21,8 +21,10 @@ import {
   LucideAngularModule,
   MapPin,
   Menu,
+  Moon,
   Search,
   ShoppingCart,
+  Sun,
   User,
   X,
 } from 'lucide-angular';
@@ -32,7 +34,6 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
-import { ConfigService } from './core/services/config.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -54,6 +55,8 @@ export const appConfig: ApplicationConfig = {
         X,
         Crosshair,
         ChevronDown,
+        Sun,
+        Moon,
       })
     ),
   ],
