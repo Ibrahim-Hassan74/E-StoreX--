@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
@@ -25,11 +26,19 @@ import {
   User,
   X,
 } from 'lucide-angular';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
+import { ConfigService } from './core/services/config.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([apiKeyInterceptor])),
     provideClientHydration(withEventReplay()),
     importProvidersFrom(
       LucideAngularModule.pick({

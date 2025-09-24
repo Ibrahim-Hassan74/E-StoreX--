@@ -1,0 +1,10 @@
+import { Injectable } from '@angular/core';
+import configJson from '../../../assets/config.json';
+
+@Injectable({ providedIn: 'root' })
+export class ConfigService {
+  private config = configJson;
+  get apiKey(): string {
+    return this.config?.apiKey || '';
+  }
+}

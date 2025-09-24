@@ -1,5 +1,4 @@
 import { Component, signal, ViewEncapsulation } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { MobileMenuComponent } from './mobile-menu/mobile-menu/mobile-menu.component';
 import { NavbarLogoComponent } from './desktop/navbar-logo/navbar-logo.component';
@@ -10,7 +9,6 @@ import { NavbarActionsComponent } from './desktop/navbar-actions/navbar-actions.
 @Component({
   selector: 'app-navbar',
   imports: [
-    RouterModule,
     LucideAngularModule,
     MobileMenuComponent,
     NavbarLogoComponent,

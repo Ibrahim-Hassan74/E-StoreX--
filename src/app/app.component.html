@@ -1,1 +1,7 @@
 <app-navbar />
+
+<ul>
+  @for (item of categories; track item.id) {
+  <li>{{ item.id }} {{ item.name }}</li>
+  }
+</ul>
