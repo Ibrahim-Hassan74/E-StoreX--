@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
+import { NavbarService } from '../../navbar.service';
 
 @Component({
   selector: 'app-navbar-actions',
@@ -10,31 +11,15 @@ import { LucideAngularModule } from 'lucide-angular';
 })
 export class NavbarActionsComponent {
   isDropdownOpen = signal(false);
-  isDarkMode = signal(false);
+  private navbarService = inject(NavbarService);
+  isDarkMode = this.navbarService.mode;
 
   ngOnInit() {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      this.isDarkMode.set(savedTheme === 'dark');
-
-      if (this.isDarkMode()) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
+    this.navbarService.load();
   }
 
   toggleTheme() {
-    if (typeof window === 'undefined') return;
-    this.isDarkMode.update((x) => !x);
-    if (this.isDarkMode()) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    this.navbarService.toggleTheme();
   }
   toggleDropdown(event: Event) {
     event.stopPropagation();

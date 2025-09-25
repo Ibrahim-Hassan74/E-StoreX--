@@ -1,21 +1,25 @@
 <div
   class="flex items-center justify-around gap-4 pt-5 border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900 transition-colors"
 >
-  <!-- Cart -->
-  <button
+  <a
+    routerLink="/cart"
+    routerLinkActive="active-link"
+    [routerLinkActiveOptions]="{ exact: true }"
     class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
   >
     <lucide-icon name="shopping-cart" size="22"></lucide-icon>
     <span class="text-xs mt-1">Cart</span>
-  </button>
+  </a>
 
-  <!-- Wishlist -->
-  <button
+  <a
+    routerLink="/wishlist"
+    routerLinkActive="active-link"
+    [routerLinkActiveOptions]="{ exact: true }"
     class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
   >
     <lucide-icon name="heart" size="22"></lucide-icon>
     <span class="text-xs mt-1">Wishlist</span>
-  </button>
+  </a>
 
   <!-- Account -->
   <button

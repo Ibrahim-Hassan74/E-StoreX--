@@ -1,39 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
+import { NavbarService } from '../../navbar.service';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-mobile-actions',
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, RouterLink, RouterLinkActive],
   templateUrl: './mobile-actions.component.html',
   styleUrl: './mobile-actions.component.scss',
 })
 export class MobileActionsComponent {
-  isDarkMode = signal(false); // ✅ مجرد إسناد أولي بدون localStorage
-
+  private navbarService = inject(NavbarService);
+  isDarkMode = this.navbarService.mode;
   ngOnInit() {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      this.isDarkMode.set(savedTheme === 'dark');
-
-      if (this.isDarkMode()) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
+    this.navbarService.load();
   }
 
   toggleTheme() {
-    if (typeof window === 'undefined') return; // Safety check للـ SSR
-
-    this.isDarkMode.update((x) => !x);
-
-    if (this.isDarkMode()) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    this.navbarService.toggleTheme();
   }
 }
