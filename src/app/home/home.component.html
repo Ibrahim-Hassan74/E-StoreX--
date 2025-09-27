@@ -1,1 +1,70 @@
-<p>home works!</p>
+<swiper-container
+  slides-per-view="1"
+  loop="true"
+  autoplay-delay="10000"
+  autoplay-disable-on-interaction="false"
+  pagination="true"
+  navigation="true"
+  class="w-full h-full bg-white dark:bg-gray-900"
+>
+  @if(isClient) { @for(slide of slides; track slide.title) {
+  <swiper-slide class="bg-white dark:bg-gray-900">
+    <div
+      class="flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-20 py-12 min-h-[80vh]"
+    >
+      <div class="text-center lg:text-left space-y-6 max-w-xl">
+        <p class="uppercase text-sm text-gray-500 dark:text-gray-400">
+          {{ slide.category }}
+        </p>
+        <h3
+          class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight"
+        >
+          {{ slide.title }}
+        </h3>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">
+          {{ slide.description }}
+        </p>
+        <div class="flex items-center gap-4 justify-center lg:justify-start">
+          <span class="text-2xl font-bold text-[#029fae]">
+            {{ slide.newPrice | currency : "EGP" : "symbol" }}
+          </span>
+          @if(slide.oldPrice > 0) {
+          <span class="text-lg text-gray-500 dark:text-gray-400 line-through">
+            {{ slide.oldPrice | currency : "EGP" : "symbol" }}
+          </span>
+          }
+        </div>
+        <button
+          class="px-6 py-3 bg-[#029fae] text-white rounded-lg shadow-lg hover:bg-[#007580] transition"
+        >
+          Shop Now
+        </button>
+      </div>
+
+      <div class="relative flex justify-center items-center">
+        <div
+          class="absolute w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-gray-200 dark:bg-gray-700 rounded-full"
+        ></div>
+
+        <swiper-container
+          slides-per-view="1"
+          loop="true"
+          autoplay-delay="2000"
+          autoplay-disable-on-interaction="false"
+          class="relative w-[250px] lg:w-[450px] h-auto"
+        >
+          @for(photo of slide.photos; track photo.imageName) {
+          <swiper-slide>
+            <img
+              [src]="'https://estorex.runasp.net/' + photo.imageName"
+              [alt]="slide.title"
+              class="object-contain w-full h-full rounded-xl"
+            />
+          </swiper-slide>
+          }
+        </swiper-container>
+      </div>
+    </div>
+  </swiper-slide>
+  } }
+</swiper-container>
