@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -6,11 +5,8 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
-import { Slide } from '../../../shared/models/Slide';
-import { Product } from '../../../shared/models/Product';
-import { Pagination } from '../../../shared/models/pagination';
+import { Slide } from '../../../shared/models/slide';
 import { ProductsService } from '../../../core/services/products/products.service';
 
 @Component({

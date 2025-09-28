@@ -1,0 +1,19 @@
+<div
+  class="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm hover:shadow-lg dark:shadow-gray-600 transition"
+>
+  <lucide-icon
+    [name]="item().iconName"
+    size="48"
+    class="text-[#029fae] dark:text-[#67e8f9]"
+  ></lucide-icon>
+  <div>
+    <h4
+      class="text-base text-gray-900 dark:text-white capitalize font-medium mb-2.5"
+    >
+      {{ item().title }}
+    </h4>
+    <p class="text-sm text-gray-500 dark:text-gray-400">
+      {{ item().description }}
+    </p>
+  </div>
+</div>

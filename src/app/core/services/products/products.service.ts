@@ -4,8 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { ProductQuery } from '../../../shared/models/product-query';
 import { map, Observable } from 'rxjs';
 import { Pagination } from '../../../shared/models/pagination';
-import { Product } from '../../../shared/models/Product';
-import { Slide } from '../../../shared/models/Slide';
+import { Slide } from '../../../shared/models/slide';
+import { Product } from '../../../shared/models/product';
 
 @Injectable({
   providedIn: 'root',

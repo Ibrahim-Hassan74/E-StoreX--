@@ -1,0 +1,7 @@
+<div class="lg:container bg-white dark:bg-gray-900 mx-auto shadow-md p-7">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    @for(item of deliveryItems(); track item.iconName) {
+    <app-delivery-card [item]="item" />
+    }
+  </div>
+</div>
