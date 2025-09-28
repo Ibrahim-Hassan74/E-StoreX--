@@ -1,10 +1,10 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { Product } from '../shared/models/Product';
-import { Pagination } from '../shared/models/Pagination ';
-import { Photo } from '../shared/models/Photo';
+import { environment } from '../../../environments/environment';
+import { Product } from '../../shared/models/Product';
+import { Pagination } from '../../shared/models/Pagination ';
+import { Photo } from '../../shared/models/Photo';
 
 interface Slide {
   title: string;
