@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import configJson from '../../../assets/config.json';
+import configJson from '../../../../assets/config.json';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigService {
