@@ -1,0 +1,47 @@
+@if(isClient()) {
+<div class="lg:container mx-auto py-12 relative bg-white dark:bg-gray-900">
+  <h2
+    class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-8 text-center"
+  >
+    Our Brands
+  </h2>
+  <swiper-container
+    slides-per-view="2"
+    loop="true"
+    autoplay-delay="3000"
+    autoplay-disable-on-interaction="false"
+    space-between="24"
+    navigation="true"
+    breakpoints='{
+      "640": { "slidesPerView": 3 },
+      "768": { "slidesPerView": 4 },
+      "1024": { "slidesPerView": 6 }
+    }'
+    class="w-full group"
+  >
+    @for (brand of brands(); track brand.id) {
+    <swiper-slide
+      class="flex items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer p-4"
+    >
+      <img
+        [src]="
+          brand.photos.length
+            ? 'https://estorex.runasp.net/' + brand.photos[0].imageName
+            : ''
+        "
+        [alt]="brand.name"
+        class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition duration-300"
+      />
+    </swiper-slide>
+    }
+  </swiper-container>
+
+  <!-- arrows -->
+  <div
+    class="swiper-button-prev !text-gray-700 dark:!text-gray-300 hover:!text-[#029fae] transition hidden lg:flex"
+  ></div>
+  <div
+    class="swiper-button-next !text-gray-700 dark:!text-gray-300 hover:!text-[#029fae] transition hidden lg:flex"
+  ></div>
+</div>
+}

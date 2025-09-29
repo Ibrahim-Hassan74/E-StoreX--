@@ -1,0 +1,23 @@
+@layer utilities {
+  @keyframes fade-in-soft {
+    0% {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in-soft {
+    animation: fade-in-soft 0.6s ease-out forwards;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+  .animation-delay-600 {
+    animation-delay: 0.6s;
+  }
+}

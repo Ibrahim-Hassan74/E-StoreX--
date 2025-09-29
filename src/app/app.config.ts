@@ -1,11 +1,9 @@
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import {
   provideClientHydration,
@@ -32,11 +30,7 @@ import {
   User,
   X,
 } from 'lucide-angular';
-import {
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
 
 export const appConfig: ApplicationConfig = {

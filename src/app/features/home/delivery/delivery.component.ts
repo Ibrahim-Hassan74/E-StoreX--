@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { DeliveryItem } from '../../../shared/models/delivery-item';
 import { DeliveryCardComponent } from './delivery-card/delivery-card.component';
 
@@ -9,6 +9,7 @@ import { DeliveryCardComponent } from './delivery-card/delivery-card.component';
   styleUrl: './delivery.component.scss',
 })
 export class DeliveryComponent {
+  isClient = input.required<Boolean>();
   deliveryItems = signal<DeliveryItem[]>([
     {
       iconName: 'percent',

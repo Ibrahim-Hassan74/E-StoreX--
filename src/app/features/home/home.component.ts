@@ -1,13 +1,57 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { HomeBannerComponent } from './home-banner/home-banner.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { HomeBrandsComponent } from './home-brands/home-brands.component';
+import { forkJoin } from 'rxjs';
+import { ProductsService } from '../../core/services/products/products.service';
+import { BrandsService } from '../../core/services/brands/brands.service';
+import { Slide } from '../../shared/models/slide';
+import { Brand } from '../../shared/models/brand';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HomeBannerComponent, DeliveryComponent],
+  imports: [
+    HomeBannerComponent,
+    DeliveryComponent,
+    HomeBrandsComponent,
+    LoadingSpinnerComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  isLoading = signal(true);
+  bannerData = signal<Slide[]>([]);
+  brandsData = signal<Brand[]>([]);
+  isClient = signal<boolean>(false);
+  private productsService = inject(ProductsService);
+  private brandsService = inject(BrandsService);
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.isClient.set(true);
+    }
+    this.isLoading.set(true);
+    forkJoin({
+      banner: this.productsService.getBestSellerSlides(5),
+      brands: this.brandsService.getBrands(),
+    }).subscribe({
+      next: (res) => {
+        this.bannerData.set(res.banner);
+        this.brandsData.set(res.brands);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(true);
+      },
+    });
+  }
+}

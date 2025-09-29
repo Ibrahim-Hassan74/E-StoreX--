@@ -1,13 +1,6 @@
-import {
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Slide } from '../../../shared/models/slide';
-import { ProductsService } from '../../../core/services/products/products.service';
 
 @Component({
   selector: 'app-home-banner',
@@ -16,18 +9,7 @@ import { ProductsService } from '../../../core/services/products/products.servic
   styleUrl: './home-banner.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class HomeBannerComponent implements OnInit {
-  slides = signal<Slide[]>([]);
-  isClient = signal<boolean>(false);
-  private productsService = inject(ProductsService);
-
-  ngOnInit(): void {
-    if (typeof window !== 'undefined') {
-      this.isClient.set(true);
-    }
-    this.productsService.getBestSellerSlides(5).subscribe({
-      next: (slides) => this.slides.set(slides),
-      error: (err) => console.error(err),
-    });
-  }
+export class HomeBannerComponent {
+  slides = input.required<Slide[]>();
+  isClient = input.required<boolean>();
 }
