@@ -10,5 +10,4 @@ import { Brand } from '../../../shared/models/brand';
 })
 export class HomeBrandsComponent {
   brands = input.required<Brand[]>();
-  isClient = input.required<Boolean>();
 }

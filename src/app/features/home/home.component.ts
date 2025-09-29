@@ -32,13 +32,9 @@ export class HomeComponent implements OnInit {
   isLoading = signal(true);
   bannerData = signal<Slide[]>([]);
   brandsData = signal<Brand[]>([]);
-  isClient = signal<boolean>(false);
   private productsService = inject(ProductsService);
   private brandsService = inject(BrandsService);
   ngOnInit(): void {
-    if (typeof window !== 'undefined') {
-      this.isClient.set(true);
-    }
     this.isLoading.set(true);
     forkJoin({
       banner: this.productsService.getBestSellerSlides(5),

@@ -11,5 +11,4 @@ import { Slide } from '../../../shared/models/slide';
 })
 export class HomeBannerComponent {
   slides = input.required<Slide[]>();
-  isClient = input.required<boolean>();
 }

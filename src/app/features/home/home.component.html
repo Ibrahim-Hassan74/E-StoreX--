@@ -1,7 +1,9 @@
-@if (isLoading()) { @if(isClient()) {
+@if (isLoading()) {
+<!-- @if(isClient()) { -->
 <app-loading-spinner />
-} } @else {
-<app-home-banner [slides]="bannerData()" [isClient]="this.isClient()" />
-<app-delivery [isClient]="this.isClient()" />
-<app-home-brands [brands]="brandsData()" [isClient]="this.isClient()" />
+<!-- }  -->
+} @else {
+<app-home-banner [slides]="bannerData()" />
+<app-delivery />
+<app-home-brands [brands]="brandsData()" />
 }

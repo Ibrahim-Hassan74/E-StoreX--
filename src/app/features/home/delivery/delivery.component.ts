@@ -9,7 +9,6 @@ import { DeliveryCardComponent } from './delivery-card/delivery-card.component';
   styleUrl: './delivery.component.scss',
 })
 export class DeliveryComponent {
-  isClient = input.required<Boolean>();
   deliveryItems = signal<DeliveryItem[]>([
     {
       iconName: 'percent',

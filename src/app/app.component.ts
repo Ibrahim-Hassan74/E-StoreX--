@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './core/layout/nav-bar/navbar.component';
 
@@ -8,4 +8,11 @@ import { NavBarComponent } from './core/layout/nav-bar/navbar.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  isClient = signal<Boolean>(false);
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.isClient.set(true);
+    }
+  }
+}
