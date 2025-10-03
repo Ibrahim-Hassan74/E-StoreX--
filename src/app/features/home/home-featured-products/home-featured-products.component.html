@@ -1,0 +1,22 @@
+<swiper-container
+  slides-per-view="1"
+  space-between="24"
+  loop="true"
+  autoplay-delay="4000"
+  autoplay-disable-on-interaction="false"
+  navigation="true"
+  breakpoints='{
+    "640": { "slidesPerView": 1 },
+    "768": { "slidesPerView": 2 },
+    "1024": { "slidesPerView": 3 },
+    "1280": { "slidesPerView": 4 },
+    "1536": { "slidesPerView": 5 }
+  }'
+  class="w-full dark:bg-gray-900"
+>
+  @for (product of featuredProducts(); track product.id) {
+  <swiper-slide>
+    <app-product-card [product]="product" />
+  </swiper-slide>
+  }
+</swiper-container>

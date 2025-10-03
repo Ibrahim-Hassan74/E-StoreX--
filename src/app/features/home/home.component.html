@@ -1,9 +1,8 @@
 @if (isLoading()) {
-<!-- @if(isClient()) { -->
 <app-loading-spinner />
-<!-- }  -->
 } @else {
 <app-home-banner [slides]="bannerData()" />
 <app-delivery />
 <app-home-brands [brands]="brandsData()" />
+<app-home-featured-products [featuredProducts]="featuredProducts()" />
 }

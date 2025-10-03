@@ -14,6 +14,8 @@ import { BrandsService } from '../../core/services/brands/brands.service';
 import { Slide } from '../../shared/models/slide';
 import { Brand } from '../../shared/models/brand';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import { Product } from '../../shared/models/product';
+import { HomeFeaturedProductsComponent } from './home-featured-products/home-featured-products.component';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +25,7 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
     DeliveryComponent,
     HomeBrandsComponent,
     LoadingSpinnerComponent,
+    HomeFeaturedProductsComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -32,6 +35,7 @@ export class HomeComponent implements OnInit {
   isLoading = signal(true);
   bannerData = signal<Slide[]>([]);
   brandsData = signal<Brand[]>([]);
+  featuredProducts = signal<Product[]>([]);
   private productsService = inject(ProductsService);
   private brandsService = inject(BrandsService);
   ngOnInit(): void {
@@ -39,10 +43,12 @@ export class HomeComponent implements OnInit {
     forkJoin({
       banner: this.productsService.getBestSellerSlides(5),
       brands: this.brandsService.getBrands(),
+      featured: this.productsService.getFeaturedProducts(),
     }).subscribe({
       next: (res) => {
         this.bannerData.set(res.banner);
         this.brandsData.set(res.brands);
+        this.featuredProducts.set(res.featured);
         this.isLoading.set(false);
       },
       error: () => {
