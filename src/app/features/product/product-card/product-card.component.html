@@ -1,81 +1,81 @@
-<swiper-slide>
+<div
+  class="group [perspective:1000px] h-[440px] rounded-2xl shadow-md hover:shadow-xl transition bg-white dark:bg-gray-900 dark:shadow-[0_4px_20px_rgba(0,0,0,0.7)] dark:border dark:border-gray-700"
+  [class.flipped]="flipped()"
+  (touchstart)="onTouchStart($event)"
+  (mouseenter)="flipped.set(true)"
+  (mouseleave)="flipped.set(false)"
+>
   <div
-    class="group [perspective:1000px] h-[440px] rounded-2xl shadow-md hover:shadow-xl transition bg-white dark:bg-gray-900 dark:shadow-[0_4px_20px_rgba(0,0,0,0.7)] dark:border dark:border-gray-700"
+    class="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] dark:bg-gray-900"
   >
     <div
-      class="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] dark:bg-gray-900"
+      class="absolute inset-0 flex flex-col bg-white dark:bg-gray-900 rounded-2xl overflow-hidden [backface-visibility:hidden]"
     >
-      <!-- front -->
-      <div
-        class="absolute inset-0 flex flex-col bg-white dark:bg-gray-900 rounded-2xl overflow-hidden [backface-visibility:hidden]"
-      >
-        <div class="relative flex-shrink-0">
-          <swiper-container
-            slides-per-view="1"
-            loop="true"
-            autoplay-delay="2500"
-            autoplay-disable-on-interaction="true"
-            pagination="true"
-            class="w-full h-64 rounded-xl bg-gray-100 dark:bg-gray-800"
-          >
-            @for (photo of product().photos; track photo.imageName) {
-            <swiper-slide>
-              <img
-                class="w-full h-64 object-contain p-4"
-                [src]="'https://estorex.runasp.net/' + photo.imageName"
-                [alt]="product().name"
-                loading="lazy"
-              />
-            </swiper-slide>
-            }
-          </swiper-container>
-
-          @if (product().oldPrice > product().newPrice && product().oldPrice >
-          0) {
-          <div
-            class="absolute top-3 left-3 bg-[#007580] text-white px-3 py-1 rounded-lg text-xs font-semibold shadow"
-          >
-            Sale
-          </div>
+      <div class="relative flex-shrink-0">
+        <swiper-container
+          slides-per-view="1"
+          loop="true"
+          autoplay-delay="2500"
+          autoplay-disable-on-interaction="true"
+          pagination="true"
+          class="w-full h-64 rounded-xl bg-gray-100 dark:bg-gray-800"
+        >
+          @for (photo of product().photos; track photo.imageName) {
+          <swiper-slide>
+            <img
+              class="w-full h-64 object-contain p-4"
+              [src]="'https://estorex.runasp.net/' + photo.imageName"
+              [alt]="product().name"
+              loading="lazy"
+            />
+          </swiper-slide>
           }
-        </div>
+        </swiper-container>
 
-        <div class="flex flex-col justify-between flex-grow p-4">
-          <h4
-            class="text-base font-semibold text-[#007580] capitalize line-clamp-2 mb-2"
-          >
-            {{ product().name }}
-          </h4>
-
-          <p
-            class="text-lg font-semibold text-[#272343] dark:text-[#f7f7f7] flex items-center gap-2"
-          >
-            {{ product().newPrice | currency : "EGP" : "symbol" }}
-            @if (product().oldPrice > 0) {
-            <span class="text-sm text-gray-400 line-through">
-              {{ product().oldPrice | currency : "EGP" : "symbol" }}
-            </span>
-            }
-          </p>
+        @if (product().oldPrice > product().newPrice && product().oldPrice > 0)
+        {
+        <div
+          class="absolute top-3 left-3 bg-[#007580] text-white px-3 py-1 rounded-lg text-xs font-semibold shadow"
+        >
+          Sale
         </div>
+        }
       </div>
 
-      <!-- back -->
-      <div
-        class="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#f8f9fa] dark:bg-gray-800 rounded-2xl [transform:rotateY(180deg)] [backface-visibility:hidden]"
-      >
-        <button
-          type="button"
-          class="cursor-pointer bg-[#007580] hover:bg-[#00656e] text-white p-4 rounded-full shadow-lg transition flex items-center justify-center"
+      <div class="flex flex-col justify-between flex-grow p-4">
+        <h4
+          class="text-base font-semibold text-[#007580] capitalize line-clamp-2 mb-2"
         >
-          <lucide-icon name="shopping-cart" size="22"></lucide-icon>
-        </button>
-        <button
-          class="cursor-pointer bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-200 p-4 rounded-full shadow-lg transition hover:text-red-500"
+          {{ product().name }}
+        </h4>
+
+        <p
+          class="text-lg font-semibold text-[#272343] dark:text-[#f7f7f7] flex items-center gap-2"
         >
-          <lucide-icon name="heart" size="22"></lucide-icon>
-        </button>
+          {{ product().newPrice | currency : "EGP" : "symbol" }}
+          @if (product().oldPrice > 0) {
+          <span class="text-sm text-gray-400 line-through">
+            {{ product().oldPrice | currency : "EGP" : "symbol" }}
+          </span>
+          }
+        </p>
       </div>
     </div>
+
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#f8f9fa] dark:bg-gray-800 rounded-2xl [transform:rotateY(180deg)] [backface-visibility:hidden]"
+    >
+      <button
+        type="button"
+        class="cursor-pointer bg-[#007580] hover:bg-[#00656e] text-white p-4 rounded-full shadow-lg transition flex items-center justify-center"
+      >
+        <lucide-icon name="shopping-cart" size="22"></lucide-icon>
+      </button>
+      <button
+        class="cursor-pointer bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-200 p-4 rounded-full shadow-lg transition hover:text-red-500"
+      >
+        <lucide-icon name="heart" size="22"></lucide-icon>
+      </button>
+    </div>
   </div>
-</swiper-slide>
+</div>
