@@ -1,10 +1,11 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './core/layout/nav-bar/navbar.component';
+import { FooterComponent } from './core/layout/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [NavBarComponent, RouterOutlet],
+  imports: [NavBarComponent, RouterOutlet, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

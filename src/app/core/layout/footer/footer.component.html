@@ -1,0 +1,51 @@
+<footer
+  class="border-t border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-800"
+>
+  <div
+    class="w-full px-8 lg:px-20 py-12 md:py-20 grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 text-sm md:text-base"
+  >
+    <div class="flex flex-col gap-6 sm:col-span-2 md:col-span-1">
+      <a [routerLink]="['/']" class="block">
+        <img class="h-10 w-auto" alt="E-StoreX logo" src="E-StoreX.png" />
+      </a>
+
+      <app-social-links [links]="socialLinks" />
+      <p class="text-xs md:text-sm text-gray-500 mt-auto dark:text-gray-400">
+        Copyright &copy;
+        <span class="year">{{ currentYear }}</span> by E-StoreX, Inc. All rights
+        reserved.
+        <br />
+        <span
+          class="font-semibold text-gray-700 dark:text-gray-200 transition duration-300 ease-in-out hover:text-[#029fae] hover:scale-105 inline-block cursor-pointer"
+        >
+          Developed by Ibrahim Hassan
+        </span>
+      </p>
+    </div>
+
+    <div>
+      <p class="text-base md:text-lg font-semibold mb-4 dark:text-white">
+        Contact us
+      </p>
+      <address class="not-italic space-y-2 text-gray-600 dark:text-gray-300">
+        <p>Bani `Umran wa Nazlat Samhan, El-Minya</p>
+        <p>
+          <a
+            class="block hover:text-gray-900 dark:hover:text-white"
+            href="tel:01015636927"
+            >01015636927</a
+          >
+          <a
+            class="block hover:text-gray-900 dark:hover:text-white"
+            href="mailto:ih3046376@gmail.com"
+            >{{ email }}</a
+          >
+        </p>
+      </address>
+    </div>
+
+    <app-footer-column title="Account" [links]="account" />
+    <app-footer-column title="Company" [links]="company" />
+    <app-footer-column title="Resources" [links]="resources" />
+  </div>
+</footer>

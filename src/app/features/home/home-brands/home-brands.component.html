@@ -12,6 +12,7 @@
     autoplay-disable-on-interaction="false"
     space-between="24"
     navigation="true"
+    pagination="true"
     breakpoints='{
       "640": { "slidesPerView": 3 },
       "768": { "slidesPerView": 4 },
@@ -21,7 +22,7 @@
   >
     @for (brand of brands(); track brand.id) {
     <swiper-slide
-      class="flex items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer p-4"
+      class="flex items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer p-4 mb-12"
     >
       <img
         [src]="
@@ -36,13 +37,4 @@
     </swiper-slide>
     }
   </swiper-container>
-
-  <!-- arrows -->
-  <div
-    class="swiper-button-prev !text-gray-700 dark:!text-gray-300 hover:!text-[#029fae] transition hidden lg:flex"
-  ></div>
-  <div
-    class="swiper-button-next !text-gray-700 dark:!text-gray-300 hover:!text-[#029fae] transition hidden lg:flex"
-  ></div>
 </div>
-<!-- } -->
