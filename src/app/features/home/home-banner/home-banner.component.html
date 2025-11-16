@@ -7,7 +7,6 @@
   navigation="true"
   class="w-full h-full bg-white dark:bg-gray-900"
 >
-  <!-- @if(isClient()) {  -->
   @for(slide of slides(); track slide.title) {
   <swiper-slide class="bg-white dark:bg-gray-900">
     <div
@@ -58,7 +57,7 @@
           <swiper-slide>
             <img
               [src]="'https://estorex.runasp.net/' + photo.imageName"
-              [alt]="slide.title"
+              [alt]="slide?.title || 'Product image'"
               class="object-contain w-full h-full rounded-xl"
               loading="lazy"
             />
@@ -69,5 +68,4 @@
     </div>
   </swiper-slide>
   }
-  <!-- } -->
 </swiper-container>
