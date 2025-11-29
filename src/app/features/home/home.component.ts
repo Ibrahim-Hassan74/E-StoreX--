@@ -16,6 +16,9 @@ import { Brand } from '../../shared/models/brand';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
 import { Product } from '../../shared/models/product';
 import { HomeFeaturedProductsComponent } from './home-featured-products/home-featured-products.component';
+import { CategoriesService } from '../../core/services/categories/categories.service';
+import { CategoriesBrands } from '../../shared/models/categories-brands';
+import { CategoriesComponent } from '../categories/categories.component';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +29,7 @@ import { HomeFeaturedProductsComponent } from './home-featured-products/home-fea
     HomeBrandsComponent,
     LoadingSpinnerComponent,
     HomeFeaturedProductsComponent,
+    CategoriesComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -36,19 +40,23 @@ export class HomeComponent implements OnInit {
   bannerData = signal<Slide[]>([]);
   brandsData = signal<Brand[]>([]);
   featuredProducts = signal<Product[]>([]);
+  categoriesBrands = signal<CategoriesBrands[]>([]);
   private productsService = inject(ProductsService);
   private brandsService = inject(BrandsService);
+  private categoriesService = inject(CategoriesService);
   ngOnInit(): void {
     this.isLoading.set(true);
     forkJoin({
       banner: this.productsService.getBestSellerSlides(5),
       brands: this.brandsService.getBrands(),
       featured: this.productsService.getFeaturedProducts(),
+      categoriesBrands: this.categoriesService.getCategoriesWithBrands(),
     }).subscribe({
       next: (res) => {
         this.bannerData.set(res.banner);
         this.brandsData.set(res.brands);
         this.featuredProducts.set(res.featured);
+        this.categoriesBrands.set(res.categoriesBrands);
         this.isLoading.set(false);
       },
       error: () => {

@@ -1,8 +1,12 @@
-<section class="w-full dark:bg-gray-900">
-  <h2
-    class="flex items-center justify-center gap-2 text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 dark:bg-gray-900"
+<section class="w-full dark:bg-gray-900 bg-white">
+    <h2
+    class="flex items-center justify-center text-2xl md:text-3xl font-bold 
+          text-gray-900 dark:text-gray-100 mb-6 gap-3
+          bg-white dark:bg-gray-900 px-6 rounded-2xl"
   >
-    Featured Products
+    <span class="whitespace-nowrap">
+      Our <span class="text-[#029fae]">Featured Products</span>
+    </span>
   </h2>
   <swiper-container
     slides-per-view="2"
@@ -19,7 +23,7 @@
     "1280": { "slidesPerView": 5 },
     "1536": { "slidesPerView": 6 }
   }'
-    class="w-full dark:bg-gray-900"
+    class="w-full dark:bg-gray-900 bg-white"
   >
     @for (product of featuredProducts(); track product.id) {
     <swiper-slide>

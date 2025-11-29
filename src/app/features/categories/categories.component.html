@@ -1,86 +1,26 @@
-<swiper-container
-  slides-per-view="1"
-  loop="true"
-  autoplay='{"delay":10000,"disableOnInteraction":false}'
-  pagination="true"
-  navigation="true"
-  class="w-full h-full bg-white dark:bg-gray-900"
->
-  @for (cat of categoriesBrands(); track cat.categories.id) {
-  <swiper-slide class="bg-white dark:bg-gray-900">
-    <section
-      class="relative flex flex-col lg:flex-row items-center justify-between min-h-[50vh] bg-white dark:bg-gray-800 mx-6 lg:mx-20 my-8 px-8 lg:px-20 py-16 gap-12 rounded-[2rem] shadow-lg dark:shadow-gray-900 transition-all duration-500"
-    >
-      <div
-        class="absolute inset-0 bg-gradient-to-tr from-[#f0faff] to-transparent dark:from-gray-900 opacity-60 rounded-[6rem] -z-10"
-      ></div>
+<section class="w-full dark:bg-gray-900 bg-white">
+  <h2
+    class="flex items-center justify-center text-2xl md:text-3xl font-bold 
+          text-gray-900 dark:text-gray-100
+          bg-white dark:bg-gray-900 px-6 rounded-2xl"
+  >
+    <span class="whitespace-nowrap">
+      Our <span class="text-[#029fae]">Categories</span>
+    </span>
+  </h2>
 
-      <div class="relative w-full lg:w-1/2 flex justify-center items-center">
-        <div
-          class="absolute w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] bg-gray-200 dark:bg-gray-700 rounded-full"
-        ></div>
-
-        <img
-          [src]="
-            'https://estorex.runasp.net/' + cat.categories.photos[0].imageName
-          "
-          [alt]="cat.categories.name"
-          class="relative rounded-2xl object-center object-contain w-full h-[400px] lg:h-[500px]"
-        />
-      </div>
-
-      <div class="w-full lg:w-1/2 space-y-6 text-center lg:text-left">
-        <h2
-          class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white capitalize"
-        >
-          {{ cat.categories.name }}
-        </h2>
-
-        <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-          {{ cat.categories.description }}
-        </p>
-
-        <div>
-          <h3
-            class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200 capitalize"
-          >
-            Popular Brands
-          </h3>
-
-          <swiper-container
-            nested="true"
-            slides-per-view="3"
-            space-between="20"
-            loop="true"
-            autoplay='{"delay":2000,"disableOnInteraction":false}'
-            breakpoints='{
-              "640": { "slidesPerView" :3 },
-              "1024": { "slidesPerView" :4}
-            }'
-            class="flex items-center justify-center lg:justify-start"
-          >
-            @for (brand of cat.brandResponse; track brand.id) {
-            <swiper-slide class="flex justify-center">
-              @if (brand.photos.length > 0) {
-              <img
-                [src]="
-                  'https://estorex.runasp.net/' + brand.photos[0].imageName
-                "
-                [alt]="brand.name"
-                class="h-12 opacity-80 hover:opacity-100 transition"
-              />
-              } @else {
-              <span
-                class="px-5 py-2 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-700 dark:text-gray-300 font-medium"
-                >{{ brand.name }}</span
-              >
-              }
-            </swiper-slide>
-            }
-          </swiper-container>
-        </div>
-      </div>
-    </section>
-  </swiper-slide>
-  }
-</swiper-container>
+  <swiper-container
+    slides-per-view="1"
+    loop="true"
+    autoplay='{"delay":10000,"disableOnInteraction":false}'
+    pagination="true"
+    navigation="true"
+    class="w-full dark:bg-gray-900"
+  >
+    @for (cat of categoriesBrands(); track cat.categories.id) {
+    <swiper-slide class="bg-white dark:bg-gray-900">
+      <app-category-card [cat]="cat" />
+    </swiper-slide>
+    }
+  </swiper-container>
+</section>
