@@ -1,25 +1,28 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategoriesBrands } from '../../../shared/models/categories-brands';
 import { Categories } from '../../../shared/models/categories';
 import { UUID } from 'crypto';
+import { ResourceService } from '../resource.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CategoriesService {
-  private http = inject(HttpClient);
-  private url = environment.baseURL + 'categories';
+export class CategoriesService extends ResourceService<Categories> {
+
+  constructor() {
+    super('categories');
+  }
+
   getCategoriesWithBrands(): Observable<CategoriesBrands[]> {
-    return this.http.get<CategoriesBrands[]>(`${this.url}/brands`);
+    return this.get<CategoriesBrands[]>('brands');
   }
+
   getCategories(): Observable<Categories[]> {
-    return this.http.get<Categories[]>(`${this.url}`);
+    return this.get<Categories[]>('');
   }
+
   getCategoryById(id: UUID): Observable<Categories> {
-    return this.http.get<Categories>(`${this.url}/${id}`);
+    return this.getById<Categories>(id.toString());
   }
-  
 }

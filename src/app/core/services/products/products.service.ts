@@ -1,37 +1,43 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { ProductQuery } from '../../../shared/models/product-query';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { ProductQuery } from '../../../shared/models/product-query';
 import { Pagination } from '../../../shared/models/pagination';
 import { Slide } from '../../../shared/models/slide';
 import { Product } from '../../../shared/models/product';
+import { ResourceService } from '../resource.service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService {
-  private http = inject(HttpClient);
-  private apiUrl = environment.baseURL + 'products';
+export class ProductsService extends ResourceService<Product> {
 
-  getProducts(query: ProductQuery = {}): Observable<Pagination<Product>> {
-    let params = new HttpParams();
-    Object.entries(query).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        params = params.set(key, value.toString());
-      }
-    });
-    return this.http.get<Pagination<Product>>(this.apiUrl, { params });
+  constructor() {
+    super('products');
   }
+
+getProducts(query: ProductQuery = {}): Observable<Pagination<Product>> {
+  let params = new HttpParams();
+
+  Object.entries(query).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params = params.set(key, value.toString());
+    }
+  });
+
+  return this.get<Pagination<Product>>('', { params });
+}
+
   getProductById(id: string): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+    return this.getById<Product>(id);
   }
+
   getBestSeller(count: number): Observable<Pagination<Product>> {
-    const params = new HttpParams().set('count', count.toString());
-    return this.http.get<Pagination<Product>>(`${this.apiUrl}/best-sellers`, {
-      params,
+    return this.get<Pagination<Product>>('best-sellers', {
+      params: { count },
     });
   }
+
   getBestSellerSlides(count: number): Observable<Slide[]> {
     return this.getBestSeller(count).pipe(
       map((response) =>
@@ -42,11 +48,12 @@ export class ProductsService {
           newPrice: p.newPrice,
           oldPrice: p.oldPrice,
           photos: p.photos,
-        }))
-      )
+        })),
+      ),
     );
   }
+
   getFeaturedProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/featured`);
+    return this.get<Product[]>('featured');
   }
 }

@@ -5,7 +5,6 @@ import { AboutComponent } from './features/about/about.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { CartComponent } from './features/cart/cart.component';
 import { WishlistComponent } from './features/wishlist/wishlist.component';
-import { CategoriesComponent } from './features/categories/categories.component';
 
 export const routes: Routes = [
   {
@@ -18,7 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'product',
-    component: CategoriesComponent,
+    component: ProductComponent,
   },
   {
     path: 'about',

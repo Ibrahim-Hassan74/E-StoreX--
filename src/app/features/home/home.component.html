@@ -1,9 +1,11 @@
 @if (isLoading()) {
-<app-loading-spinner />
+  <app-loading-spinner />
 } @else {
-<app-home-banner [slides]="bannerData()" />
-<app-delivery />
-<app-home-brands [brands]="brandsData()" />
-<app-categories [categoriesBrands]="categoriesBrands()" />
-<app-home-featured-products [featuredProducts]="featuredProducts()" />
+  <div class="stagger">
+    <app-home-banner [slides]="bannerData()" />
+    <app-delivery />
+    <app-home-brands [brands]="brandsData()" />
+    <app-categories [categoriesBrands]="categoriesBrands()" />
+    <app-home-featured-products [featuredProducts]="featuredProducts()" />
+  </div>
 }
