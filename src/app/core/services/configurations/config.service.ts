@@ -7,4 +7,7 @@ export class ConfigService {
   get apiKey(): string {
     return this.config?.apiKey || '';
   }
+  get clientId(): string {
+    return this.config?.clientId || '';
+  }
 }

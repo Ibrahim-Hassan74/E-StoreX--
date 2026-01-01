@@ -1,0 +1,81 @@
+<div class="space-y-10">
+  
+  <!-- Messages -->
+  @if (message()) {
+    <div class="rounded-md bg-green-50 dark:bg-green-900/20 p-4 border border-green-200 dark:border-green-800">
+      <p class="text-sm font-medium text-green-800 dark:text-green-200">{{ message() }}</p>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <div class="rounded-md bg-red-50 dark:bg-red-900/20 p-4 border border-red-200 dark:border-red-800">
+      <p class="text-sm font-medium text-red-800 dark:text-red-200">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Change Password -->
+  <div
+    class="rounded-lg bg-gray-50 dark:bg-gray-900/40
+           p-6 ring-1 ring-gray-200 dark:ring-gray-700"
+  >
+    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+      Change Password
+    </h3>
+
+    <form
+      [formGroup]="changePasswordForm"
+      (ngSubmit)="onChangePassword()"
+      class="mt-6 grid gap-6"
+    >
+      <!-- Current Password -->
+      <div>
+        <label for="currentPassword" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">Current Password</label>
+        <input type="password" formControlName="currentPassword" id="currentPassword" class="input">
+      </div>
+
+      <!-- New Password -->
+      <div>
+        <label for="newPassword" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">New Password</label>
+        <input type="password" formControlName="newPassword" id="newPassword" class="input">
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">Confirm New Password</label>
+        <input type="password" formControlName="confirmPassword" id="confirmPassword" class="input">
+      </div>
+
+      <button
+        type="submit"
+        class="self-start rounded-md bg-[#029fae]
+               px-4 py-2 text-sm font-semibold text-white
+               hover:bg-[#028b99]"
+      >
+        Update Password
+      </button>
+    </form>
+  </div>
+
+  <!-- Danger Zone -->
+  <div
+    class="rounded-lg border border-red-200 dark:border-red-800
+           bg-red-50 dark:bg-red-900/20 p-6"
+  >
+    <h3 class="text-sm font-semibold text-red-600 dark:text-red-400">
+      Danger Zone
+    </h3>
+    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+      This action is permanent and cannot be undone.
+    </p>
+
+    <button
+      type="button"
+      (click)="deleteAccount()"
+      class="mt-4 rounded-md bg-red-600
+             px-4 py-2 text-sm font-semibold text-white
+             hover:bg-red-500"
+    >
+      Delete Account
+    </button>
+  </div>
+</div>

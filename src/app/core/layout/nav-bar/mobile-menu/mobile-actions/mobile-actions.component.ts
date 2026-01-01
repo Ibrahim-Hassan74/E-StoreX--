@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, output } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { NavbarService } from '../../navbar.service';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AccountService } from '../../../../services/account/account.service';
 
 @Component({
   selector: 'app-mobile-actions',
@@ -11,12 +12,26 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class MobileActionsComponent {
   private navbarService = inject(NavbarService);
+  private accountService = inject(AccountService);
+  private router = inject(Router);
+  
+  closeMenu = output<void>();
+
   isDarkMode = this.navbarService.mode;
+  currentUser = this.accountService.currentUser;
+
   ngOnInit() {
     this.navbarService.load();
   }
 
   toggleTheme() {
     this.navbarService.toggleTheme();
+  }
+
+  logout() {
+    this.accountService.logout().subscribe(() => {
+      this.router.navigate(['/']);
+      this.closeMenu.emit();
+    });
   }
 }

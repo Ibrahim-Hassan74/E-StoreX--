@@ -30,12 +30,12 @@ export abstract class ResourceService<TModel = unknown> {
     private readonly commonHeaders?: Record<string, string>,
   ) {}
 
-  private buildUrl(path?: string): string {
+  protected buildUrl(path?: string): string {
     const resourceBase = `${this.baseUrl}/${this.resourcePath}`;
     return path ? `${resourceBase}/${path}` : resourceBase;
   }
 
-  private buildHeaders(headers?: HttpHeaders | Record<string, string>): HttpHeaders | undefined {
+  protected buildHeaders(headers?: HttpHeaders | Record<string, string>): HttpHeaders | undefined {
     let result: HttpHeaders | undefined;
 
     if (headers instanceof HttpHeaders) {
@@ -54,7 +54,7 @@ export abstract class ResourceService<TModel = unknown> {
     return result;
   }
 
-  private buildParams(
+  protected buildParams(
     params?: HttpParams | Record<string, string | number | boolean | null | undefined>,
   ): HttpParams | undefined {
     if (!params) return undefined;

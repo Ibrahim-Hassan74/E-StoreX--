@@ -1,0 +1,172 @@
+<div
+  class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8
+         bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+>
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm text-center">
+    <div
+      class="flex justify-center items-center gap-2
+             text-2xl font-semibold text-gray-900 dark:text-white"
+    >
+      <lucide-icon name="User" class="text-[#029fae]" [size]="32"></lucide-icon>
+      <span>Create an account</span>
+    </div>
+
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Create your E-StoreX account
+    </p>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-xl
+             shadow-lg ring-1 ring-gray-200 dark:ring-gray-700
+             px-6 py-8"
+    >
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="space-y-5"
+      >
+        @if (errorMessage()) {
+          <div
+            class="rounded-md bg-red-50 dark:bg-red-900/20
+                   p-4 border border-red-200 dark:border-red-800"
+          >
+            <p class="text-sm text-red-800 dark:text-red-200">
+              {{ errorMessage() }}
+            </p>
+          </div>
+        }
+
+        <!-- Username -->
+        <div>
+          <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
+            Username
+          </label>
+          <input
+            type="text"
+            formControlName="userName"
+            class="input"
+            [ngClass]="{ 'ring-red-500': hasError('userName','required') }"
+          />
+          @if (hasError('userName','required')) {
+            <p class="error-text">Username is required.</p>
+          }
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            formControlName="email"
+            class="input"
+            [ngClass]="{
+              'ring-red-500':
+                hasError('email','required') || hasError('email','email')
+            }"
+          />
+          @if (hasError('email','required')) {
+            <p class="error-text">Email is required.</p>
+          }
+          @if (hasError('email','email')) {
+            <p class="error-text">Enter a valid email address.</p>
+          }
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
+            Phone
+          </label>
+          <input
+            type="tel"
+            formControlName="phone"
+            class="input"
+            [ngClass]="{ 'ring-red-500': hasError('phone','required') }"
+          />
+          @if (hasError('phone','required')) {
+            <p class="error-text">Phone number is required.</p>
+          }
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            formControlName="password"
+            class="input"
+            [ngClass]="{
+              'ring-red-500':
+                hasError('password','required') ||
+                hasError('password','minlength')
+            }"
+          />
+          @if (hasError('password','required')) {
+            <p class="error-text">Password is required.</p>
+          }
+          @if (hasError('password','minlength')) {
+            <p class="error-text">Password must be at least 6 characters.</p>
+          }
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            class="input"
+            [ngClass]="{
+              'ring-red-500':
+                registerForm.errors?.['passwordMismatch'] &&
+                registerForm.get('confirmPassword')?.dirty
+            }"
+          />
+          @if (
+            registerForm.errors?.['passwordMismatch'] &&
+            registerForm.get('confirmPassword')?.dirty
+          ) {
+            <p class="error-text">Passwords do not match.</p>
+          }
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid || isLoading()"
+          class="flex w-full justify-center items-center gap-2
+                 rounded-md bg-[#029fae]
+                 px-3 py-2 text-sm font-semibold text-white
+                 shadow-md hover:shadow-lg
+                 hover:bg-[#028b99]
+                 transition-all disabled:opacity-50"
+        >
+          @if (isLoading()) {
+            <lucide-icon name="Loader2" class="animate-spin" [size]="18"></lucide-icon>
+            Registering...
+          } @else {
+            Register
+          }
+        </button>
+      </form>
+    </div>
+
+    <p class="mt-10 text-center text-sm text-gray-500 dark:text-gray-400">
+      Already have an account?
+      <a
+        routerLink="/auth/login"
+        class="font-semibold text-[#029fae] hover:text-[#028b99]"
+      >
+        Sign in
+      </a>
+    </p>
+  </div>
+</div>

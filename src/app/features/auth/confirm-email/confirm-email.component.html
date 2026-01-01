@@ -1,0 +1,107 @@
+<div
+  class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8
+         bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+>
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-xl
+             shadow-lg ring-1 ring-gray-200 dark:ring-gray-700
+             px-6 py-10 text-center"
+    >
+      @if (isLoading()) {
+        <div class="flex flex-col items-center">
+          <div
+            class="flex h-16 w-16 items-center justify-center
+                   rounded-full bg-teal-50 dark:bg-teal-900/20"
+          >
+            <lucide-icon
+              name="Loader2"
+              class="animate-spin text-[#029fae]"
+              [size]="32"
+            ></lucide-icon>
+          </div>
+
+          <h2
+            class="mt-6 text-xl font-semibold text-gray-900 dark:text-white"
+          >
+            Verifying your email...
+          </h2>
+
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Please wait while we confirm your email address.
+          </p>
+        </div>
+      }
+
+      @else if (successMessage()) {
+        <div class="flex flex-col items-center">
+          <div
+            class="flex h-16 w-16 items-center justify-center
+                   rounded-full bg-green-100 dark:bg-green-900/20"
+          >
+            <lucide-icon
+              name="Check"
+              class="text-green-600 dark:text-green-400"
+              [size]="32"
+            ></lucide-icon>
+          </div>
+
+          <h2
+            class="mt-6 text-xl font-semibold text-gray-900 dark:text-white"
+          >
+            Email Confirmed!
+          </h2>
+
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Your email has been successfully verified.
+            You can now sign in to your account.
+          </p>
+
+          <a
+            routerLink="/auth/login"
+            class="mt-8 inline-flex items-center justify-center
+                   rounded-md bg-[#029fae]
+                   px-4 py-2 text-sm font-semibold text-white
+                   shadow-md hover:shadow-lg
+                   hover:bg-[#028b99]
+                   transition-all"
+          >
+            Sign in
+          </a>
+        </div>
+      }
+
+      @else {
+        <div class="flex flex-col items-center">
+          <div
+            class="flex h-16 w-16 items-center justify-center
+                   rounded-full bg-red-100 dark:bg-red-900/20"
+          >
+            <lucide-icon
+              name="X"
+              class="text-red-600 dark:text-red-400"
+              [size]="32"
+            ></lucide-icon>
+          </div>
+
+          <h2
+            class="mt-6 text-xl font-semibold text-gray-900 dark:text-white"
+          >
+            Verification Failed
+          </h2>
+
+          <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+            {{ errorMessage() }}
+          </p>
+
+          <a
+            routerLink="/auth/login"
+            class="mt-8 text-sm font-semibold text-[#029fae] hover:text-[#028b99]"
+          >
+            Back to login →
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

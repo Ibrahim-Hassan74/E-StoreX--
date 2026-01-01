@@ -1,7 +1,9 @@
+import { AccountService } from './core/services/account/account.service';
 import {
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
+  APP_INITIALIZER
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
@@ -34,16 +36,31 @@ import {
   Twitter,
   User,
   X,
+  Loader2,
+  Chrome,
+  LogOut,
 } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+
+function initializeApp(accountService: AccountService) {
+  return () => accountService.initializeUser();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([apiKeyInterceptor])),
+    provideHttpClient(withInterceptors([apiKeyInterceptor, authInterceptor])),
+
     provideClientHydration(withEventReplay()),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      multi: true,
+      deps: [AccountService],
+    },
     importProvidersFrom(
       LucideAngularModule.pick({
         Menu,
@@ -69,6 +86,9 @@ export const appConfig: ApplicationConfig = {
         Twitter,
         Github,
         Star,
+        Loader2,
+        Chrome,
+        LogOut
       })
     ),
   ],

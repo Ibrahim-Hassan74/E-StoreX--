@@ -1,7 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { NavbarService } from '../../navbar.service';
+import { AccountService } from '../../../../services/account/account.service';
 
 @Component({
   selector: 'app-navbar-actions',
@@ -12,7 +13,11 @@ import { NavbarService } from '../../navbar.service';
 export class NavbarActionsComponent {
   isDropdownOpen = signal(false);
   private navbarService = inject(NavbarService);
+  private accountService = inject(AccountService);
+  private router = inject(Router);
+
   isDarkMode = this.navbarService.mode;
+  currentUser = this.accountService.currentUser;
 
   ngOnInit() {
     this.navbarService.load();
@@ -28,5 +33,12 @@ export class NavbarActionsComponent {
 
   closeDropdown() {
     this.isDropdownOpen.set(false);
+  }
+
+  logout() {
+    this.accountService.logout().subscribe(() => {
+      this.router.navigate(['/']);
+    });
+    this.closeDropdown();
   }
 }

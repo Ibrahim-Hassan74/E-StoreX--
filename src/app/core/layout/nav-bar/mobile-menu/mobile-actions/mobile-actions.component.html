@@ -1,40 +1,90 @@
-<div
-  class="flex items-center justify-around gap-4 pt-5 border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900 transition-colors"
->
+<div class="flex flex-col space-y-4">
+  <!-- Cart -->
   <a
     routerLink="/cart"
     routerLinkActive="active-link"
-    [routerLinkActiveOptions]="{ exact: true }"
-    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
+    (click)="closeMenu.emit()"
+    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition"
   >
-    <lucide-icon name="shopping-cart" size="22"></lucide-icon>
-    <span class="text-xs mt-1">Cart</span>
+    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <lucide-icon name="shopping-cart" size="20"></lucide-icon>
+    </div>
+    <span class="font-medium">Cart</span>
   </a>
 
+  <!-- Wishlist -->
   <a
     routerLink="/wishlist"
     routerLinkActive="active-link"
-    [routerLinkActiveOptions]="{ exact: true }"
-    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
+    (click)="closeMenu.emit()"
+    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition"
   >
-    <lucide-icon name="heart" size="22"></lucide-icon>
-    <span class="text-xs mt-1">Wishlist</span>
+    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <lucide-icon name="heart" size="20"></lucide-icon>
+    </div>
+    <span class="font-medium">Wishlist</span>
   </a>
-
-  <!-- Account -->
-  <button
-    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
-  >
-    <lucide-icon name="user" size="22"></lucide-icon>
-    <span class="text-xs mt-1">Account</span>
-  </button>
 
   <!-- Theme Toggle -->
   <button
     (click)="toggleTheme()"
-    class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-[#029fae] transition"
+    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition w-full text-left"
   >
-    <lucide-icon [name]="isDarkMode() ? 'sun' : 'moon'" size="22"></lucide-icon>
-    <span class="text-xs mt-1">{{ isDarkMode() ? "Light" : "Dark" }}</span>
+    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <lucide-icon [name]="isDarkMode() ? 'sun' : 'moon'" size="20"></lucide-icon>
+    </div>
+    <span class="font-medium">{{ isDarkMode() ? "Switch to Light Mode" : "Switch to Dark Mode" }}</span>
   </button>
+
+  <div class="h-px bg-gray-100 dark:bg-gray-800 my-2"></div>
+
+  <!-- Auth -->
+  @if (currentUser()) {
+    <a
+      routerLink="/account/profile"
+      (click)="closeMenu.emit()"
+      class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition"
+    >
+        @if (currentUser()?.photoUrl) {
+           <img [src]="'https://estorex.runasp.net/' + currentUser()?.photoUrl" class="h-[36px] w-[36px] rounded-full object-cover ring-2 ring-white dark:ring-gray-800">
+        } @else {
+           <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+             <lucide-icon name="user" size="20"></lucide-icon>
+           </div>
+        }
+      <div class="flex flex-col">
+        <span class="font-medium">My Account</span>
+        <span class="text-xs text-gray-400">Manage profile & settings</span>
+      </div>
+    </a>
+
+    <button
+      (click)="logout()"
+      class="flex items-center gap-4 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition w-full text-left"
+    >
+      <div class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+        <lucide-icon name="log-out" size="20"></lucide-icon>
+      </div>
+      <span class="font-medium">Logout</span>
+    </button>
+
+  } @else {
+    <div class="grid grid-cols-2 gap-4">
+      <a
+        routerLink="/auth/login"
+        (click)="closeMenu.emit()"
+        class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:border-[#029fae] hover:text-[#029fae] transition"
+      >
+        <span class="font-medium">Login</span>
+      </a>
+      
+      <a
+        routerLink="/auth/register"
+        (click)="closeMenu.emit()"
+        class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#029fae] text-white hover:bg-[#028f9d] transition shadow-md shadow-[#029fae]/20"
+      >
+        <span class="font-medium">Register</span>
+      </a>
+    </div>
+  }
 </div>

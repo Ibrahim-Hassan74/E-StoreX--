@@ -1,9 +1,28 @@
 @if(menuState()) {
 <div
-  class="md:hidden bg-white dark:bg-gray-900 shadow-lg border-t border-gray-200 dark:border-gray-700 px-6 py-5 space-y-4 animate-fadeIn"
+  class="fixed inset-0 z-[999] h-[100dvh] bg-white dark:bg-gray-900 animate-fadeIn flex flex-col"
 >
-  <app-mobile-links />
-  <app-mobile-location />
-  <app-mobile-actions />
+  <!-- Header -->
+  <div class="px-6 h-[75px] flex items-center justify-between border-b border-gray-100 dark:border-gray-800">
+    <app-navbar-logo />
+    <button
+      (click)="closeMenu.emit()"
+      class="p-2 -mr-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none"
+      aria-label="Close menu"
+    >
+      <lucide-icon name="x" size="28"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 overflow-y-auto py-8 px-6">
+    <div class="max-w-md mx-auto w-full space-y-8">
+      <app-mobile-links (click)="closeMenu.emit()" />
+      <hr class="border-gray-100 dark:border-gray-800" />
+      <app-mobile-actions (closeMenu)="closeMenu.emit()" />
+      <hr class="border-gray-100 dark:border-gray-800" />
+      <app-mobile-location />
+    </div>
+  </div>
 </div>
 }
