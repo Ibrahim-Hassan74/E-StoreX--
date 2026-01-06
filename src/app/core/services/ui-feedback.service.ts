@@ -18,9 +18,9 @@ export class UiFeedbackService {
 
   private get commonOptions() {
     return {
-      background: this.isDark ? '#1f2937' : '#ffffff', // gray-800 : white
-      color: this.isDark ? '#f3f4f6' : '#1f2937',     // gray-100 : gray-800
-      confirmButtonColor: '#0d9488', // Teal-600 (primary color)
+      background: this.isDark ? '#1f2937' : '#ffffff', 
+      color: this.isDark ? '#f3f4f6' : '#1f2937',    
+      confirmButtonColor: '#0d9488', 
     };
   }
 
@@ -32,7 +32,7 @@ export class UiFeedbackService {
       icon: 'success',
       title: title,
       text: message,
-      timer: 3000,
+      timer: 1500,
       timerProgressBar: true,
       showConfirmButton: false,
       didOpen: (toast) => {

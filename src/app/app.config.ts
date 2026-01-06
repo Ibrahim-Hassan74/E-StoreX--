@@ -39,6 +39,9 @@ import {
   Loader2,
   Chrome,
   LogOut,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
@@ -88,7 +91,10 @@ export const appConfig: ApplicationConfig = {
         Star,
         Loader2,
         Chrome,
-        LogOut
+        LogOut,
+        Filter,
+        ChevronLeft,
+        ChevronRight
       })
     ),
   ],

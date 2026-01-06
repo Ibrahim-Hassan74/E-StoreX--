@@ -1,80 +1,76 @@
 <div
-  class="group [perspective:1000px] h-[440px] rounded-2xl shadow-md hover:shadow-xl transition bg-white dark:bg-gray-900 dark:shadow-[0_4px_20px_rgba(0,0,0,0.7)] dark:border dark:border-gray-700 mb-12 overflow-hidden cursor-pointer"
-  [class.flipped]="flipped()"
-  (touchstart)="onTouchStart($event)"
-  (mouseenter)="flipped.set(true)"
-  (mouseleave)="flipped.set(false)"
+  class="group h-full min-h-[400px] rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col"
 >
-  <div
-    class="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] dark:bg-gray-900"
-  >
+  <div class="relative flex-shrink-0 bg-white dark:bg-gray-900 z-10">
+      <swiper-container
+        init="false"
+        #swiperEl
+        slides-per-view="1"
+        loop="true"
+        autoplay-delay="2500"
+        autoplay-disable-on-interaction="true"
+        pagination="true"
+        class="w-full h-64 bg-gray-50 dark:bg-gray-800"
+      >
+      @for (photo of product().photos; track photo.imageName) {
+      <swiper-slide>
+        <img
+          class="w-full h-64 object-contain p-4"
+          [src]="'https://estorex.runasp.net/' + photo.imageName"
+          [alt]="product().name"
+          loading="lazy"
+        />
+      </swiper-slide>
+      }
+    </swiper-container>
+
+    @if (product().oldPrice > product().newPrice && product().oldPrice > 0)
+    {
     <div
-      class="absolute inset-0 flex flex-col bg-white dark:bg-gray-900 rounded-2xl overflow-hidden [backface-visibility:hidden]"
+      class="absolute top-3 left-3 bg-[#007580]/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-xs font-semibold shadow-sm z-20"
     >
-      <div class="relative flex-shrink-0">
-        <swiper-container
-          slides-per-view="1"
-          loop="true"
-          autoplay-delay="2500"
-          autoplay-disable-on-interaction="true"
-          pagination="true"
-          class="w-full h-64 rounded-xl bg-gray-100 dark:bg-gray-800"
-        >
-          @for (photo of product().photos; track photo.imageName) {
-          <swiper-slide>
-            <img
-              class="w-full h-64 object-contain p-4"
-              [src]="'https://estorex.runasp.net/' + photo.imageName"
-              [alt]="product().name"
-              loading="lazy"
-            />
-          </swiper-slide>
-          }
-        </swiper-container>
+      Sale
+    </div>
+    }
+  </div>
 
-        @if (product().oldPrice > product().newPrice && product().oldPrice > 0)
-        {
-        <div
-          class="absolute top-3 left-3 bg-[#007580] text-white px-3 py-1 rounded-lg text-xs font-semibold shadow"
-        >
-          Sale
-        </div>
-        }
-      </div>
-
-      <div class="flex flex-col justify-between flex-grow p-4">
-        <h4
-          class="text-base font-semibold text-[#007580] capitalize line-clamp-2 mb-2"
-        >
+  <div class="flex flex-col justify-between flex-1 p-4">
+    <div>
+        <h4 class="text-sm md:text-base font-medium text-gray-900 dark:text-gray-100 capitalize line-clamp-2 mb-2 group-hover:text-[#007580] transition-colors">
           {{ product().name }}
         </h4>
 
-        <p
-          class="text-lg font-semibold text-[#272343] dark:text-[#f7f7f7] flex items-center gap-2"
-        >
+        <p class="text-lg font-bold text-[#272343] dark:text-[#f7f7f7] flex items-center gap-2">
           {{ product().newPrice | currency : "EGP" : "symbol" }}
           @if (product().oldPrice > 0) {
-          <span class="text-sm text-gray-400 line-through">
+          <span class="text-sm text-gray-400 line-through font-normal">
             {{ product().oldPrice | currency : "EGP" : "symbol" }}
           </span>
           }
         </p>
-      </div>
     </div>
 
-    <div
-      class="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#f8f9fa] dark:bg-gray-800 rounded-2xl [transform:rotateY(180deg)] [backface-visibility:hidden]"
-    >
+    <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
       <button
         type="button"
-        class="cursor-pointer bg-[#007580] hover:bg-[#00656e] text-white p-4 rounded-full shadow-lg transition flex items-center justify-center"
+        class="flex-1 bg-[#007580] hover:bg-[#00656e] text-white
+              py-2 px-3 rounded-xl shadow-sm
+              transition-colors flex items-center justify-center gap-1.5
+              text-xs font-medium cursor-pointer"
       >
-        <lucide-icon name="shopping-cart" size="22"></lucide-icon>
-      </button>
+        <lucide-icon name="shopping-cart" size="16"></lucide-icon>
+        Add to Cart
+      </button>      
       <button
-        class="cursor-pointer bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-200 p-4 rounded-full shadow-lg transition hover:text-red-500"
+        class="p-2 rounded-lg
+               border border-gray-200 dark:border-gray-700
+               text-gray-500
+               hover:text-red-500 hover:border-red-500
+               hover:bg-red-50 dark:hover:bg-red-900/10
+               transition-colors cursor-pointer"
+        title="Add to Wishlist"
       >
-        <lucide-icon name="heart" size="22"></lucide-icon>
+        <lucide-icon name="heart" size="16"></lucide-icon>
       </button>
     </div>
   </div>

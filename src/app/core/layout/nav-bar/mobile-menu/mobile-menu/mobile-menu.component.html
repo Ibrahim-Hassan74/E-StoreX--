@@ -1,6 +1,10 @@
-@if(menuState()) {
-<div
-  class="fixed inset-0 z-[999] h-[100dvh] bg-white dark:bg-gray-900 animate-fadeIn flex flex-col"
+<div 
+  class="fixed inset-0 z-[999] h-[100dvh] bg-white dark:bg-gray-900 flex flex-col transition-transform duration-700 ease-in-out"
+  [class.-translate-y-full]="!menuState()"
+  [class.translate-y-0]="menuState()"
+  aria-labelledby="mobile-menu" 
+  role="dialog" 
+  aria-modal="true"
 >
   <!-- Header -->
   <div class="px-6 h-[75px] flex items-center justify-between border-b border-gray-100 dark:border-gray-800">
@@ -25,4 +29,3 @@
     </div>
   </div>
 </div>
-}

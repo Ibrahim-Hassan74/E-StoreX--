@@ -26,7 +26,7 @@
     class="w-full dark:bg-gray-900 bg-white"
   >
     @for (product of featuredProducts(); track product.id) {
-    <swiper-slide>
+    <swiper-slide class="mb-12">
       <app-product-card [product]="product" />
     </swiper-slide>
     }

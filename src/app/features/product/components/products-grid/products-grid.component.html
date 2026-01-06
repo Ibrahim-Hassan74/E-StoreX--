@@ -1,0 +1,27 @@
+@if (state.loading()) {
+  <div class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#029fae]"></div>
+  </div>
+}
+
+@if (!state.loading() && state.products().length > 0) {
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+    @for (product of state.products(); track product.id) {
+      <app-product-card [product]="product" />
+    }
+    </div>
+}
+
+@if (!state.loading() && state.products().length === 0) {
+  <div class="flex flex-col items-center justify-center h-64 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+    <lucide-icon name="package-open" size="48" class="text-gray-300 dark:text-gray-600 mb-4"></lucide-icon>
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white">No products found</h3>
+    <p class="text-gray-500 dark:text-gray-400 mt-1">Try adjusting your filters</p>
+    <button 
+      (click)="state.resetFilters()"
+      class="mt-4 px-4 py-2 text-[#029fae] hover:bg-[#029fae]/10 rounded-lg transition-colors font-medium"
+    >
+      Clear all filters
+    </button>
+  </div>
+}
