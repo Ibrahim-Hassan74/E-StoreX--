@@ -8,7 +8,7 @@ import { Categories } from '../../shared/models/categories';
 import { ProductQuery } from '../../shared/models/product-query';
 import { Pagination } from '../../shared/models/pagination';
 import { SortOrderOptions } from '../../shared/enums/sort-order.enum';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable()
@@ -60,14 +60,17 @@ export class ProductStateService {
 
   loadProducts() {
     this.loading.set(true);
-    this.productsService.getProducts(this.query()).subscribe({
-      next: (response) => {
-        this.products.set(response.data);
-        this.pagination.set(response);
-        this.loading.set(false);
-      },
-      error: () => this.loading.set(false),
-    });
+    this.productsService.getProducts(this.query())
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (response: Pagination<Product>) => {
+          this.products.set(response?.data || []);
+          this.pagination.set(response);
+        },
+        error: () => {
+          this.products.set([]);
+        }
+      });
   }
 
   updateQuery(changes: Partial<ProductQuery>) {

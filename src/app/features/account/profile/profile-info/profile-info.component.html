@@ -51,7 +51,7 @@
       }
     </div>
 
-    <input #fileInput type="file" class="hidden" (change)="onFileSelected($event)" />
+    <input #fileInput type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
   </div>
 
   <!-- Profile Form -->
@@ -97,4 +97,13 @@
       Save Profile
     </button>
   </form>
+
+
+  @if (showCropper()) {
+    <app-image-cropper-modal
+      [imageFile]="selectedFile() || undefined"
+      (save)="onCropSave($event)"
+      (cancel)="onCropCancel()"
+    ></app-image-cropper-modal>
+  }
 </div>

@@ -42,6 +42,7 @@ import {
   Filter,
   ChevronLeft,
   ChevronRight,
+  PackageOpen,
 } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
@@ -94,7 +95,8 @@ export const appConfig: ApplicationConfig = {
         LogOut,
         Filter,
         ChevronLeft,
-        ChevronRight
+        ChevronRight,
+        PackageOpen
       })
     ),
   ],

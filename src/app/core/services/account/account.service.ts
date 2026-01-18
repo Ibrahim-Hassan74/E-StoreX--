@@ -119,9 +119,18 @@ export class AccountService extends ResourceService<User> {
     );
   }
 
-  uploadPhoto(file: File): Observable<AuthResponse> {
+  uploadPhoto(file: File, cropOptions?: { cropX: number; cropY: number; cropWidth: number; cropHeight: number; zoom: number }): Observable<AuthResponse> {
     const formData = new FormData();
     formData.append('file', file);
+    
+    if (cropOptions) {
+      formData.append('cropX', cropOptions.cropX.toString());
+      formData.append('cropY', cropOptions.cropY.toString());
+      formData.append('cropWidth', cropOptions.cropWidth.toString());
+      formData.append('cropHeight', cropOptions.cropHeight.toString());
+      formData.append('zoom', cropOptions.zoom.toString());
+    }
+
     return this.http.patch<AuthResponse>(this.buildUrl('upload-photo'), formData).pipe(
       tap(() => this.getMe().subscribe(user => this.currentUserSignal.set(user)))
     );
@@ -162,7 +171,6 @@ export class AccountService extends ResourceService<User> {
     );
   }
 
-  // Helper methods
   public setSession(authResult: AuthResponse): void {
     if (isPlatformBrowser(this.platformId)) {
       if (authResult.token) localStorage.setItem(this.TOKEN_KEY, authResult.token);

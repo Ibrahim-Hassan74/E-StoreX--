@@ -1,0 +1,69 @@
+import { Component, input, output, signal, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ImageCropperComponent, ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
+import { LucideAngularModule } from 'lucide-angular';
+
+export interface CropResult {
+  blob: Blob;
+  cropX: number;
+  cropY: number;
+  cropWidth: number;
+  cropHeight: number;
+  zoom: number;
+}
+
+@Component({
+  selector: 'app-image-cropper-modal',
+  standalone: true,
+  imports: [CommonModule, ImageCropperComponent, LucideAngularModule],
+  templateUrl: './image-cropper-modal.component.html'
+})
+export class ImageCropperModalComponent {
+  imageFile = input<File | undefined>(undefined);
+  save = output<CropResult>();
+  cancel = output<void>();
+
+  @ViewChild(ImageCropperComponent) imageCropper?: ImageCropperComponent;
+
+  zoom = signal(1);
+  croppedImage: any = '';
+  currentCropEvent: ImageCroppedEvent | null = null;
+  errorMessage = signal<string | null>(null);
+
+  imageLoaded(image: LoadedImage) {
+    // Image loaded logic if needed
+    this.errorMessage.set(null);
+  }
+
+  cropperReady() {
+    // Cropper ready logic
+  }
+
+  loadImageFailed() {
+    console.error('Load image failed');
+    this.errorMessage.set('Failed to load image. Please try another file.');
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.objectUrl;
+    this.currentCropEvent = event;
+  }
+
+  onZoomChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.zoom.set(parseFloat(input.value));
+  }
+
+  onSave() {
+    if (this.currentCropEvent && this.currentCropEvent.blob) {
+      this.save.emit({
+        blob: this.currentCropEvent.blob,
+        cropX: this.currentCropEvent.imagePosition.x1,
+        cropY: this.currentCropEvent.imagePosition.y1,
+        cropWidth: this.currentCropEvent.imagePosition.x2 - this.currentCropEvent.imagePosition.x1,
+        cropHeight: this.currentCropEvent.imagePosition.y2 - this.currentCropEvent.imagePosition.y1,
+        zoom: this.zoom()
+      });
+    }
+  }
+}

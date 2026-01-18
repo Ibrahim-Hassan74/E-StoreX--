@@ -1,16 +1,12 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { HomeComponent } from './features/home/home.component';
-import { ProductComponent } from './features/product/product.component';
 import { AboutComponent } from './features/about/about.component';
 import { ContactComponent } from './features/contact/contact.component';
-import { CartComponent } from './features/cart/cart.component';
-import { WishlistComponent } from './features/wishlist/wishlist.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
   },
   {
     path: 'home',
@@ -19,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'product',
-    component: ProductComponent,
+    loadComponent: () => import('./features/product/product.component').then(m => m.ProductComponent)
   },
   {
     path: 'about',
@@ -31,11 +27,11 @@ export const routes: Routes = [
   },
   {
     path: 'cart',
-    component: CartComponent,
+    loadComponent: () => import('./features/cart/cart.component').then(m => m.CartComponent)
   },
   {
     path: 'wishlist',
-    component: WishlistComponent,
+    loadComponent: () => import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent)
   },
   {
     path: 'auth',
