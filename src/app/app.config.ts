@@ -5,7 +5,7 @@ import {
   provideZoneChangeDetection,
   APP_INITIALIZER
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import {
   provideClientHydration,
@@ -43,6 +43,14 @@ import {
   ChevronLeft,
   ChevronRight,
   PackageOpen,
+  StarOff,
+  CheckCircle,
+  Plus,
+  Minus,
+  Pencil,
+  Trash2,
+  MessageSquare,
+  MessageSquareOff,
 } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
@@ -55,7 +63,7 @@ function initializeApp(accountService: AccountService) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
     provideHttpClient(withInterceptors([apiKeyInterceptor, authInterceptor])),
 
     provideClientHydration(withEventReplay()),
@@ -96,7 +104,15 @@ export const appConfig: ApplicationConfig = {
         Filter,
         ChevronLeft,
         ChevronRight,
-        PackageOpen
+        PackageOpen,
+        StarOff,
+        CheckCircle,
+        Minus,
+        Plus,
+        Pencil,
+        Trash2,
+        MessageSquare,
+        MessageSquareOff
       })
     ),
   ],

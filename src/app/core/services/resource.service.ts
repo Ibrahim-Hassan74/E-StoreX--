@@ -87,4 +87,38 @@ export abstract class ResourceService<TModel = unknown> {
     return this.get<R>(String(id), options);
   }
 
+  protected post<R = TModel>(
+    path = '',
+    body: unknown = {},
+    options: RequestOptions = {},
+  ): Observable<R> {
+    const url = this.buildUrl(path);
+    const headers = this.buildHeaders(options.headers);
+    const params = this.buildParams(options.params);
+
+    return this.http.post<R>(url, body, { headers, params });
+  }
+
+  protected put<R = TModel>(
+    path = '',
+    body: unknown = {},
+    options: RequestOptions = {},
+  ): Observable<R> {
+    const url = this.buildUrl(path);
+    const headers = this.buildHeaders(options.headers);
+    const params = this.buildParams(options.params);
+
+    return this.http.put<R>(url, body, { headers, params });
+  }
+
+  protected delete<R = TModel>(
+    path = '',
+    options: RequestOptions = {},
+  ): Observable<R> {
+    const url = this.buildUrl(path);
+    const headers = this.buildHeaders(options.headers);
+    const params = this.buildParams(options.params);
+
+    return this.http.delete<R>(url, { headers, params });
+  }
 }

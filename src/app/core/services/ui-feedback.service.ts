@@ -75,4 +75,19 @@ export class UiFeedbackService {
       ...options
     });
   }
+
+  confirm(message: string, title = 'Are you sure?', confirmText = 'Yes, delete it!'): Promise<boolean> {
+    return Swal.fire({
+      ...this.commonOptions,
+      title: title,
+      text: message,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: confirmText
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+  }
 }

@@ -1,5 +1,6 @@
 <div
-  class="group h-full min-h-[400px] rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col"
+  [routerLink]="['/product', product().id]"
+  class="group h-full min-h-[400px] rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col cursor-pointer"
 >
   <div class="relative flex-shrink-0 bg-white dark:bg-gray-900 z-10">
       <swiper-container
@@ -53,6 +54,7 @@
     <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
       <button
         type="button"
+        (click)="$event.stopPropagation()"
         class="flex-1 bg-[#007580] hover:bg-[#00656e] text-white
               py-2 px-3 rounded-xl shadow-sm
               transition-colors flex items-center justify-center gap-1.5
@@ -62,6 +64,7 @@
         Add to Cart
       </button>      
       <button
+        (click)="$event.stopPropagation()"
         class="p-2 rounded-lg
                border border-gray-200 dark:border-gray-700
                text-gray-500

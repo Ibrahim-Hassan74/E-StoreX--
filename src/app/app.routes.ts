@@ -14,6 +14,10 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'product/:id',
+    loadComponent: () => import('./features/product/product-details/product-details.component').then(m => m.ProductDetailsComponent)
+  },
+  {
     path: 'product',
     loadComponent: () => import('./features/product/product.component').then(m => m.ProductComponent)
   },

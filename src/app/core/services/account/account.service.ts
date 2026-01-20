@@ -39,17 +39,25 @@ export class AccountService extends ResourceService<User> {
     if (!isPlatformBrowser(this.platformId)) return Promise.resolve();
 
     const token = this.getToken();
-    if (token) {
+    if (token && this.isValidTokenFormat(token)) {
       return firstValueFrom(
         this.getMe().pipe(
-          tap({
-            next: (user) => this.currentUserSignal.set(user),
-            error: () => this.clearSession()
+          tap((user) => this.currentUserSignal.set(user)),
+          catchError(() => {
+            this.clearSession();
+            return of(null);
           })
         )
       );
     }
+    
+    // If token is missing or malformed, clear session immediately
+    this.clearSession();
     return Promise.resolve();
+  }
+
+  private isValidTokenFormat(token: string): boolean {
+    return token.split('.').length === 3;
   }
 
   register(data: RegisterRequest): Observable<AuthResponse> {
@@ -91,6 +99,11 @@ export class AccountService extends ResourceService<User> {
   }
 
   refreshToken(data: RefreshTokenRequest): Observable<AuthResponse> {
+    // Prevent sending malformed tokens which cause 500 errors
+    if (!this.isValidTokenFormat(data.token) || !this.isValidTokenFormat(data.refreshToken)) {
+      return throwError(() => new Error('Invalid token format'));
+    }
+
     return this.http.post<AuthResponse>(this.buildUrl('generate-new-jwt-token'), data).pipe(
       tap((response) => {
         if (response.success && response.token) {
