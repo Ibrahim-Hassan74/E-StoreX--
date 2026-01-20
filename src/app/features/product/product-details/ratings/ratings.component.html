@@ -1,0 +1,47 @@
+<div class="space-y-12">
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Customer Reviews</h2>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm text-center animate-in fade-in slide-in-from-top-2">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <div class="grid lg:grid-cols-12 gap-8 lg:gap-12">
+    <div class="lg:col-span-4 space-y-8 lg:space-y-6">
+      <app-rating-summary [summary]="summary()" />
+      @if (isLoggedIn()) {
+        <app-rating-form 
+          [userRating]="userRating()"
+          [isLoading]="isActionLoading()" 
+          (save)="onSaveRating($event)"
+          (delete)="onDeleteRating()"
+        />
+      } @else {
+        <div class="p-8 bg-white dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 text-center shadow-sm">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Have you used this product?</h3>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Sign in to share your experience.</p>
+          <a 
+            [routerLink]="['/auth/login']"
+            [queryParams]="{ returnUrl: router.url }"
+            class="inline-block w-full bg-[#029fae] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#028b99] transition-all shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
+          >
+            Log in / Sign up
+          </a>
+        </div>
+      }
+    </div>
+
+    <div class="lg:col-span-8">
+      @if (isLoading() && ratings().length === 0) {
+        <div class="flex justify-center py-12">
+          <div class="h-8 w-8 border-2 border-[#029fae] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      } @else {
+        <app-rating-list [ratings]="ratings()" />
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+@if (loading()) {
+  <div class="flex justify-center items-center min-h-[60vh]">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#029fae]"></div>
+  </div>
+} @else if (error()) {
+  <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+    <lucide-icon name="alert-circle" size="48" class="text-red-500 mb-4"></lucide-icon>
+    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Product Not Found</h3>
+    <p class="text-gray-500 dark:text-gray-400 mb-6">{{ error() }}</p>
+    <a routerLink="/" class="px-6 py-2 bg-[#029fae] text-white rounded-lg hover:bg-[#028b99] transition-colors">
+      Back to Home
+    </a>
+  </div>
+} @else {
+  @if (product(); as p) {
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <nav class="flex mb-8 text-sm text-gray-500 dark:text-gray-400">
+        <a routerLink="/" class="hover:text-[#029fae]">Home</a>
+        <span class="mx-2">/</span>
+        <a routerLink="/product" class="hover:text-[#029fae]">Products</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900 dark:text-white truncate">{{ p.name }}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div class="space-y-4">
+          <div class="aspect-square bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
+            @if (selectedImage()) {
+              <img [src]="getImageUrl(selectedImage()!)" [alt]="p.name" class="w-full h-full object-contain p-4"/>
+            } @else {
+              <div class="flex items-center justify-center h-full text-gray-400">
+                <lucide-icon name="image" size="64"></lucide-icon>
+              </div>
+            }
+          </div>
+          
+          @if (p.photos && p.photos.length > 1) {
+            <div class="grid grid-cols-4 gap-4">
+              @for (photo of p.photos; track photo.imageName) {
+                <button 
+                  (click)="setImage(photo.imageName)"
+                  class="aspect-square rounded-lg border-2 overflow-hidden bg-gray-50 dark:bg-gray-800 transition-all cursor-pointer"
+                  [class.border-[#029fae]]="selectedImage() === photo.imageName"
+                  [class.border-transparent]="selectedImage() !== photo.imageName"
+                >
+                  <img [src]="getImageUrl(photo.imageName)" class="w-full h-full object-contain p-1" />
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#029fae]/10 text-[#029fae]">
+                {{ p.categoryName }}
+              </span>
+              @if (p.brandName) {
+                <span class="text-sm text-gray-500 dark:text-gray-400">• {{ p.brandName }}</span>
+              }
+            </div>
+            
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ p.name }}</h1>
+            
+            <div class="mt-4 flex items-baseline gap-4">
+              <span class="text-3xl font-bold text-[#029fae]">{{ p.newPrice | currency: 'EGP' }}</span>
+              @if (p.oldPrice > p.newPrice) {
+                <span class="text-lg text-gray-400 line-through">{{ p.oldPrice | currency: 'EGP' }}</span>
+                <span class="text-sm font-medium text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded">
+                  {{ ((p.oldPrice - p.newPrice) / p.oldPrice) | percent }} OFF
+                </span>
+              }
+            </div>
+          </div>
+
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+            {{ p.description }}
+          </p>
+
+          <div class="pt-6 border-t border-gray-100 dark:border-gray-800 space-y-6">
+            <div class="flex items-center gap-2">
+              @if (p.quantityAvailable > 0) {
+                <lucide-icon name="check-circle" size="20" class="text-green-500"></lucide-icon>
+                <span class="text-green-600 font-medium">In Stock ({{ p.quantityAvailable }} available)</span>
+              } @else {
+                <lucide-icon name="x-circle" size="20" class="text-red-500"></lucide-icon>
+                <span class="text-red-600 font-medium">Out of Stock</span>
+              }
+            </div>
+
+            @if (p.quantityAvailable > 0) {
+              <div class="flex flex-col sm:flex-row gap-4">
+                <div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg w-max">
+                  <button 
+                    (click)="decrementQuantity()"
+                    class="p-3 text-gray-500 hover:text-[#029fae] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                    [disabled]="quantity() <= 1"
+                  >
+                    <lucide-icon name="minus" size="18"></lucide-icon>
+                  </button>
+                  <span class="w-12 text-center font-medium text-gray-900 dark:text-white">{{ quantity() }}</span>
+                  <button 
+                    (click)="incrementQuantity()"
+                    class="p-3 text-gray-500 hover:text-[#029fae] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                    [disabled]="quantity() >= p.quantityAvailable"
+                  >
+                    <lucide-icon name="plus" size="18"></lucide-icon>
+                  </button>
+                </div>
+
+                <button 
+                  (click)="addToCart()"
+                  class="flex-1 flex items-center justify-center gap-2 bg-[#029fae] text-white px-8 py-3 rounded-lg hover:bg-[#028b99] transition-all font-semibold shadow-sm hover:shadow-md cursor-pointer"
+                >
+                  <lucide-icon name="shopping-cart" size="20"></lucide-icon>
+                  Add to Cart
+                </button>
+                
+                <button 
+                  (click)="addToWishlist()"
+                  class="p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 hover:text-red-500 hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors cursor-pointer flex items-center justify-center"
+                >
+                  <lucide-icon name="heart" size="20"></lucide-icon>
+                </button>
+
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-12">
+        <app-ratings [productId]="p.id" />
+      </div>
+    </div>
+  }
+}

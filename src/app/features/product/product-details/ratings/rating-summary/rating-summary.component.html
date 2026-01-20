@@ -1,0 +1,70 @@
+@if (summary(); as s) {
+  <div class="flex flex-col gap-6 p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+    <!-- Big Average Score -->
+    <div class="flex items-center gap-6">
+      <div class="flex flex-col items-center justify-center bg-[#f8fafc] dark:bg-gray-800/50 w-24 h-24 rounded-2xl">
+        <span class="text-4xl font-bold text-gray-900 dark:text-white">{{ s.averageScore | number:'1.1-1' }}</span>
+        <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">out of 5</span>
+      </div>
+      
+      <div class="space-y-1">
+        <div class="flex gap-1 relative">
+          @for (star of [1,2,3,4,5]; track star) {
+            <div class="relative">
+              <!-- Background Star (Gray) -->
+              <lucide-icon 
+                name="star" 
+                [size]="24" 
+                class="text-gray-200 dark:text-gray-700 fill-current"
+              ></lucide-icon>
+              
+              <!-- Foreground Star (Yellow - Partial Fill) -->
+              <div 
+                class="absolute top-0 left-0 overflow-hidden" 
+                [style.width.%]="getFillPercentage(s.averageScore, star)"
+              >
+                <lucide-icon 
+                  name="star" 
+                  [size]="24" 
+                  class="text-yellow-400 fill-current"
+                ></lucide-icon>
+              </div>
+            </div>
+          }
+        </div>
+        <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Based on {{ s.totalRatings }} reviews
+        </p>
+      </div>
+    </div>
+
+    <!-- Distribution Bars -->
+    <div class="space-y-3">
+      @for (star of [5,4,3,2,1]; track star) {
+        <div class="flex items-center gap-4 text-sm">
+          <span class="w-12 font-medium text-gray-600 dark:text-gray-300 flex items-center gap-1">
+            {{ star }} <lucide-icon name="star" [size]="12" class="text-yellow-400 fill-current"></lucide-icon>
+          </span>
+          <div class="flex-1 h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div 
+              class="h-full bg-yellow-400 rounded-full transition-all duration-500"
+              [style.width.%]="getStarPercentage(s, star)"
+            ></div>
+          </div>
+          <span class="w-12 text-right text-gray-500 dark:text-gray-400 font-mono">
+            {{ getStarPercentage(s, star) | number:'1.0-0' }}%
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
+    <div class="text-center">
+      <div class="inline-flex p-3 bg-white dark:bg-gray-800 rounded-full shadow-sm mb-3">
+        <lucide-icon name="star-off" size="24" class="text-gray-400"></lucide-icon>
+      </div>
+      <p class="text-gray-500 dark:text-gray-400 font-medium">No ratings yet</p>
+    </div>
+  </div>
+}

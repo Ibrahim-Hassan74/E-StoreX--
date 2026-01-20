@@ -1,0 +1,108 @@
+<div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+  @if (!isEditing() && userRating(); as rating) {
+    <div class="p-6">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Your Review</h3>
+          <div class="flex text-yellow-400 gap-1">
+            @for (star of [1,2,3,4,5]; track star) {
+              <lucide-icon 
+                name="star" 
+                [size]="18" 
+                class="fill-current"
+                [class.text-gray-200]="star > rating.score"
+                [class.dark:text-gray-700]="star > rating.score"
+              ></lucide-icon>
+            }
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button 
+            (click)="startEdit()" 
+            class="p-2 text-gray-500 hover:text-[#029fae] hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
+            title="Edit Review"
+          >
+            <lucide-icon name="pencil" size="18"></lucide-icon>
+          </button>
+          <div class="h-4 w-px bg-gray-200 dark:bg-gray-700"></div>
+          <button 
+            (click)="onDelete()"
+            class="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors cursor-pointer"
+            title="Delete Review"
+          >
+            <lucide-icon name="trash-2" size="18"></lucide-icon>
+          </button>
+        </div>
+      </div>
+      
+      <p class="text-gray-600 dark:text-gray-300 italic pl-4 border-l-2 border-gray-100 dark:border-gray-800">
+        "{{ rating.comment }}"
+      </p>
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-6 space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+          {{ userRating() ? 'Edit Your Review' : 'Write a Review' }}
+        </h3>
+        @if (userRating()) {
+          <button type="button" (click)="cancelEdit()" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+            Cancel
+          </button>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rate this product</label>
+        <div class="flex gap-2">
+          @for (star of [1,2,3,4,5]; track star) {
+            <button 
+              type="button" 
+              (mouseenter)="hoveredStar.set(star)" 
+              (mouseleave)="hoveredStar.set(0)"
+              (click)="setRating(star)"
+              class="focus:outline-none transition-transform hover:scale-110 cursor-pointer p-1"
+            >
+              <lucide-icon 
+                name="star" 
+                [size]="32" 
+                class="fill-current transition-colors"
+                [class.text-yellow-400]="star <= (hoveredStar() || currentScore)"
+                [class.text-gray-200]="star > (hoveredStar() || currentScore)"
+                [class.dark:text-gray-700]="star > (hoveredStar() || currentScore)"
+              ></lucide-icon>
+            </button>
+          }
+        </div>
+        @if (form.get('score')?.touched && form.get('score')?.invalid) {
+          <p class="text-xs text-red-500 mt-1 font-medium animate-pulse">Please select a star rating</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Share your experience</label>
+        <textarea 
+          formControlName="comment" 
+          rows="4" 
+          placeholder="What did you like or dislike?"
+          class="w-full text-sm rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-[#029fae] focus:border-transparent transition-all resize-none p-3"
+        ></textarea>
+        @if (form.get('comment')?.touched && form.get('comment')?.invalid) {
+          <p class="text-xs text-red-500 mt-1 font-medium">Please write a review (max 500 characters)</p>
+        }
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="form.invalid || isLoading()"
+        class="w-full bg-[#029fae] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#028b99] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+      >
+        @if (isLoading()) {
+          <div class="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+        }
+        {{ userRating() ? 'Update Review' : 'Submit Review' }}
+      </button>
+    </form>
+  }
+</div>

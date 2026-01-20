@@ -1,0 +1,53 @@
+<div class="space-y-4">
+  <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+    Review Highlights
+    <span class="px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-semibold text-gray-600 dark:text-gray-300">
+      {{ ratings().length }}
+    </span>
+  </h3>
+
+  <div class="grid gap-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+    @for (rating of ratings(); track rating.id) {
+      <div class="p-5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#029fae] to-[#007580] flex items-center justify-center text-white font-bold text-sm shadow-sm">
+              {{ rating.userName.charAt(0).toUpperCase() }}
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-900 dark:text-white text-sm">
+                {{ rating.userName }}
+              </h4>
+              <div class="flex items-center gap-1 mt-0.5">
+                <div class="flex text-yellow-400">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <lucide-icon 
+                      name="star" 
+                      [size]="12" 
+                      class="fill-current"
+                      [class.text-gray-200]="star > rating.score"
+                      [class.dark:text-gray-700]="star > rating.score"
+                    ></lucide-icon>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Date could go here if available -->
+        </div>
+        
+        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+          {{ rating.comment }}
+        </p>
+      </div>
+    } @empty {
+      <div class="text-center py-12 px-4 bg-gray-50 dark:bg-gray-800/30 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700">
+        <div class="bg-gray-100 dark:bg-gray-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+          <lucide-icon name="message-square-off" size="20" class="text-gray-400"></lucide-icon>
+        </div>
+        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">No reviews yet</h4>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Be the first to share your thoughts!</p>
+      </div>
+    }
+  </div>
+</div>
