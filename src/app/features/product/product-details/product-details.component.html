@@ -119,9 +119,19 @@
                 
                 <button 
                   (click)="addToWishlist()"
-                  class="p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 hover:text-red-500 hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors cursor-pointer flex items-center justify-center"
+                  class="p-3 rounded-lg border transition-colors cursor-pointer flex items-center justify-center group/heart"
+                  [ngClass]="{
+                    'border-red-500 text-red-500 bg-red-50 dark:bg-red-900/10': isInWishlist(),
+                    'border-gray-300 dark:border-gray-600 text-gray-500 hover:text-red-500 hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-900/10': !isInWishlist()
+                  }"
+                  [title]="isInWishlist() ? 'Remove from Wishlist' : 'Add to Wishlist'"
                 >
-                  <lucide-icon name="heart" size="20"></lucide-icon>
+                  <lucide-icon 
+                    name="heart" 
+                    size="20"
+                    [class.fill-current]="isInWishlist()"
+                    class="transition-all duration-300"
+                  ></lucide-icon>
                 </button>
 
               </div>

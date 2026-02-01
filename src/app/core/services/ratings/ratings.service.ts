@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { Rating, RatingRequest, RatingResponse, RatingSummary } from '../../../shared/models/rating';
 import { ResourceService } from '../resource.service';
 
@@ -32,7 +32,14 @@ export class RatingsService extends ResourceService<Rating> {
     return this.get<RatingSummary>(`product/${productId}/summary`);
   }
 
-  getUserRating(productId: string): Observable<Rating> {
-    return this.get<Rating>(`product/${productId}/my-rating`);
+  getUserRating(productId: string): Observable<Rating | null> {
+    return this.get<Rating>(`product/${productId}/my-rating`).pipe(
+      catchError(err => {
+        if (err.status === 404) {
+          return of(null);
+        }
+        return throwError(() => err);
+      })
+    );
   }
 }

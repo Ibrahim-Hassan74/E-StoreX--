@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, inject, signal, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { catchError, of } from 'rxjs';
 import { RouterModule, Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { RatingsService } from '../../../../core/services/ratings/ratings.service';

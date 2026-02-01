@@ -1,10 +1,11 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { Product } from '../../../shared/models/product';
 import { BasketStateService } from '../../../core/services/cart/basket-state.service';
+import { WishlistStateService } from '../../../core/services/wishlist/wishlist-state.service';
 import { BasketItem } from '../../../shared/models/basket';
 import { RatingsComponent } from './ratings/ratings.component';
 
@@ -73,6 +74,12 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   private basketState = inject(BasketStateService);
+  private wishlistState = inject(WishlistStateService);
+
+  isInWishlist = computed(() => {
+    const p = this.product();
+    return p ? this.wishlistState.isInWishlist(p.id) : false;
+  });
 
   addToCart() {
     const product = this.product();
@@ -89,23 +96,12 @@ export class ProductDetailsComponent implements OnInit {
     };
 
     this.basketState.addItem(item);
-    
-    // Optional: Show feedback via UiFeedbackService if not handled globally
-    // But BasketStateService might already trigger a toast? 
-    // The requirement says "On every successful API call, replace basket state".
-    // Error handling: "backend WILL NOT return 200 -> show an error toast".
-    // BasketStateService handles .subscribe({ next: ..., error: ... }).
-    // I should probably add UI feedback in BasketStateService or here.
-    // For now, let's assume BasketService/StateService works. 
-    // I'll leave the console log strictly for debugging if needed, but remove the alert.
   }
 
   addToWishlist() {
     const product = this.product();
     if (!product) return;
-
-    console.log('Adding to wishlist:', product.name);
-    alert(`Added ${product.name} to wishlist (Simulated)`);
+    this.wishlistState.toggleWishlist(product);
   }
 
   getImageUrl(path: string | undefined): string {

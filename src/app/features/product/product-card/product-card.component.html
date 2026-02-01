@@ -64,16 +64,20 @@
         Add to Cart
       </button>      
       <button
-        (click)="$event.stopPropagation()"
-        class="p-2 rounded-lg
-               border border-gray-200 dark:border-gray-700
-               text-gray-500
-               hover:text-red-500 hover:border-red-500
-               hover:bg-red-50 dark:hover:bg-red-900/10
-               transition-colors cursor-pointer"
-        title="Add to Wishlist"
+        (click)="toggleWishlist($event)"
+        class="p-2 rounded-lg border transition-colors cursor-pointer group/heart"
+        [ngClass]="{
+          'border-red-500 text-red-500 bg-red-50 dark:bg-red-900/10': isInWishlist(),
+          'border-gray-200 dark:border-gray-700 text-gray-500 hover:text-red-500 hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-900/10': !isInWishlist()
+        }"
+        [title]="isInWishlist() ? 'Remove from Wishlist' : 'Add to Wishlist'"
       >
-        <lucide-icon name="heart" size="16"></lucide-icon>
+        <lucide-icon 
+            name="heart" 
+            size="16" 
+            [class.fill-red-500]="isInWishlist()"
+            class="transition-all duration-300"
+        ></lucide-icon>
       </button>
     </div>
   </div>

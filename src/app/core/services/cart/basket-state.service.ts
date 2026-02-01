@@ -27,10 +27,10 @@ export class BasketStateService {
         const user = this.accountService.currentUser();
         if (user) {
             this.handleAuthUser();
-            console.log(this.basket());
+            // console.log(this.basket());
         } else {
             this.handleGuestUser();
-            console.log(this.basket());
+            // console.log(this.basket());
         }
     });
   }

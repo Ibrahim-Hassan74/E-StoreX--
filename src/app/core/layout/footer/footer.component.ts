@@ -16,7 +16,7 @@ import { SocialLinksComponent } from './social-links/social-links.component';
   styleUrl: './footer.component.scss',
 })
 export class FooterComponent {
-  email = 'estorex.customer@gmail.com';
+  email = 'ibrahimhassan.dev1@gmail.com';
   currentYear: number = new Date().getFullYear();
   resources = [
     { label: 'Product catalog', route: '/products' },

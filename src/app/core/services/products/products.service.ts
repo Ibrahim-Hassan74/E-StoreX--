@@ -42,6 +42,7 @@ getProducts(query: ProductQuery = {}): Observable<Pagination<Product>> {
     return this.getBestSeller(count).pipe(
       map((response) =>
         response.data.map((p: Product) => ({
+          id: p.id,
           title: p.name,
           category: p.categoryName,
           description: p.description,

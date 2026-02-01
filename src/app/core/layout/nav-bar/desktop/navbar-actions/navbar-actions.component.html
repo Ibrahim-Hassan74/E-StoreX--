@@ -35,6 +35,13 @@
           transition-all"
   >
     <lucide-icon name="heart" size="22"></lucide-icon>
+    @if (wishlistCount() > 0) {
+      <span
+        class="badge absolute -top-2 -right-2 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full shadow-sm"
+      >
+        {{ wishlistCount() }}
+      </span>
+    }
   </a>
 
   <button

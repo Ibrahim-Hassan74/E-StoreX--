@@ -13,6 +13,8 @@ import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BasketStateService } from '../../../core/services/cart/basket-state.service';
+import { WishlistStateService } from '../../../core/services/wishlist/wishlist-state.service';
+import { computed } from '@angular/core';
 import { BasketItem } from '../../../shared/models/basket';
 
 @Component({
@@ -29,6 +31,9 @@ export class ProductCardComponent {
   @ViewChild('swiperEl', { static: true }) swiperEl!: ElementRef;
 
   private basketState = inject(BasketStateService);
+  private wishlistState = inject(WishlistStateService);
+
+  isInWishlist = computed(() => this.wishlistState.isInWishlist(this.product().id));
 
   addToCart(event: Event) {
     // Event propagation handled in template
@@ -44,6 +49,12 @@ export class ProductCardComponent {
     };
     
     this.basketState.addItem(item);
+  }
+
+  toggleWishlist(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.wishlistState.toggleWishlist(this.product());
   }
 
   ngAfterViewInit() {

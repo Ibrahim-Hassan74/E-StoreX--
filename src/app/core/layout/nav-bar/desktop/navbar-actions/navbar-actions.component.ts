@@ -4,6 +4,8 @@ import { LucideAngularModule } from 'lucide-angular';
 import { NavbarService } from '../../navbar.service';
 import { AccountService } from '../../../../services/account/account.service';
 import { BasketStateService } from '../../../../services/cart/basket-state.service';
+import { WishlistStateService } from '../../../../services/wishlist/wishlist-state.service';
+import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-navbar-actions',
@@ -22,6 +24,9 @@ export class NavbarActionsComponent {
   
   private basketState = inject(BasketStateService);
   basketCount = this.basketState.basketCount;
+  
+  private wishlistState = inject(WishlistStateService);
+  wishlistCount = computed(() => this.wishlistState.wishlist().length);
 
   ngOnInit() {
     this.navbarService.load();
