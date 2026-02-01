@@ -3,6 +3,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { NavbarService } from '../../navbar.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AccountService } from '../../../../services/account/account.service';
+import { BasketStateService } from '../../../../services/cart/basket-state.service';
 
 @Component({
   selector: 'app-mobile-actions',
@@ -13,12 +14,14 @@ import { AccountService } from '../../../../services/account/account.service';
 export class MobileActionsComponent {
   private navbarService = inject(NavbarService);
   private accountService = inject(AccountService);
+  private basketState = inject(BasketStateService);
   private router = inject(Router);
   
   closeMenu = output<void>();
 
   isDarkMode = this.navbarService.mode;
   currentUser = this.accountService.currentUser;
+  basketCount = this.basketState.basketCount;
 
   ngOnInit() {
     this.navbarService.load();

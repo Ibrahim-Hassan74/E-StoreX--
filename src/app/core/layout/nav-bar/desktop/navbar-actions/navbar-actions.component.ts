@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { NavbarService } from '../../navbar.service';
 import { AccountService } from '../../../../services/account/account.service';
+import { BasketStateService } from '../../../../services/cart/basket-state.service';
 
 @Component({
   selector: 'app-navbar-actions',
@@ -18,6 +19,9 @@ export class NavbarActionsComponent {
 
   isDarkMode = this.navbarService.mode;
   currentUser = this.accountService.currentUser;
+  
+  private basketState = inject(BasketStateService);
+  basketCount = this.basketState.basketCount;
 
   ngOnInit() {
     this.navbarService.load();

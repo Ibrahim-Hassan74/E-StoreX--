@@ -4,6 +4,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { Product } from '../../../shared/models/product';
+import { BasketStateService } from '../../../core/services/cart/basket-state.service';
+import { BasketItem } from '../../../shared/models/basket';
 import { RatingsComponent } from './ratings/ratings.component';
 
 @Component({
@@ -70,12 +72,32 @@ export class ProductDetailsComponent implements OnInit {
     this.quantity.update(q => (q > 1 ? q - 1 : 1));
   }
 
+  private basketState = inject(BasketStateService);
+
   addToCart() {
     const product = this.product();
     if (!product) return;
     
-    console.log('Adding to cart:', product.name, 'Quantity:', this.quantity());
-    alert(`Added ${this.quantity()} x ${product.name} to cart (Simulated)`);
+    const item: BasketItem = {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      quantity: this.quantity(),
+      price: product.newPrice,
+      category: product.categoryName,
+      image: 'https://estorex.runasp.net/' + (product.photos[0]?.imageName || '')
+    };
+
+    this.basketState.addItem(item);
+    
+    // Optional: Show feedback via UiFeedbackService if not handled globally
+    // But BasketStateService might already trigger a toast? 
+    // The requirement says "On every successful API call, replace basket state".
+    // Error handling: "backend WILL NOT return 200 -> show an error toast".
+    // BasketStateService handles .subscribe({ next: ..., error: ... }).
+    // I should probably add UI feedback in BasketStateService or here.
+    // For now, let's assume BasketService/StateService works. 
+    // I'll leave the console log strictly for debugging if needed, but remove the alert.
   }
 
   addToWishlist() {

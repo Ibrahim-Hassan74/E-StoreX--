@@ -51,6 +51,7 @@ import {
   Trash2,
   MessageSquare,
   MessageSquareOff,
+  ArrowRight,
 } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
@@ -112,7 +113,8 @@ export const appConfig: ApplicationConfig = {
         Pencil,
         Trash2,
         MessageSquare,
-        MessageSquareOff
+        MessageSquareOff,
+        ArrowRight
       })
     ),
   ],

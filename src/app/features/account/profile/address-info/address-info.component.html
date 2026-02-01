@@ -1,6 +1,5 @@
 <div class="rounded-lg bg-gray-50 dark:bg-gray-900/40 p-6 ring-1 ring-gray-200 dark:ring-gray-700">
   
-  <!-- Messages -->
   @if (message()) {
     <div class="mb-6 rounded-md bg-green-50 dark:bg-green-900/20 p-4 border border-green-200 dark:border-green-800">
       <p class="text-sm font-medium text-green-800 dark:text-green-200">{{ message() }}</p>
@@ -18,37 +17,28 @@
   </h3>
 
   <form [formGroup]="addressForm" (ngSubmit)="onUpdateAddress()" class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-      <!-- First Name -->
       <div>
         <label for="firstName" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">First name</label>
         <input type="text" formControlName="firstName" id="firstName" class="input">
       </div>
-
-      <!-- Last Name -->
       <div>
         <label for="lastName" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">Last name</label>
         <input type="text" formControlName="lastName" id="lastName" class="input">
       </div>
 
-      <!-- Street -->
       <div class="col-span-full">
         <label for="street" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">Street address</label>
         <input type="text" formControlName="street" id="street" class="input">
       </div>
-
-      <!-- City -->
       <div>
         <label for="city" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">City</label>
         <input type="text" formControlName="city" id="city" class="input">
       </div>
 
-      <!-- State -->
       <div>
         <label for="state" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">State / Province</label>
         <input type="text" formControlName="state" id="state" class="input">
       </div>
-
-      <!-- Zip -->
       <div>
         <label for="zipCode" class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">ZIP / Postal code</label>
         <input type="text" formControlName="zipCode" id="zipCode" class="input">

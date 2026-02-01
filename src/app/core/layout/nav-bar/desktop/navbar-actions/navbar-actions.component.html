@@ -14,11 +14,13 @@
   >
     <lucide-icon name="shopping-cart" size="22"></lucide-icon>
     <span>Cart</span>
-        <span
+    @if (basketCount() > 0) {
+      <span
         class="badge absolute -top-2 -right-2 bg-[#029fae] text-white text-[10px] px-1.5 py-0.5 rounded-full shadow-sm"
       >
-        2
+        {{ basketCount() }}
       </span>
+    }
   </a>
 
   <a

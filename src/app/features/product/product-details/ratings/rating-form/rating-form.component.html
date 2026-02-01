@@ -86,9 +86,9 @@
           formControlName="comment" 
           rows="4" 
           placeholder="What did you like or dislike?"
-          class="w-full text-sm rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-[#029fae] focus:border-transparent transition-all resize-none p-3"
+          class="w-full text-sm rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-[#029fae] focus:border-transparent transition-all resize-none p-3"
         ></textarea>
-        @if (form.get('comment')?.touched && form.get('comment')?.invalid) {
+        @if (form.get('comment')?.touched && form.get('comment')?.invalid && form.get('comment')?.dirty) {
           <p class="text-xs text-red-500 mt-1 font-medium">Please write a review (max 500 characters)</p>
         }
       </div>

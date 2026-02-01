@@ -6,8 +6,13 @@
     (click)="closeMenu.emit()"
     class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition"
   >
-    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm relative">
       <lucide-icon name="shopping-cart" size="20"></lucide-icon>
+      @if (basketCount() > 0) {
+        <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-gray-800">
+           {{ basketCount() }}
+        </span>
+      }
     </div>
     <span class="font-medium">Cart</span>
   </a>

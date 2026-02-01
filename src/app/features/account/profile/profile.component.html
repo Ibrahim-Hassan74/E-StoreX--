@@ -3,15 +3,15 @@
          bg-gray-50 dark:bg-gray-900 transition-colors"
 >
   <div class="mx-auto max-w-3xl">
-    <!-- Main Card -->
+
     <div
       class="bg-white dark:bg-gray-800
              rounded-xl shadow-lg
              ring-1 ring-gray-200 dark:ring-gray-700
              px-6 py-8 sm:px-8"
     >
-      <!-- Header -->
-      <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+
+    <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
           Account Settings
         </h2>
@@ -20,7 +20,6 @@
         </p>
       </div>
 
-      <!-- Tabs -->
       <div class="mt-8 border-b border-gray-200 dark:border-gray-700">
         <nav class="-mb-px flex gap-6">
           <button
@@ -55,20 +54,15 @@
         </nav>
       </div>
 
-      <!-- CONTENT -->
       <div class="mt-8 space-y-12">
 
-        <!-- PROFILE TAB -->
         @if (activeTab() === 'profile') {
           <app-profile-info></app-profile-info>
         }
 
-        <!-- ADDRESS TAB -->
         @if (activeTab() === 'address') {
           <app-address-info></app-address-info>
         }
-
-        <!-- SECURITY TAB -->
         @if (activeTab() === 'security') {
           <app-security-settings></app-security-settings>
         }

@@ -1,0 +1,43 @@
+<div class="flex flex-col sm:flex-row items-center gap-6 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all hover:shadow-md mb-6">
+  <div class="relative group shrink-0 w-24 h-24 sm:w-32 sm:h-32 bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden">
+    <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+  </div>
+
+  <div class="flex-1 w-full text-center sm:text-left">
+    <h3
+      [routerLink]="['/product', item.id]"
+      class="text-lg font-bold text-gray-900 dark:text-white mb-1 line-clamp-1 hover:text-[#029fae] cursor-pointer transition-colors"
+    >
+      {{ item.name }}
+    </h3>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ item.category }}</p>
+
+    <div class="flex items-center justify-between sm:justify-start gap-4">
+      <p class="text-xl font-bold text-[#029fae]">{{ item.price | currency }}</p>
+      
+      <div class="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
+         <button
+          (click)="onDecrease()"
+          class="p-1 rounded-md text-gray-500 hover:text-red-500 hover:bg-white dark:hover:bg-gray-800 transition-all disabled:opacity-50 cursor-pointer"
+        >
+          <lucide-icon [name]="item.quantity === 1 ? 'trash-2' : 'minus'" size="16"></lucide-icon>
+        </button>
+        <span class="w-8 text-center font-semibold text-gray-900 dark:text-white">{{ item.quantity }}</span>
+        <button
+          (click)="onIncrease()"
+           class="p-1 rounded-md text-gray-500 hover:text-[#029fae] hover:bg-white dark:hover:bg-gray-800 transition-all cursor-pointer"
+        >
+          <lucide-icon name="plus" size="16"></lucide-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button
+    (click)="onRemove()"
+     class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors cursor-pointer"
+     title="Remove item"
+  >
+    <lucide-icon name="trash-2" size="20"></lucide-icon>
+  </button>
+</div>
