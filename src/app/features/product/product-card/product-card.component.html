@@ -7,7 +7,7 @@
         init="false"
         #swiperEl
         slides-per-view="1"
-        loop="true"
+        [loop]="shouldLoop()"
         autoplay-delay="2500"
         autoplay-disable-on-interaction="true"
         pagination="true"

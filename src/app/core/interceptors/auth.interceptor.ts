@@ -10,7 +10,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const accountService = inject(AccountService);
   const token = accountService.getToken();
 
-  // Helper to add token to request
   const addToken = (request: any, token: string) => {
     return request.clone({
       setHeaders: {
@@ -27,7 +26,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((error) => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
-        // If we are already refreshing, wait for it
         if (isRefreshing) {
           return refreshTokenSubject.pipe(
             filter(token => token !== null),
@@ -62,7 +60,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               })
             );
           } else {
-            // No refresh token available
             accountService.logout();
             return throwError(() => error);
           }

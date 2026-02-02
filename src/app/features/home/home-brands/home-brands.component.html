@@ -10,7 +10,7 @@
   </h2>
   <swiper-container
     slides-per-view="2"
-    loop="true"
+    [loop]="shouldLoop()"
     autoplay-delay="3000"
     autoplay-disable-on-interaction="false"
     space-between="24"
@@ -23,20 +23,22 @@
     }'
     class="w-full group"
   >
-    @for (brand of brands(); track brand.id) {
+    @for (brand of brands(); track $index) {
     <swiper-slide
       class="flex items-center justify-center bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer p-4 mb-12"
     >
-      <img
-        [src]="
-          brand.photos.length
-            ? 'https://estorex.runasp.net/' + brand.photos[0].imageName
-            : ''
-        "
-        [alt]="brand.name"
-        class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition duration-300"
-        loading="lazy"
-      />
+      <a [routerLink]="['/product']" [queryParams]="{ brandId: brand.id }" class="block w-full h-full flex items-center justify-center">
+        <img
+          [src]="
+            brand.photos.length
+              ? 'https://estorex.runasp.net/' + brand.photos[0].imageName
+              : ''
+          "
+          [alt]="brand.name"
+          class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition duration-300"
+          loading="lazy"
+        />
+      </a>
     </swiper-slide>
     }
   </swiper-container>

@@ -24,7 +24,7 @@
         <nav class="-mb-px flex gap-6">
           <button
             (click)="setActiveTab('profile')"
-            class="pb-3 text-sm font-medium border-b-2 transition-colors"
+            class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
             [ngClass]="activeTab() === 'profile'
               ? 'border-[#029fae] text-[#029fae]'
               : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
@@ -34,7 +34,7 @@
 
           <button
             (click)="setActiveTab('address')"
-            class="pb-3 text-sm font-medium border-b-2 transition-colors"
+            class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
             [ngClass]="activeTab() === 'address'
               ? 'border-[#029fae] text-[#029fae]'
               : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
@@ -44,7 +44,7 @@
 
           <button
             (click)="setActiveTab('security')"
-            class="pb-3 text-sm font-medium border-b-2 transition-colors"
+            class="pb-3 text-sm font-medium border-b-2 transition-colors cursor-pointer"
             [ngClass]="activeTab() === 'security'
               ? 'border-[#029fae] text-[#029fae]'
               : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
@@ -57,14 +57,14 @@
       <div class="mt-8 space-y-12">
 
         @if (activeTab() === 'profile') {
-          <app-profile-info></app-profile-info>
+          <app-profile-info />
         }
 
         @if (activeTab() === 'address') {
-          <app-address-info></app-address-info>
+          <app-address-info />
         }
         @if (activeTab() === 'security') {
-          <app-security-settings></app-security-settings>
+          <app-security-settings />
         }
 
       </div>

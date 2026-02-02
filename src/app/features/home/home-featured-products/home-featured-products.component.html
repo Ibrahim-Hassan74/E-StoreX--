@@ -11,7 +11,7 @@
   <swiper-container
     slides-per-view="2"
     space-between="24"
-    loop="true"
+    [loop]="shouldLoop()"
     autoplay-delay="8000"
     autoplay-disable-on-interaction="false"
     navigation="true"
@@ -25,7 +25,7 @@
   }'
     class="w-full dark:bg-gray-900 bg-white"
   >
-    @for (product of featuredProducts(); track product.id) {
+    @for (product of featuredProducts(); track $index) {
     <swiper-slide class="mb-12">
       <app-product-card [product]="product" />
     </swiper-slide>

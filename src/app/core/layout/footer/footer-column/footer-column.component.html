@@ -3,7 +3,7 @@
     {{ title() }}
   </p>
   <ul class="space-y-2">
-    @for (link of links(); track link.route) {
+    @for (link of links(); track $index) {
     <li>
       <a
         [routerLink]="link.route"

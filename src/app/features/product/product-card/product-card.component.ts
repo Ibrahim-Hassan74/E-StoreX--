@@ -34,9 +34,9 @@ export class ProductCardComponent {
   private wishlistState = inject(WishlistStateService);
 
   isInWishlist = computed(() => this.wishlistState.isInWishlist(this.product().id));
+  shouldLoop = computed(() => this.product().photos.length > 1);
 
   addToCart(event: Event) {
-    // Event propagation handled in template
     const product = this.product();
     const item: BasketItem = {
       id: product.id,

@@ -19,9 +19,9 @@ export class FooterComponent {
   email = 'ibrahimhassan.dev1@gmail.com';
   currentYear: number = new Date().getFullYear();
   resources = [
-    { label: 'Product catalog', route: '/products' },
+    { label: 'Product catalog', route: '/product' },
     { label: 'Help center', route: '/help' },
-    { label: 'Privacy & terms', route: '/privacy' },
+    { label: 'Privacy & terms', route: '/legal' },
   ];
   company = [
     { label: 'About', route: '/about' },
@@ -30,10 +30,10 @@ export class FooterComponent {
     { label: 'Careers', route: '/careers' },
   ];
   account = [
-    { label: 'Create account', route: '/register' },
-    { label: 'Sign in', route: '/login' },
-    { label: 'iOS app', route: '/ios-app' },
-    { label: 'Android app', route: '/android-app' },
+    { label: 'Create account', route: '/auth/register' },
+    { label: 'Sign in', route: '/auth/login' },
+    { label: 'iOS app', route: '/mobile-app' },
+    { label: 'Android app', route: '/mobile-app' },
   ];
   socialLinks = [
     {

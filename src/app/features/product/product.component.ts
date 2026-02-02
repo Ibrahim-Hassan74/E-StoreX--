@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { ProductStateService } from './product.state';
 import { ProductsToolbarComponent } from './components/products-toolbar/products-toolbar.component';
@@ -28,7 +29,21 @@ import { MobileFiltersDrawerComponent } from './components/mobile-filters-drawer
 export class ProductComponent implements OnInit {
   state = inject(ProductStateService);
 
+  private route = inject(ActivatedRoute);
+
   ngOnInit() {
-    this.state.initialize();
+    this.route.queryParams.subscribe((params: Params) => {
+      const updates: any = {};
+      if (params['brandId']) {
+        updates.brandId = params['brandId'];
+      }
+      if (params['categoryId']) {
+        updates.categoryId = params['categoryId'];
+      }
+      if (Object.keys(updates).length > 0) {
+        this.state.updateQuery(updates);
+      }
+      this.state.initialize();
+    });
   }
 }

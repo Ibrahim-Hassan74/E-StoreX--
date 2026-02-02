@@ -1,5 +1,5 @@
 <ul class="flex gap-4">
-  @for (link of links(); track link.url) {
+  @for (link of links(); track $index) {
   <li>
     <a
       [href]="link.url"

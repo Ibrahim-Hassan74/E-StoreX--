@@ -1,4 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductsService } from '../../core/services/products/products.service';
 import { BrandsService } from '../../core/services/brands/brands.service';
 import { CategoriesService } from '../../core/services/categories/categories.service';
@@ -16,6 +17,7 @@ export class ProductStateService {
   private productsService = inject(ProductsService);
   private brandsService = inject(BrandsService);
   private categoriesService = inject(CategoriesService);
+  private router = inject(Router);
 
   // State Signals
   products = signal<Product[]>([]);
@@ -87,6 +89,7 @@ export class ProductStateService {
       this.setSearch('');
   }
 
+
   resetFilters() {
     this.query.set({
       pageNumber: 1,
@@ -100,6 +103,8 @@ export class ProductStateService {
       brandId: undefined,
     });
     this.setSearch('');
+    // Clear query parameters from URL
+    this.router.navigate([], { queryParams: {} });
     this.loadProducts();
   }
   

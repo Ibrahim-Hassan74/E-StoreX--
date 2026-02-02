@@ -7,7 +7,7 @@
   navigation="true"
   class="w-full h-full bg-white dark:bg-gray-900"
 >
-  @for(slide of slides(); track slide.title) {
+  @for(slide of slides(); track $index) {
   <swiper-slide class="bg-white dark:bg-gray-900">
     <div
       class="flex flex-col lg:flex-row items-center justify-between gap-10 px-8 lg:px-20 py-12 min-h-[80vh]"
@@ -55,7 +55,7 @@
           autoplay-disable-on-interaction="false"
           class="relative w-[250px] lg:w-[450px] h-auto"
         >
-          @for(photo of slide.photos; track photo.imageName) {
+          @for(photo of slide.photos; track $index) {
           <swiper-slide>
             <img
               [src]="'https://estorex.runasp.net/' + photo.imageName"

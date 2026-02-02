@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { AboutComponent } from './features/about/about.component';
-import { ContactComponent } from './features/contact/contact.component';
+import { nonAuthGuard } from './core/guards/non-auth.guard';
 
 export const routes: Routes = [
   {
@@ -23,11 +22,11 @@ export const routes: Routes = [
   },
   {
     path: 'about',
-    component: AboutComponent,
+    loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent),
   },
   {
     path: 'contact',
-    component: ContactComponent,
+    loadComponent: () => import('./features/contact/contact.component').then(m => m.ContactComponent),
   },
   {
     path: 'cart',
@@ -40,8 +39,16 @@ export const routes: Routes = [
   {
     path: 'auth',
     children: [
-      { path: 'login', loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent) },
-      { path: 'register', loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent) },
+      { 
+        path: 'login', 
+        loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent),
+        canActivate: [nonAuthGuard]
+      },
+      { 
+        path: 'register', 
+        loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
+        canActivate: [nonAuthGuard]
+      },
       { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
       { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
       { path: 'confirm-email', loadComponent: () => import('./features/auth/confirm-email/confirm-email.component').then(m => m.ConfirmEmailComponent) },
@@ -52,12 +59,35 @@ export const routes: Routes = [
     path: 'account',
     children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
-      { 
-        path: 'profile', 
+      { path: 'profile', 
         loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent),
         canActivate: [authGuard]
       }
     ]
+  },
+  {
+    path: 'mobile-app',
+    loadComponent: () => import('./features/downloads/downloads.component').then(m => m.DownloadsComponent)
+  },
+  {
+    path: 'business',
+    loadComponent: () => import('./features/business/business.component').then(m => m.BusinessComponent)
+  },
+  {
+    path: 'partners',
+    loadComponent: () => import('./features/partners/partners.component').then(m => m.PartnersComponent)
+  },
+  {
+    path: 'careers',
+    loadComponent: () => import('./features/careers/careers.component').then(m => m.CareersComponent)
+  },
+  {
+    path: 'help',
+    loadComponent: () => import('./features/help/help.component').then(m => m.HelpComponent)
+  },
+  {
+    path: 'legal',
+    loadComponent: () => import('./features/legal/legal.component').then(m => m.LegalComponent)
   },
   {
     path: '**',
