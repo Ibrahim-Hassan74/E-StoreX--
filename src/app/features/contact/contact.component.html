@@ -1,1 +1,166 @@
-<p>contact works!</p>
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-12 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center justify-center p-3 bg-[#029fae]/10 rounded-full mb-6">
+        <lucide-icon name="mail" class="text-[#029fae]" size="32"></lucide-icon>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+        Get in <span class="text-[#029fae]">Touch</span>
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+        Have a project in mind, a question, or just want to say hi? I'd love to hear from you.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8 lg:gap-12">
+      
+      <div class="lg:col-span-2 space-y-6">
+        
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Contact Info</h2>
+          
+          <div class="space-y-6">
+            @for (info of contactInfo; track info.label) {
+              <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="p-2 bg-[#029fae]/10 rounded-lg shrink-0">
+                  <lucide-icon [name]="info.icon" class="text-[#029fae]" size="20"></lucide-icon>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{{ info.label }}</p>
+                  @if (info.link) {
+                    <a [href]="info.link" class="text-gray-900 dark:text-white font-semibold hover:text-[#029fae] transition-colors break-all">
+                      {{ info.value }}
+                    </a>
+                  } @else {
+                    <p class="text-gray-900 dark:text-white font-semibold">{{ info.value }}</p>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+           <div class="mt-8 pt-8 border-t border-gray-100 dark:border-gray-700">
+             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Social Profiles</h3>
+             <div class="grid grid-cols-1 gap-4">
+               @for (social of socialLinks; track social.name) {
+                 <a [href]="social.url" target="_blank" class="flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#029fae] hover:bg-[#029fae]/5 transition-all group">
+                   <lucide-icon [name]="social.icon" class="text-gray-600 dark:text-gray-300 group-hover:text-[#029fae]" size="20"></lucide-icon>
+                   <span class="font-medium text-gray-700 dark:text-gray-200 group-hover:text-[#029fae]">{{ social.name }}</span>
+                   <lucide-icon name="arrow-up-right" class="ml-auto text-gray-400 group-hover:text-[#029fae] opacity-0 group-hover:opacity-100 transition-opacity" size="16"></lucide-icon>
+                 </a>
+               }
+             </div>
+           </div>
+        </div>
+
+      </div>
+
+      <div class="lg:col-span-3">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8 md:p-10">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send Message</h2>
+          
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              
+              <div class="space-y-2">
+                <label for="name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    id="name" 
+                    formControlName="name"
+                    class="w-full bg-gray-50 dark:bg-gray-900 border text-gray-900 dark:text-white text-sm rounded-lg block p-3 px-4 focus:ring-[#029fae] focus:border-[#029fae] outline-none transition-all dark:placeholder-gray-400"
+                    [class.border-red-500]="isFieldInvalid('name')"
+                    [class.border-gray-300]="!isFieldInvalid('name')"
+                    [class.dark:border-gray-600]="!isFieldInvalid('name')"
+                    placeholder="John Doe"
+                  />
+                  <lucide-icon *ngIf="isFieldInvalid('name')" name="alert-circle" class="absolute right-3 top-3 text-red-500" size="18"></lucide-icon>
+                </div>
+                <p *ngIf="isFieldInvalid('name')" class="text-xs text-red-500 animate-in slide-in-from-top-1">
+                  Name is required (min 2 characters)
+                </p>
+              </div>
+
+              <div class="space-y-2">
+                <label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+                <div class="relative">
+                  <input 
+                    type="email" 
+                    id="email" 
+                    formControlName="email"
+                    class="w-full bg-gray-50 dark:bg-gray-900 border text-gray-900 dark:text-white text-sm rounded-lg block p-3 px-4 focus:ring-[#029fae] focus:border-[#029fae] outline-none transition-all dark:placeholder-gray-400"
+                    [class.border-red-500]="isFieldInvalid('email')"
+                    [class.border-gray-300]="!isFieldInvalid('email')"
+                    [class.dark:border-gray-600]="!isFieldInvalid('email')"
+                    placeholder="john@example.com"
+                  />
+                   <lucide-icon *ngIf="isFieldInvalid('email')" name="alert-circle" class="absolute right-3 top-3 text-red-500" size="18"></lucide-icon>
+                </div>
+                 <p *ngIf="isFieldInvalid('email')" class="text-xs text-red-500 animate-in slide-in-from-top-1">
+                  Please enter a valid email
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="subject" class="text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  id="subject" 
+                  formControlName="subject"
+                   class="w-full bg-gray-50 dark:bg-gray-900 border text-gray-900 dark:text-white text-sm rounded-lg block p-3 px-4 focus:ring-[#029fae] focus:border-[#029fae] outline-none transition-all dark:placeholder-gray-400"
+                  [class.border-red-500]="isFieldInvalid('subject')"
+                  [class.border-gray-300]="!isFieldInvalid('subject')"
+                  [class.dark:border-gray-600]="!isFieldInvalid('subject')"
+                  placeholder="Project Inquiry"
+                />
+                 <lucide-icon *ngIf="isFieldInvalid('subject')" name="alert-circle" class="absolute right-3 top-3 text-red-500" size="18"></lucide-icon>
+              </div>
+               <p *ngIf="isFieldInvalid('subject')" class="text-xs text-red-500 animate-in slide-in-from-top-1">
+                  Subject is required
+                </p>
+            </div>
+
+            <div class="space-y-2">
+              <label for="message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+              <div class="relative">
+                <textarea 
+                  id="message" 
+                  rows="6" 
+                  formControlName="message"
+                  class="w-full bg-gray-50 dark:bg-gray-900 border text-gray-900 dark:text-white text-sm rounded-lg block p-3 px-4 focus:ring-[#029fae] focus:border-[#029fae] outline-none transition-all dark:placeholder-gray-400 resize-none"
+                  [class.border-red-500]="isFieldInvalid('message')"
+                  [class.border-gray-300]="!isFieldInvalid('message')"
+                  [class.dark:border-gray-600]="!isFieldInvalid('message')"
+                  placeholder="How can help you..."
+                ></textarea>
+                <lucide-icon *ngIf="isFieldInvalid('message')" name="alert-circle" class="absolute right-3 top-3 text-red-500" size="18"></lucide-icon>
+              </div>
+               <p *ngIf="isFieldInvalid('message')" class="text-xs text-red-500 animate-in slide-in-from-top-1">
+                  Message is required (min 10 characters)
+                </p>
+            </div>
+
+            <button 
+              type="submit" 
+              [disabled]="contactForm.invalid || isLoading()"
+              class="w-full bg-[#029fae] hover:bg-[#028b99] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#029fae]/20 flex items-center justify-center gap-2 mt-4 cursor-pointer"
+            >
+              @if (isLoading()) {
+                <lucide-icon name="loader-2" class="animate-spin" size="20"></lucide-icon>
+                Sending...
+              } @else {
+                <span>Send Message</span>
+                <lucide-icon name="send" size="20"></lucide-icon>
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

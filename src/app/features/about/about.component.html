@@ -1,1 +1,87 @@
-<p>about works!</p>
+<div class="bg-gray-50 dark:bg-gray-900 min-h-screen pt-24 pb-12 transition-colors duration-300">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center justify-center p-3 bg-[#029fae]/10 rounded-full mb-6">
+        <lucide-icon name="code-2" class="text-[#029fae]" size="32"></lucide-icon>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+        About <span class="text-[#029fae]">E-StoreX</span>
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+        A professional, full-stack e-commerce demonstration platform designed and engineered by <span class="font-semibold text-gray-900 dark:text-white">Ibrahim Hassan</span>.
+      </p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden mb-12 border border-gray-100 dark:border-gray-700">
+      <div class="p-8 md:p-12 space-y-8">
+        
+        <section>
+          <div class="flex items-center gap-3 mb-4">
+            <lucide-icon name="info" class="text-[#029fae]" size="24"></lucide-icon>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Project Purpose</h2>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+            E-StoreX is a <strong class="text-[#029fae]">non-commercial portfolio project</strong>. It serves as a showcase of advanced full-stack engineering capabilities, demonstrating best practices in modern web development, architecture, and user experience design. It is not a real store, and no actual products are for sale.
+          </p>
+        </section>
+
+        <section class="border-t border-gray-100 dark:border-gray-700 pt-8">
+          <div class="flex items-center gap-3 mb-4">
+            <lucide-icon name="user" class="text-[#029fae]" size="24"></lucide-icon>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Engineering & Design</h2>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+            Every aspect of this application was conceptualized, designed, and built by <strong>Ibrahim Hassan</strong>. This includes:
+          </p>
+          <ul class="grid md:grid-cols-2 gap-4">
+            <li class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <lucide-icon name="layout" class="text-[#029fae] shrink-0 mt-1" size="20"></lucide-icon>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">Frontend Architecture</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Angular, Signals, Reactive State Management, Tailwind CSS</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <lucide-icon name="server" class="text-[#029fae] shrink-0 mt-1" size="20"></lucide-icon>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">Backend Systems</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">API Design, Database Schema, Authentication, Business Logic</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <lucide-icon name="paint-bucket" class="text-[#029fae] shrink-0 mt-1" size="20"></lucide-icon>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">UI/UX Design</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Responsive layouts, Dark Mode, Interactive feedback</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+              <lucide-icon name="layers" class="text-[#029fae] shrink-0 mt-1" size="20"></lucide-icon>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">System Design</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Scalable patterns, Clean Code, Performance Optimization</p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+      </div>
+    
+      <div class="bg-gray-50 dark:bg-gray-700/30 p-8 border-t border-gray-100 dark:border-gray-700 text-center">
+        <p class="text-gray-500 dark:text-gray-400 mb-6">
+          Exploring the code? Feel free to review the architecture and implementation details.
+        </p>
+        <a routerLink="/" class="inline-flex items-center gap-2 px-6 py-3 bg-[#029fae] text-white font-medium rounded-lg hover:bg-[#028b99] transition shadow-lg shadow-[#029fae]/20">
+          <lucide-icon name="arrow-left" size="20"></lucide-icon>
+          Back to Store
+        </a>
+      </div>
+    </div>
+
+    <div class="text-center text-sm text-gray-400 dark:text-gray-500">
+      &copy; {{ currentYear }} Ibrahim Hassan. All Rights Reserved.
+    </div>
+
+  </div>
+</div>

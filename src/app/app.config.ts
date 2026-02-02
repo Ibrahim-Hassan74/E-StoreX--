@@ -52,6 +52,18 @@ import {
   MessageSquare,
   MessageSquareOff,
   ArrowRight,
+  Code2,
+  Layout,
+  Server,
+  Layers,
+  ArrowLeft,
+  PaintBucket,
+  Mail,
+  Phone,
+  Linkedin,
+  ArrowUpRight,
+  Send,
+  AlertCircle,
 } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
@@ -114,7 +126,19 @@ export const appConfig: ApplicationConfig = {
         Trash2,
         MessageSquare,
         MessageSquareOff,
-        ArrowRight
+        ArrowRight,
+        Code2,
+        Layout,
+        Server,
+        Layers,
+        ArrowLeft,
+        PaintBucket,
+        Mail,
+        Phone,
+        Linkedin,
+        ArrowUpRight,
+        Send,
+        AlertCircle
       })
     ),
   ],
