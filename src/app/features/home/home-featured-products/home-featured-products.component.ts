@@ -13,6 +13,5 @@ import { LucideAngularModule } from 'lucide-angular';
 })
 export class HomeFeaturedProductsComponent {
   featuredProducts = input.required<Product[]>();
-  // Max slidesPerView is 6, so we only loop if we have more than 6 items
   shouldLoop = computed(() => this.featuredProducts().length > 6);
 }

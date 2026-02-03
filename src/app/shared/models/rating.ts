@@ -9,7 +9,7 @@ export interface Rating {
 export interface RatingRequest {
   score: number;
   comment: string;
-  productId?: string; // Optional for updates
+  productId?: string; 
 }
 
 export interface RatingSummary {

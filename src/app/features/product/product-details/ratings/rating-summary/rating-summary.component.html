@@ -1,6 +1,5 @@
 @if (summary(); as s) {
   <div class="flex flex-col gap-6 p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
-    <!-- Big Average Score -->
     <div class="flex items-center gap-6">
       <div class="flex flex-col items-center justify-center bg-[#f8fafc] dark:bg-gray-800/50 w-24 h-24 rounded-2xl">
         <span class="text-4xl font-bold text-gray-900 dark:text-white">{{ s.averageScore | number:'1.1-1' }}</span>
@@ -11,14 +10,12 @@
         <div class="flex gap-1 relative">
           @for (star of [1,2,3,4,5]; track star) {
             <div class="relative">
-              <!-- Background Star (Gray) -->
               <lucide-icon 
                 name="star" 
                 [size]="24" 
                 class="text-gray-200 dark:text-gray-700 fill-current"
               ></lucide-icon>
               
-              <!-- Foreground Star (Yellow - Partial Fill) -->
               <div 
                 class="absolute top-0 left-0 overflow-hidden" 
                 [style.width.%]="getFillPercentage(s.averageScore, star)"
@@ -38,7 +35,6 @@
       </div>
     </div>
 
-    <!-- Distribution Bars -->
     <div class="space-y-3">
       @for (star of [5,4,3,2,1]; track star) {
         <div class="flex items-center gap-4 text-sm">

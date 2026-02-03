@@ -23,7 +23,6 @@
         (ngSubmit)="onSubmit()"
         class="space-y-5"
       >
-        <!-- Error Alert -->
         @if (errorMessage()) {
           <div
             class="rounded-md bg-red-50 dark:bg-red-900/20
@@ -35,7 +34,6 @@
           </div>
         }
 
-        <!-- Resend Success -->
         @if (resendSuccessMessage()) {
           <div
             class="rounded-md bg-green-50 dark:bg-green-900/20
@@ -47,7 +45,6 @@
           </div>
         }
 
-        <!-- Resend Confirmation -->
         @if (showResendConfirmation()) {
           <button
             type="button"
@@ -59,7 +56,6 @@
           </button>
         }
 
-        <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
             Email address
@@ -82,7 +78,6 @@
           }
         </div>
 
-        <!-- Password -->
         <div>
           <div class="flex items-center justify-between">
             <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
@@ -107,7 +102,6 @@
           }
         </div>
 
-        <!-- Remember Me -->
         <div class="flex items-center">
           <input
           id="rememberMe"
@@ -122,7 +116,6 @@
           </label>
         </div>
 
-        <!-- Submit -->
         <button
           type="submit"
           [disabled]="loginForm.invalid || isLoading()"
@@ -141,7 +134,6 @@
           }
         </button>
 
-        <!-- External Login -->
         <div class="relative mt-6">
           <div class="absolute inset-0 flex items-center" aria-hidden="true">
             <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>

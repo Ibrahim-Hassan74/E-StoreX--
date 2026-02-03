@@ -39,7 +39,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           refreshTokenSubject.next(null);
           
           const refreshToken = accountService.getRefreshToken();
-          const currentToken = accountService.getToken(); // Need current expired token? API usually just needs refresh token & expired token
+          const currentToken = accountService.getToken();
 
           if (refreshToken && currentToken) {
             return accountService.refreshToken({ token: currentToken, refreshToken }).pipe(

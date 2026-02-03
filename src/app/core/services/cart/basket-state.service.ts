@@ -1,7 +1,8 @@
-import { computed, inject, Injectable, signal, effect } from '@angular/core';
+import { computed, inject, Injectable, signal, effect, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Basket, BasketItem } from '../../../shared/models/basket';
 import { BasketService } from './basket.service';
-import { catchError, map, of, tap } from 'rxjs';
+import { of, tap } from 'rxjs';
 import { AccountService } from '../../services/account/account.service';
 import { UiFeedbackService } from '../ui-feedback.service';
 
@@ -12,6 +13,7 @@ export class BasketStateService {
   private basketService = inject(BasketService);
   private accountService = inject(AccountService);
   private ui = inject(UiFeedbackService);
+  private platformId = inject(PLATFORM_ID);
 
   private basketSignal = signal<Basket | null>(null);
 
@@ -27,23 +29,26 @@ export class BasketStateService {
         const user = this.accountService.currentUser();
         if (user) {
             this.handleAuthUser();
-            // console.log(this.basket());
         } else {
             this.handleGuestUser();
-            // console.log(this.basket());
         }
     });
   }
 
   private get guestBasketId(): string | null {
-    return localStorage.getItem('guestBasketId');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('guestBasketId');
+    }
+    return null;
   }
 
   private set guestBasketId(id: string | null) {
-    if (id) {
-      localStorage.setItem('guestBasketId', id);
-    } else {
-      localStorage.removeItem('guestBasketId');
+    if (isPlatformBrowser(this.platformId)) {
+      if (id) {
+        localStorage.setItem('guestBasketId', id);
+      } else {
+        localStorage.removeItem('guestBasketId');
+      }
     }
   }
 
@@ -70,6 +75,11 @@ export class BasketStateService {
   }
 
   private loadAuthBasket() {
+      if (!isPlatformBrowser(this.platformId)) {
+          this.basketSignal.set(null);
+          return;
+      }
+
       const persistedId = localStorage.getItem('basketId');
       
        if (persistedId) {
@@ -103,12 +113,19 @@ export class BasketStateService {
   }
   
   private persistAuthBasketId(id: string) {
-      localStorage.setItem('basketId', id);
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('basketId', id);
+      }
   }
 
   addItem(item: BasketItem) {
     const user = this.accountService.currentUser();
     let basketId = this.basketSignal()?.id;
+    let storedBasketId: string | null = null;
+    
+    if (isPlatformBrowser(this.platformId)) {
+        storedBasketId = localStorage.getItem('basketId');
+    }
 
     if (!user) {
         basketId = basketId ?? this.guestBasketId ?? this.createUUID();
@@ -116,7 +133,7 @@ export class BasketStateService {
             this.guestBasketId = basketId;
         }
     } else {
-        basketId = basketId ?? localStorage.getItem('basketId') ?? this.createUUID();
+        basketId = basketId ?? storedBasketId ?? this.createUUID();
     }
 
     this.basketService.addBasket(item, basketId).subscribe({

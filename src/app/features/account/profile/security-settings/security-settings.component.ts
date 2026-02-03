@@ -60,7 +60,6 @@ export class SecuritySettingsComponent {
           err?.error?.message || 'Failed to delete account.'
         );
       },
-      // Success redirection handled by auth guard / service typically
     });
   }
 

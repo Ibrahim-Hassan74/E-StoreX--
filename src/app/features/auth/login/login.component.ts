@@ -89,10 +89,6 @@ export class LoginComponent {
 
   private handleLoginError(message: string): void {
     this.uiFeedback.error(message);
-    // We don't necessarily need to set errorMessage signal if we are using popups, 
-    // BUT the template might rely on it or the user might want it.
-    // However, the specific requirement is the resend link.
-    // this.errorMessage.set(message); 
 
     if (
       message.toLowerCase().includes('confirm') &&

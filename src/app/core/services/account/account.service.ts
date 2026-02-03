@@ -51,7 +51,6 @@ export class AccountService extends ResourceService<User> {
       );
     }
     
-    // If token is missing or malformed, clear session immediately
     this.clearSession();
     return Promise.resolve();
   }
@@ -69,7 +68,6 @@ export class AccountService extends ResourceService<User> {
       tap((response) => {
         if (response.success && response.token && response.refreshToken) {
           this.setSession(response);
-          // After login, fetch full user details
           this.getMe().subscribe(user => this.currentUserSignal.set(user));
         }
       })
@@ -77,9 +75,8 @@ export class AccountService extends ResourceService<User> {
   }
 
   logout(): Observable<void> {
-    // Call API logout if needed, but definitely clear local state
     return this.http.post<void>(this.buildUrl('logout'), {}).pipe(
-      catchError(() => of(void 0)), // Ignore errors on logout
+      catchError(() => of(void 0)),
       tap(() => {
         this.clearSession();
       })
@@ -99,16 +96,15 @@ export class AccountService extends ResourceService<User> {
   }
 
   refreshToken(data: RefreshTokenRequest): Observable<AuthResponse> {
-    // Prevent sending malformed tokens which cause 500 errors
-    if (!this.isValidTokenFormat(data.token) || !this.isValidTokenFormat(data.refreshToken)) {
+    if (!this.isValidTokenFormat(data.token)) {
       return throwError(() => new Error('Invalid token format'));
     }
 
     return this.http.post<AuthResponse>(this.buildUrl('generate-new-jwt-token'), data).pipe(
       tap((response) => {
         if (response.success && response.token) {
-           // Update tokens
            if (isPlatformBrowser(this.platformId)) {
+            console.log(response);
              localStorage.setItem(this.TOKEN_KEY, response.token);
              if (response.refreshToken) {
                localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
@@ -126,7 +122,6 @@ export class AccountService extends ResourceService<User> {
   updateProfile(data: UpdateProfileRequest): Observable<AuthResponse> {
     return this.http.put<AuthResponse>(this.buildUrl('update-profile'), data).pipe(
       tap(() => {
-        // Refresh local user data
         this.getMe().subscribe(user => this.currentUserSignal.set(user));
       })
     );

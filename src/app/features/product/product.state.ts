@@ -19,7 +19,6 @@ export class ProductStateService {
   private categoriesService = inject(CategoriesService);
   private router = inject(Router);
 
-  // State Signals
   products = signal<Product[]>([]);
   pagination = signal<Pagination<Product> | null>(null);
   brands = signal<Brand[]>([]);
@@ -27,7 +26,6 @@ export class ProductStateService {
   loading = signal<boolean>(false);
   isMobileFilterOpen = signal<boolean>(false);
 
-  // Query Signal
   query = signal<ProductQuery>({
     pageNumber: 1,
     pageSize: 12,
@@ -103,7 +101,6 @@ export class ProductStateService {
       brandId: undefined,
     });
     this.setSearch('');
-    // Clear query parameters from URL
     this.router.navigate([], { queryParams: {} });
     this.loadProducts();
   }

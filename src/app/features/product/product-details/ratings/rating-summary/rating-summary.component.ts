@@ -19,7 +19,6 @@ export class RatingSummaryComponent {
     return (count / summary.totalRatings) * 100;
   }
 
-  // Helper to calculate fill percentage for display stars (1-5)
   getFillPercentage(average: number, starIndex: number): number {
     const fill = Math.max(0, Math.min(100, (average - (starIndex - 1)) * 100));
     return fill;

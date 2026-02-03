@@ -7,7 +7,9 @@ import {
   input,
   signal,
   ViewChild,
+  PLATFORM_ID,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Product } from '../../../shared/models/product';
 import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
@@ -36,6 +38,8 @@ export class ProductCardComponent {
   isInWishlist = computed(() => this.wishlistState.isInWishlist(this.product().id));
   shouldLoop = computed(() => this.product().photos.length > 1);
 
+  private platformId = inject(PLATFORM_ID);
+
   addToCart(event: Event) {
     const product = this.product();
     const item: BasketItem = {
@@ -58,8 +62,9 @@ export class ProductCardComponent {
   }
 
   ngAfterViewInit() {
-    if(window === undefined) return;
-    const swiper = this.swiperEl.nativeElement;
-    swiper.initialize();
+    if (isPlatformBrowser(this.platformId)) {
+      const swiper = this.swiperEl.nativeElement;
+      swiper.initialize();
+    }
   }
 }

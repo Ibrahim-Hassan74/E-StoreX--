@@ -12,6 +12,5 @@ import { RouterModule } from '@angular/router';
 })
 export class HomeBrandsComponent {
   brands = input.required<Brand[]>();
-  // Max slidesPerView is 6, so we only loop if we have more than 6 items
   shouldLoop = computed(() => this.brands().length > 6);
 }

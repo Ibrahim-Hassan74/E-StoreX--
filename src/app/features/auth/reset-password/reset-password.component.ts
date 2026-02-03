@@ -56,7 +56,6 @@ export class ResetPasswordComponent implements OnInit {
     return null;
   }
 
-  // ✅ Error يظهر فقط بعد الكتابة
   hasError(controlName: string, error: string): boolean {
     const control = this.form.get(controlName);
     return !!(

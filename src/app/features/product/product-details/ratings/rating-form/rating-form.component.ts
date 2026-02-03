@@ -36,10 +36,10 @@ export class RatingFormComponent {
           score: rating.score,
           comment: rating.comment
         });
-        this.isEditing.set(false); // Initially show view mode
+        this.isEditing.set(false); 
       } else {
         this.form.reset({ score: 0, comment: '' });
-        this.isEditing.set(true); // Show form mode for new
+        this.isEditing.set(true); 
       }
     });
   }
@@ -68,7 +68,6 @@ export class RatingFormComponent {
       this.isEditing.set(false);
     } else {
       this.form.reset();
-      // If no rating, we might want to inform parent/reset state, but keeping isEditing true/reset is fine
     }
   }
 

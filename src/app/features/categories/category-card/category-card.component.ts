@@ -12,6 +12,5 @@ import { RouterModule } from '@angular/router';
 })
 export class CategoryCardComponent {
   cat = input.required<CategoriesBrands>();
-  // Max slidesPerView is 4, so we loop only if we have more than 4 items
   shouldLoop = computed(() => (this.cat().brandResponse?.length || 0) > 4);
 }

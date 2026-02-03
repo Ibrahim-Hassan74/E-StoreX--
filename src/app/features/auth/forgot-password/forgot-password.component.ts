@@ -23,7 +23,6 @@ export class ForgotPasswordComponent {
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
 
-  // ✅ Error يظهر فقط بعد الكتابة
   hasError(error: string): boolean {
     const control = this.form.get('email');
     return !!(

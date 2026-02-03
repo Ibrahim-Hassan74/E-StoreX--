@@ -31,12 +31,10 @@ export class ImageCropperModalComponent {
   errorMessage = signal<string | null>(null);
 
   imageLoaded(image: LoadedImage) {
-    // Image loaded logic if needed
     this.errorMessage.set(null);
   }
 
   cropperReady() {
-    // Cropper ready logic
   }
 
   loadImageFailed() {
