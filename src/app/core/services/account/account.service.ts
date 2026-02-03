@@ -104,7 +104,7 @@ export class AccountService extends ResourceService<User> {
       tap((response) => {
         if (response.success && response.token) {
            if (isPlatformBrowser(this.platformId)) {
-            console.log(response);
+            // console.log(response);
              localStorage.setItem(this.TOKEN_KEY, response.token);
              if (response.refreshToken) {
                localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);

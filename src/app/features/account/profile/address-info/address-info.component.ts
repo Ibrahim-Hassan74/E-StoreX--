@@ -14,6 +14,7 @@ export class AddressInfoComponent implements OnInit {
   private accountService = inject(AccountService);
 
   isLoading = signal(false);
+  isFetching = signal(true);
   message = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
 
@@ -33,17 +34,17 @@ export class AddressInfoComponent implements OnInit {
   }
 
   private loadAddress(): void {
-    this.isLoading.set(true);
+    this.isFetching.set(true);
 
     this.accountService.getAddress().subscribe({
       next: (address) => {
-        this.isLoading.set(false);
+        this.isFetching.set(false);
         if (address) {
           this.addressId.set(address.id);
           this.addressForm.patchValue(address);
         }
       },
-      error: () => this.isLoading.set(false),
+      error: () => this.isFetching.set(false),
     });
   }
 

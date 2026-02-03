@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { AccountService } from '../../../../core/services/account/account.service';
 import { ImageCropperModalComponent, CropResult } from '../image-cropper-modal/image-cropper-modal.component';
+import { UiFeedbackService } from '../../../../core/services/ui-feedback.service';
 
 @Component({
   selector: 'app-profile-info',
@@ -14,6 +15,7 @@ import { ImageCropperModalComponent, CropResult } from '../image-cropper-modal/i
 export class ProfileInfoComponent {
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
+  private ui = inject(UiFeedbackService);
 
   currentUser = this.accountService.currentUser;
   isLoading = signal(false);
@@ -92,12 +94,15 @@ export class ProfileInfoComponent {
   }
 
   deletePhoto(): void {
-    if (!confirm('Delete profile photo?')) return;
-
-    this.handleRequest(
-      this.accountService.deletePhoto(),
-      'Photo deleted successfully.'
-    );
+    this.ui.confirm('Are you sure you want to delete your profile photo?', 'Delete Photo', 'Delete', 'Cancel', 'warning')
+      .then((confirmed) => {
+        if (confirmed) {
+          this.handleRequest(
+            this.accountService.deletePhoto(),
+            'Photo deleted successfully.'
+          );
+        }
+      });
   }
 
   private handleRequest(

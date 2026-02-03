@@ -9,8 +9,10 @@
     <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm relative">
       <lucide-icon name="shopping-cart" size="20"></lucide-icon>
       @if (basketCount() > 0) {
-        <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-gray-800">
-           {{ basketCount() }}
+        <span
+          class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-gray-800"
+        >
+          {{ basketCount() }}
         </span>
       }
     </div>
@@ -24,8 +26,15 @@
     (click)="closeMenu.emit()"
     class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition"
   >
-    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+    <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm relative">
       <lucide-icon name="heart" size="20"></lucide-icon>
+      @if (wishlistCount() > 0) {
+        <span
+          class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-gray-800"
+        >
+          {{ wishlistCount() }}
+        </span>
+      }
     </div>
     <span class="font-medium">Wishlist</span>
   </a>
@@ -36,9 +45,14 @@
     class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition w-full text-left"
   >
     <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-      <lucide-icon [name]="isDarkMode() ? 'sun' : 'moon'" size="20"></lucide-icon>
+      <lucide-icon
+        [name]="isDarkMode() ? 'sun' : 'moon'"
+        size="20"
+      ></lucide-icon>
     </div>
-    <span class="font-medium">{{ isDarkMode() ? "Switch to Light Mode" : "Switch to Dark Mode" }}</span>
+    <span class="font-medium">{{
+      isDarkMode() ? "Switch to Light Mode" : "Switch to Dark Mode"
+    }}</span>
   </button>
 
   <div class="h-px bg-gray-100 dark:bg-gray-800 my-2"></div>
@@ -50,13 +64,16 @@
       (click)="closeMenu.emit()"
       class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#029fae] transition"
     >
-        @if (currentUser()?.photoUrl) {
-           <img [src]="'https://estorex.runasp.net/' + currentUser()?.photoUrl" class="h-[36px] w-[36px] rounded-full object-cover ring-2 ring-white dark:ring-gray-800">
-        } @else {
-           <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-             <lucide-icon name="user" size="20"></lucide-icon>
-           </div>
-        }
+      @if (currentUser()?.photoUrl) {
+        <img
+          [src]="'https://estorex.runasp.net/' + currentUser()?.photoUrl"
+          class="h-[36px] w-[36px] rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+        />
+      } @else {
+        <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+          <lucide-icon name="user" size="20"></lucide-icon>
+        </div>
+      }
       <div class="flex flex-col">
         <span class="font-medium">My Account</span>
         <span class="text-xs text-gray-400">Manage profile & settings</span>
@@ -72,7 +89,6 @@
       </div>
       <span class="font-medium">Logout</span>
     </button>
-
   } @else {
     <div class="grid grid-cols-2 gap-4">
       <a
@@ -82,7 +98,7 @@
       >
         <span class="font-medium">Sign in</span>
       </a>
-      
+
       <a
         routerLink="/auth/register"
         (click)="closeMenu.emit()"
