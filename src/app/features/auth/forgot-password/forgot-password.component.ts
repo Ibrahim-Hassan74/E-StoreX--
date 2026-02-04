@@ -4,6 +4,7 @@ import { AccountService } from '../../../core/services/account/account.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { UiFeedbackService } from '../../../core/services/ui-feedback.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,14 +15,13 @@ import { RouterLink } from '@angular/router';
 export class ForgotPasswordComponent {
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
+  private uiFeedback = inject(UiFeedbackService);
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
   });
 
   isLoading = signal(false);
-  errorMessage = signal<string | null>(null);
-  successMessage = signal<string | null>(null);
 
   hasError(error: string): boolean {
     const control = this.form.get('email');
@@ -36,23 +36,22 @@ export class ForgotPasswordComponent {
     if (this.form.invalid) return;
 
     this.isLoading.set(true);
-    this.errorMessage.set(null);
-    this.successMessage.set(null);
 
     this.accountService.forgotPassword(this.form.value.email!).subscribe({
       next: (res) => {
         this.isLoading.set(false);
         if (res.success) {
-          this.successMessage.set(
-            res.message || 'Check your email for instructions.'
+          this.uiFeedback.success(
+            res.message || 'Check your email for instructions.',
+            'Email Sent'
           );
         } else {
-          this.errorMessage.set(res.message || 'Failed to send reset link.');
+          this.uiFeedback.error(res.message || 'Failed to send reset link.');
         }
       },
       error: (err) => {
         this.isLoading.set(false);
-        this.errorMessage.set(
+        this.uiFeedback.error(
           err.error?.message || 'Failed to send reset link.'
         );
       }

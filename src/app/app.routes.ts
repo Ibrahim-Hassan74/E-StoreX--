@@ -49,11 +49,28 @@ export const routes: Routes = [
         loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
         canActivate: [nonAuthGuard]
       },
-      { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
-      { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
-      { path: 'confirm-email', loadComponent: () => import('./features/auth/confirm-email/confirm-email.component').then(m => m.ConfirmEmailComponent) },
+      { 
+        path: 'forgot-password', 
+        loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
+        canActivate: [nonAuthGuard]
+      },
+      { 
+        path: 'reset-password', 
+        loadComponent: () => import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+        canActivate: [nonAuthGuard]
+      },
+      {
+        path: 'reset-password-success',
+        loadComponent: () => import('./features/auth/reset-password-success/reset-password-success.component').then(m => m.ResetPasswordSuccessComponent),
+        canActivate: [nonAuthGuard]
+      },
+      { 
+        path: 'confirm-email', 
+        loadComponent: () => import('./features/auth/confirm-email/confirm-email.component').then(m => m.ConfirmEmailComponent),
+        canActivate: [nonAuthGuard]
+      },
     ]
-
+    
   },
   {
     path: 'account',

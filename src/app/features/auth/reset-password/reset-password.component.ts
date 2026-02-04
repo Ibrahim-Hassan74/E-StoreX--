@@ -10,6 +10,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AccountService } from '../../../core/services/account/account.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
+import { UiFeedbackService } from '../../../core/services/ui-feedback.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -22,6 +23,7 @@ export class ResetPasswordComponent implements OnInit {
   private accountService = inject(AccountService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private uiFeedback = inject(UiFeedbackService);
 
   form = this.fb.group(
     {
@@ -34,15 +36,59 @@ export class ResetPasswordComponent implements OnInit {
   );
 
   isLoading = signal(false);
+  isVerifying = signal(true);
+  tokenStatus = signal<'pending' | 'valid' | 'invalid'>('pending');
   errorMessage = signal<string | null>(null);
-  successMessage = signal<string | null>(null);
+  
+  callback = signal<string | null>(null);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      const userId = params['userId'];
+      const callback = params['callback'];
+      
+      if (callback) {
+        this.callback.set(callback);
+      }
+
+      if (!token || !userId) {
+        this.tokenStatus.set('invalid');
+        this.errorMessage.set('Invalid or missing reset token.');
+        this.isVerifying.set(false);
+        this.uiFeedback.error('Invalid or missing reset token.');
+        return;
+      }
+
       this.form.patchValue({
-        token: params['token'],
-        userId: params['userId'],
+        token: token,
+        userId: userId,
       });
+
+      this.verifyToken(userId, token);
+    });
+  }
+
+  verifyToken(userId: string, token: string): void {
+    this.accountService.verifyResetToken(userId, token).subscribe({
+      next: (res) => {
+        this.isVerifying.set(false);
+        if (res.success && res.statusCode === 200) {
+          this.tokenStatus.set('valid');
+        } else {
+          this.tokenStatus.set('invalid');
+          const msg = res.message || 'Invalid or expired token.';
+          this.errorMessage.set(msg);
+          this.uiFeedback.error(msg);
+        }
+      },
+      error: (err) => {
+        this.isVerifying.set(false);
+        this.tokenStatus.set('invalid');
+        const msg = err.error?.message || 'Failed to verify token.';
+        this.errorMessage.set(msg);
+        this.uiFeedback.error(msg);
+      }
     });
   }
 
@@ -70,25 +116,25 @@ export class ResetPasswordComponent implements OnInit {
 
     this.isLoading.set(true);
     this.errorMessage.set(null);
-    this.successMessage.set(null);
 
     this.accountService.resetPassword(this.form.value as any).subscribe({
       next: (res) => {
         this.isLoading.set(false);
         if (res.success) {
-          this.successMessage.set('Password has been reset successfully.');
-          setTimeout(() => this.router.navigate(['/auth/login']), 2000);
+          const queryParams: any = {};
+          if (this.callback()) {
+            queryParams['callback'] = this.callback();
+          }
+          this.router.navigate(['/auth/reset-password-success'], { queryParams });
         } else {
-          this.errorMessage.set(
-            res.errors?.join(', ') || res.message || 'Failed to reset password.'
-          );
+          const msg = res.errors?.join(', ') || res.message || 'Failed to reset password.';
+          this.uiFeedback.error(msg);
         }
       },
       error: (err) => {
         this.isLoading.set(false);
-        this.errorMessage.set(
-          err.error?.message || 'Failed to reset password.'
-        );
+        const msg = err.error?.message || 'Failed to reset password.';
+        this.uiFeedback.error(msg);
       }
     });
   }

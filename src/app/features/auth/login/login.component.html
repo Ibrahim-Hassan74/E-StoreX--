@@ -18,44 +18,11 @@
              shadow-lg ring-1 ring-gray-200 dark:ring-gray-700
              px-6 py-8"
     >
-      <form
+        <form
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()"
         class="space-y-5"
       >
-        @if (errorMessage()) {
-          <div
-            class="rounded-md bg-red-50 dark:bg-red-900/20
-                   p-4 border border-red-200 dark:border-red-800"
-          >
-            <p class="text-sm text-red-800 dark:text-red-200">
-              {{ errorMessage() }}
-            </p>
-          </div>
-        }
-
-        @if (resendSuccessMessage()) {
-          <div
-            class="rounded-md bg-green-50 dark:bg-green-900/20
-                   p-4 border border-green-200 dark:border-green-800"
-          >
-            <p class="text-sm text-green-800 dark:text-green-200">
-              {{ resendSuccessMessage() }}
-            </p>
-          </div>
-        }
-
-        @if (showResendConfirmation()) {
-          <button
-            type="button"
-            (click)="onResendConfirmation()"
-            class="w-full text-sm font-medium text-[#029fae]
-                   hover:text-[#028b99] cursor-pointer"
-          >
-            Resend confirmation email
-          </button>
-        }
-
         <div>
           <label class="block text-sm font-medium text-gray-900 dark:text-gray-200 mb-2">
             Email address
@@ -124,7 +91,7 @@
                  px-3 py-2 text-sm font-semibold text-white
                  shadow-md hover:shadow-lg
                  hover:bg-[#028b99]
-                 transition-all disabled:opacity-50"
+                 transition-all disabled:opacity-50 cursor-pointer"
         >
           @if (isLoading()) {
             <lucide-icon name="Loader2" class="animate-spin" [size]="18"></lucide-icon>
@@ -157,7 +124,7 @@
            shadow-sm ring-1 ring-inset
            ring-gray-300 dark:ring-gray-700
            hover:bg-gray-50 dark:hover:bg-gray-700
-           transition-all disabled:opacity-50"
+           transition-all disabled:opacity-50 cursor-pointer"
   >
     <svg
       class="h-5 w-5"
@@ -194,7 +161,7 @@
            px-4 py-2.5 text-sm font-semibold text-white
            shadow-sm hover:bg-[#24292F]/90
            dark:hover:bg-[#24292F]/80
-           transition-all disabled:opacity-50"
+           transition-all disabled:opacity-50 cursor-pointer"
   >
     <lucide-icon name="Github" [size]="20"></lucide-icon>
     <span>Continue with GitHub</span>

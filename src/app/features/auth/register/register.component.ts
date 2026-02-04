@@ -81,14 +81,12 @@ export class RegisterComponent {
         } else {
           const message = res.errors?.join(', ') || res.message;
           this.uiFeedback.error(message);
-          this.errorMessage.set(message);
         }
       },
       error: (err: any) => {
         this.isLoading.set(false);
         const message = err?.error?.message || 'Registration failed';
         this.uiFeedback.error(message);
-        this.errorMessage.set(message);
       }
     });
   }

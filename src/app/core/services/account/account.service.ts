@@ -91,6 +91,11 @@ export class AccountService extends ResourceService<User> {
     return this.http.post<AuthResponse>(this.buildUrl('reset-password'), data);
   }
 
+  verifyResetToken(userId: string, token: string): Observable<AuthResponse> {
+    const params = { userId, token };
+    return this.http.get<AuthResponse>(this.buildUrl('reset-password/verify'), { params: params as any });
+  }
+
   resendConfirmationEmail(email: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(this.buildUrl('resend-confirmation-email'), { email });
   }

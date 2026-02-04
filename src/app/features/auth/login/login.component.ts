@@ -66,7 +66,6 @@ export class LoginComponent {
 
     this.isLoading.set(true);
     this.errorMessage.set(null);
-    this.showResendConfirmation.set(false);
     this.resendSuccessMessage.set(null);
 
     this.accountService.login(this.loginForm.value as any).subscribe({
@@ -95,7 +94,11 @@ export class LoginComponent {
       message.toLowerCase().includes('email') &&
       !message.toLowerCase().includes('wait')
     ) {
-      this.showResendConfirmation.set(true);
+        this.uiFeedback.confirm(message + " Would you like to resend the confirmation email?", "Email not confirmed", "Yes, resend", "No").then(confirmed => {
+            if (confirmed) {
+                this.onResendConfirmation();
+            }
+        });
     }
   }
 
@@ -110,24 +113,14 @@ export class LoginComponent {
         this.isLoading.set(false);
         if (res.success) {
           this.uiFeedback.success(res.message || 'Confirmation email sent!', 'Success');
-          this.resendSuccessMessage.set(
-            res.message || 'Confirmation email sent!'
-          );
-          this.showResendConfirmation.set(false);
         } else {
           this.uiFeedback.error(res.message || 'Failed to resend email.');
-          this.errorMessage.set(res.message || 'Failed to resend email.');
         }
       },
       error: (err: any) => {
         this.isLoading.set(false);
         const message = err.error?.message || 'Failed to resend email.';
         this.uiFeedback.error(message);
-        this.errorMessage.set(message);
-
-        if (message.toLowerCase().includes('wait')) {
-             this.showResendConfirmation.set(false);
-        }
       }
     });
   }
