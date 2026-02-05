@@ -64,6 +64,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/auth/reset-password-success/reset-password-success.component').then(m => m.ResetPasswordSuccessComponent),
         canActivate: [nonAuthGuard]
       },
+      {
+        path: 'oauth-callback',
+        loadComponent: () => import('./features/auth/oauth-callback/oauth-callback.component').then(m => m.OAuthCallbackComponent),
+        canActivate: [nonAuthGuard]
+      },
       { 
         path: 'confirm-email', 
         loadComponent: () => import('./features/auth/confirm-email/confirm-email.component').then(m => m.ConfirmEmailComponent),

@@ -21,10 +21,17 @@ export class ConfirmEmailComponent implements OnInit {
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
 
+  redirectTo = signal<string | null>(null);
+
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const userId = params['userId'];
       const token = params['token'];
+      const redirect = params['redirectTo'];
+      
+      if (redirect) {
+        this.redirectTo.set(redirect);
+      }
 
       if (userId && token) {
         this.confirm(userId, token);
@@ -39,12 +46,12 @@ export class ConfirmEmailComponent implements OnInit {
   confirm(userId: string, token: string) {
     this.accountService.confirmEmail({ userId, token }).subscribe({
       next: async (res: any) => {
+        console.log(res);
         this.isLoading.set(false);
         if (res.success) {
           const msg = res.message || 'Email confirmed successfully.';
           this.successMessage.set(msg);
           await this.uiFeedback.success(msg, 'Success');
-          this.router.navigate(['/auth/login']);
         } else {
           const msg = res.message || 'Failed to verify email.';
           this.errorMessage.set(msg);
@@ -58,5 +65,15 @@ export class ConfirmEmailComponent implements OnInit {
         this.uiFeedback.error(msg);
       }
     });
+  }
+  goLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
+  goExternal() {
+    const url = this.redirectTo();
+    if (url) {
+        window.location.href = url;
+    }
   }
 }
