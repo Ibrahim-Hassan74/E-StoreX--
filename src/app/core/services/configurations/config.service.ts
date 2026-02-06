@@ -10,4 +10,7 @@ export class ConfigService {
   get clientId(): string {
     return this.config?.clientId || '';
   }
+  get publishableKey(): string {
+    return this.config?.publishableKey || '';
+  }
 }

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import emailjs from '@emailjs/browser';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
 
 export interface ContactMessage {
   name: string;
@@ -13,25 +14,9 @@ export interface ContactMessage {
   providedIn: 'root'
 })
 export class ContactService {
+  private http = inject(HttpClient);
   
-  async sendMessage(data: ContactMessage): Promise<void> {
-    try {
-      await emailjs.send(
-        environment.emailJs.serviceId,
-        environment.emailJs.templateId,
-        {
-          from_name: data.name,
-          reply_to: data.email,
-          subject: data.subject,
-          message: data.message
-        },
-        {
-          publicKey: environment.emailJs.publicKey,
-        }
-      );
-    } catch (error) {
-      console.error('EmailJS Error:', error);
-      throw error;
-    }
+  sendMessage(data: ContactMessage): Observable<any> {
+    return this.http.post(`${environment.baseURL}Contact/send-message`, data);
   }
 }

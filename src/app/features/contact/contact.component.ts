@@ -41,8 +41,14 @@ export class ContactComponent {
     },
     {
       name: 'Facebook',
-      url: 'https://web.facebook.com/ibrahim.hassan.309765',
+      url: 'https://www.facebook.com/share/1bxtDtRTFp',
       icon: 'facebook',
+      display: 'Ibrahim Hassan'
+    },
+    {
+      name: 'Instagram',
+      url: 'https://www.instagram.com/ibrahim_hassan_72?igsh=eXdsb3BlZGk4emh0',
+      icon: 'instagram',
       display: 'Ibrahim Hassan'
     }
   ];
@@ -73,7 +79,7 @@ export class ContactComponent {
     return !!(field && field.invalid && field.dirty);
   }
 
-  async onSubmit() {
+  onSubmit() {
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
       return;
@@ -82,16 +88,18 @@ export class ContactComponent {
     this.isLoading.set(true);
     const messageData: ContactMessage = this.contactForm.value as ContactMessage;
 
-    try {
-      await this.contactService.sendMessage(messageData);
-      this.isLoading.set(false);
-      this.contactForm.reset();
-      this.uiFeedback.success('Your message has been sent successfully. Ibrahim will contact you soon.', 'Message Sent');
-    } catch (err: any) {
-      this.isLoading.set(false);
-      console.error('Email send failed', err);
-      const errorMessage = err.text || 'Failed to send message.';
-      this.uiFeedback.error(errorMessage, 'Message Failed');
-    }
+    this.contactService.sendMessage(messageData).subscribe({
+      next: (response) => {
+        this.isLoading.set(false);
+        this.contactForm.reset();
+        this.uiFeedback.success('Your message has been sent successfully. Ibrahim will contact you soon.', 'Message Sent');
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        console.error('Message send failed', err);
+        const errorMessage = err.error?.message || 'Failed to send message.';
+        this.uiFeedback.error(errorMessage, 'Message Failed');
+      }
+    });
   }
 }
