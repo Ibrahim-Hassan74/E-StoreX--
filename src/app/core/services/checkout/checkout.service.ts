@@ -1,0 +1,82 @@
+
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Address } from '../../../shared/models/auth';
+import { DeliveryMethod, OrderToCreate } from '../../../shared/models/order';
+import { AccountService } from '../account/account.service';
+import { BasketStateService } from '../cart/basket-state.service';
+import { OrdersService } from '../orders/orders.service';
+import { tap } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CheckoutService {
+  private accountService = inject(AccountService);
+  private basketState = inject(BasketStateService);
+  private ordersService = inject(OrdersService);
+
+  private _shippingAddress = signal<Address | null>(null);
+  private _deliveryMethod = signal<DeliveryMethod | null>(null);
+  private _paymentIntent = signal<string | null>(null);
+  private _clientSecret = signal<string | null>(null);
+
+  shippingAddress = computed(() => this._shippingAddress());
+  deliveryMethod = computed(() => this._deliveryMethod());
+  paymentIntent = computed(() => this._paymentIntent());
+  clientSecret = computed(() => this._clientSecret());
+  
+  total = computed(() => {
+    const basketTotal = this.basketState.basketTotal();
+    const shippingPrice = this._deliveryMethod()?.price ?? 0;
+    const discount = this.basketState.basket()?.discountValue ?? 0;
+    return basketTotal + shippingPrice - discount;
+  });
+
+  constructor() { }
+
+  updateShippingAddress(address: Address) {
+    this._shippingAddress.set(address);
+  }
+
+  updateDeliveryMethod(method: DeliveryMethod) {
+    this._deliveryMethod.set(method);
+    this.createPaymentIntent();
+  }
+
+  getDeliveryMethods() {
+    return this.ordersService.getDeliveryMethods();
+  }
+
+  createPaymentIntent() {
+    const basket = this.basketState.basket();
+    const deliveryMethod = this._deliveryMethod();
+
+    if (basket && deliveryMethod) {
+      this.ordersService.createPaymentIntent(basket.id, deliveryMethod.id).subscribe({
+        next: (response) => {
+          this._paymentIntent.set(response.paymentIntentId);
+          this._clientSecret.set(response.clientSecret);
+        },
+        error: (error) => console.error('Failed to create payment intent', error)
+      });
+    }
+  }
+
+  createOrder() {
+    const basket = this.basketState.basket();
+    const deliveryMethod = this._deliveryMethod();
+    const address = this._shippingAddress();
+
+    if (!basket || !deliveryMethod || !address) {
+      throw new Error('Missing required data for order creation');
+    }
+
+    const orderToCreate: OrderToCreate = {
+      basketId: basket.id,
+      deliveryMethodId: deliveryMethod.id,
+      shipToAddress: address
+    };
+
+    return this.ordersService.createOrder(orderToCreate);
+  }
+}

@@ -40,7 +40,7 @@
      <p *ngIf="error()" class="text-red-500 text-xs mt-2 ml-1">{{ error() }}</p>
   </div>
 
-  <button class="w-full bg-[#029fae] hover:bg-[#028b99] text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#029fae]/20 flex items-center justify-center gap-2 cursor-pointer">
+  <button routerLink="/checkout" class="w-full bg-[#029fae] hover:bg-[#028b99] text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-[#029fae]/20 flex items-center justify-center gap-2 cursor-pointer">
     <span>Proceed to Checkout</span>
     <lucide-icon name="arrow-right" size="20"></lucide-icon>
   </button>

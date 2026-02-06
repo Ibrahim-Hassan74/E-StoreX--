@@ -1,0 +1,73 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="lg:grid lg:grid-cols-12 lg:gap-x-12 mt-12">
+      
+       <div class="lg:hidden mb-8">
+        <app-order-summary />
+      </div>
+
+      <div class="lg:col-span-8">
+        <nav aria-label="Progress" class="mb-12">
+          <ol role="list" class="flex items-center w-full">
+            <li class="flex-1 flex items-center">
+              <div class="relative flex flex-col items-center">
+                <button (click)="goToStep(1)" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-[#029fae] hover:bg-[#028b99] transition-colors cursor-pointer z-10">
+                  <span class="h-2.5 w-2.5 rounded-full bg-white" aria-hidden="true"></span>
+                  <span class="sr-only">Step 1</span>
+                </button>
+                <div class="absolute top-10 whitespace-nowrap text-sm font-bold text-[#029fae]">Address</div>
+              </div>
+              <div class="flex-1 h-0.5 mx-2" [ngClass]="currentStep() >= 2 ? 'bg-[#029fae]' : 'bg-gray-200 dark:bg-gray-700'"></div>
+            </li>
+
+            <li class="flex-1 flex items-center">
+              <div class="relative flex flex-col items-center">
+                <button (click)="goToStep(2)" [disabled]="currentStep() < 2" 
+                  class="relative flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-300 z-10"
+                  [ngClass]="currentStep() >= 2 ? 'bg-[#029fae] hover:bg-[#028b99] cursor-pointer' : 'bg-gray-200 dark:bg-gray-700 cursor-not-allowed'">
+                  <span class="h-2.5 w-2.5 rounded-full bg-white" aria-hidden="true"></span>
+                  <span class="sr-only">Step 2</span>
+                </button>
+                <div class="absolute top-10 whitespace-nowrap text-sm font-bold transition-colors duration-300" [ngClass]="currentStep() >= 2 ? 'text-[#029fae]' : 'text-gray-500 dark:text-gray-400'">Delivery</div>
+              </div>
+              <div class="flex-1 h-0.5 mx-2" [ngClass]="currentStep() >= 3 ? 'bg-[#029fae]' : 'bg-gray-200 dark:bg-gray-700'"></div>
+            </li>
+
+            <li class="relative flex flex-col items-center">
+              <button (click)="goToStep(3)" [disabled]="currentStep() < 3"
+                 class="relative flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-300 z-10"
+                 [ngClass]="currentStep() >= 3 ? 'bg-[#029fae] hover:bg-[#028b99] cursor-pointer' : 'bg-gray-200 dark:bg-gray-700 cursor-not-allowed'">
+                <span class="h-2.5 w-2.5 rounded-full bg-white" aria-hidden="true"></span>
+                <span class="sr-only">Step 3</span>
+              </button>
+              <div class="absolute top-10 whitespace-nowrap text-sm font-bold transition-colors duration-300" [ngClass]="currentStep() >= 3 ? 'text-[#029fae]' : 'text-gray-500 dark:text-gray-400'">Payment</div>
+            </li>
+          </ol>
+        </nav>
+
+        @if (currentStep() === 1) {
+          <app-checkout-address (next)="nextStep()"/>
+        }
+        
+        @if (currentStep() === 2) {
+          <app-checkout-delivery 
+            (next)="nextStep()"
+            (back)="prevStep()"
+          />
+        }
+        
+        @if (currentStep() === 3) {
+          <app-checkout-payment (back)="prevStep()"/>
+        }
+      </div>
+
+      <div class="hidden lg:block lg:col-span-4">
+        <div class="sticky top-4">
+            <app-order-summary/>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

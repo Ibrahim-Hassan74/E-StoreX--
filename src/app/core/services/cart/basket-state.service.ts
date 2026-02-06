@@ -54,8 +54,6 @@ export class BasketStateService {
 
   private handleAuthUser() {
       const guestId = this.guestBasketId;
-      const user = this.accountService.currentUser();
-      
       if (guestId) {
           this.basketService.mergeBasket(guestId).subscribe({
               next: (basket) => {
@@ -66,11 +64,11 @@ export class BasketStateService {
                   }
               },
               error: () => {
-                  if (user) this.loadAuthBasket();
+                  this.loadAuthBasket();
               }
           });
       } else {
-          if (user) this.loadAuthBasket();
+          this.loadAuthBasket();
       }
   }
 
@@ -90,7 +88,10 @@ export class BasketStateService {
                     this.persistAuthBasketId(basket.id);
                  }
               },
-              error: () => this.basketSignal.set(null)
+              error: () => {
+                  this.basketSignal.set(null);
+                  localStorage.removeItem('basketId'); // Clear invalid ID
+              }
           });
       } else {
           this.basketSignal.set(null);
@@ -98,6 +99,10 @@ export class BasketStateService {
   }
 
   private handleGuestUser() {
+      if (isPlatformBrowser(this.platformId)) {
+          localStorage.removeItem('basketId');
+      }
+      
       const guestId = this.guestBasketId;
       if (guestId) {
           this.basketService.getBasket(guestId).subscribe({
@@ -121,19 +126,18 @@ export class BasketStateService {
   addItem(item: BasketItem) {
     const user = this.accountService.currentUser();
     let basketId = this.basketSignal()?.id;
-    let storedBasketId: string | null = null;
     
-    if (isPlatformBrowser(this.platformId)) {
-        storedBasketId = localStorage.getItem('basketId');
+    if (!basketId) {
+        if (user) {
+             const stored = isPlatformBrowser(this.platformId) ? localStorage.getItem('basketId') : null;
+             basketId = stored ?? this.createUUID();
+        } else {
+             basketId = this.guestBasketId ?? this.createUUID();
+        }
     }
 
-    if (!user) {
-        basketId = basketId ?? this.guestBasketId ?? this.createUUID();
-        if (basketId !== this.guestBasketId) {
-            this.guestBasketId = basketId;
-        }
-    } else {
-        basketId = basketId ?? storedBasketId ?? this.createUUID();
+    if (!user && basketId !== this.guestBasketId) {
+        this.guestBasketId = basketId;
     }
 
     this.basketService.addBasket(item, basketId).subscribe({

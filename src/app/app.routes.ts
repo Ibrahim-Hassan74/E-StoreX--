@@ -112,6 +112,16 @@ export const routes: Routes = [
     loadComponent: () => import('./features/legal/legal.component').then(m => m.LegalComponent)
   },
   {
+    path: 'checkout',
+    loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'checkout/success',
+    loadComponent: () => import('./features/checkout/components/order-success/order-success.component').then(m => m.OrderSuccessComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'
