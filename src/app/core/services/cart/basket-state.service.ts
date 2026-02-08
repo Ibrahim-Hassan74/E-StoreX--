@@ -18,20 +18,35 @@ export class BasketStateService {
   private basketSignal = signal<Basket | null>(null);
 
   basket = computed(() => this.basketSignal());
-  basketCount = computed(() =>
-    this.basketSignal()?.basketItems?.reduce((acc, item) => acc + item.quantity, 0) ?? 0
-  );
-  basketTotal = computed(() => this.basketSignal()?.total ?? 0);
   basketItems = computed(() => this.basketSignal()?.basketItems ?? []);
+  basketCount = computed(() =>
+    this.basketItems().reduce((acc, item) => acc + item.quantity, 0)
+  );
+  
+  basketSubTotal = computed(() => 
+    this.basketItems().reduce((acc, item) => acc + (item.price * item.quantity), 0)
+  );
+
+  basketTotal = computed(() => {
+    const sub = this.basketSubTotal();
+    const discount = this.basketSignal()?.discountValue ?? 0;
+    return sub - discount;
+  });
+
+  private loginBasketSyncInProgress = false;
 
   constructor() {
     effect(() => {
-        const user = this.accountService.currentUser();
-        if (user) {
-            this.handleAuthUser();
-        } else {
-            this.handleGuestUser();
+      const user = this.accountService.currentUser();
+      if (user) {
+        // Only load if sync is NOT in progress. 
+        // If sync is in progress, it will handle the loading/merging itself.
+        if (!this.loginBasketSyncInProgress) {
+           this.handleAuthUser(user.id!);
         }
+      } else {
+        this.handleGuestUser();
+      }
     });
   }
 
@@ -52,109 +67,139 @@ export class BasketStateService {
     }
   }
 
-  private handleAuthUser() {
+  private get currentBasketId(): string | null {
+    const user = this.accountService.currentUser();
+    if (user?.id) {
+      return user.id;
+    }
+    return this.guestBasketId;
+  }
+
+  private handleAuthUser(userId: string) {
+      this.loadUserBasket(userId);
+  }
+
+  public handleLoginBasketSync() {
+      if (this.loginBasketSyncInProgress) return;
+      this.loginBasketSyncInProgress = true;
+
+      const user = this.accountService.currentUser();
+      if (!user) {
+          this.loginBasketSyncInProgress = false;
+          return;
+      }
+
       const guestId = this.guestBasketId;
+
       if (guestId) {
           this.basketService.mergeBasket(guestId).subscribe({
               next: (basket) => {
                   this.basketSignal.set(basket);
                   this.guestBasketId = null;
-                  if (basket) {
-                    this.persistAuthBasketId(basket.id);
-                  }
+                  this.loginBasketSyncInProgress = false;
               },
-              error: () => {
-                  this.loadAuthBasket();
+              error: (err) => {
+                  console.error('Merge failed', err);
+                  // Safety: Clear guest ID to prevent infinite loops, then load user basket
+                  this.guestBasketId = null;
+                  this.loadUserBasket(user.id!);
+                  this.loginBasketSyncInProgress = false;
               }
           });
       } else {
-          this.loadAuthBasket();
+          this.loadUserBasket(user.id!);
+          this.loginBasketSyncInProgress = false;
       }
   }
 
-  private loadAuthBasket() {
-      if (!isPlatformBrowser(this.platformId)) {
-          this.basketSignal.set(null);
-          return;
+  private loadUserBasket(userId: string) {
+    this.basketService.getBasket(userId).subscribe({
+      next: (basket) => {
+        this.basketSignal.set(basket);
+      },
+      error: () => {
+        this.basketSignal.set(null);
       }
-
-      const persistedId = localStorage.getItem('basketId');
-      
-       if (persistedId) {
-          this.basketService.getBasket(persistedId).subscribe({
-              next: (basket) => {
-                 this.basketSignal.set(basket);
-                 if (basket) {
-                    this.persistAuthBasketId(basket.id);
-                 }
-              },
-              error: () => {
-                  this.basketSignal.set(null);
-                  localStorage.removeItem('basketId'); // Clear invalid ID
-              }
-          });
-      } else {
-          this.basketSignal.set(null);
-      }
+    });
   }
 
   private handleGuestUser() {
-      if (isPlatformBrowser(this.platformId)) {
-          localStorage.removeItem('basketId');
-      }
-      
-      const guestId = this.guestBasketId;
-      if (guestId) {
-          this.basketService.getBasket(guestId).subscribe({
-              next: (basket) => this.basketSignal.set(basket),
-              error: () => {
-                  this.guestBasketId = null;
-                  this.basketSignal.set(null);
-              }
-          });
-      } else {
-          this.basketSignal.set(null);
-      }
-  }
-  
-  private persistAuthBasketId(id: string) {
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('basketId', id);
-      }
+    this.basketSignal.set(null);
+    this.loginBasketSyncInProgress = false;
+
+    const guestId = this.guestBasketId;
+    if (guestId) {
+        this.basketService.getBasket(guestId).subscribe({
+            next: (basket) => this.basketSignal.set(basket),
+            error: () => {
+                this.guestBasketId = null;
+                this.basketSignal.set(null);
+            }
+        });
+    }
   }
 
   addItem(item: BasketItem) {
-    const user = this.accountService.currentUser();
-    let basketId = this.basketSignal()?.id;
-    
+    let basketId = this.currentBasketId;
     if (!basketId) {
-        if (user) {
-             const stored = isPlatformBrowser(this.platformId) ? localStorage.getItem('basketId') : null;
-             basketId = stored ?? this.createUUID();
-        } else {
-             basketId = this.guestBasketId ?? this.createUUID();
-        }
-    }
-
-    if (!user && basketId !== this.guestBasketId) {
+        basketId = this.createUUID();
         this.guestBasketId = basketId;
     }
 
     this.basketService.addBasket(item, basketId).subscribe({
       next: (basket) => {
         this.basketSignal.set(basket);
-        if (user) {
-             this.persistAuthBasketId(basket.id);
-        } else {
-             this.guestBasketId = basket.id;
-        }
         this.ui.success('The item has been added to your cart successfully.', 'Added to Cart');
       },
       error: (err) => {
-          console.error('AddItem Error:', err);
-          this.ui.error(err.error?.message || 'Failed to add item to cart');
+        console.error('AddItem Error:', err);
+        this.ui.error(err.error?.message || 'Failed to add item to cart');
       }
     });
+  }
+
+  removeItem(itemId: string) {
+    const id = this.currentBasketId;
+    if (!id) return;
+    
+    this.basketService.removeItem(id, itemId).subscribe({
+      next: b => this.basketSignal.set(b),
+      error: err => this.ui.error(err.error?.message || 'Failed to remove item')
+    });
+  }
+  
+  increaseItem(itemId: string) {
+    const id = this.currentBasketId;
+    if (!id) return;
+
+    this.basketService.increaseItem(id, itemId).subscribe({
+      next: b => {
+          this.basketSignal.set(b);
+      },
+      error: err => this.ui.error(err.error?.message || 'Failed to increase quantity')
+    });
+  }
+  
+  decreaseItem(itemId: string) {
+    const id = this.currentBasketId;
+    if (!id) return;
+
+    this.basketService.decreaseItem(id, itemId).subscribe({
+      next: b => this.basketSignal.set(b),
+      error: err => this.ui.error(err.error?.message || 'Failed to decrease quantity')
+    });
+  }
+
+  applyDiscount(code: string): import('rxjs').Observable<Basket | null> {
+    const id = this.currentBasketId;
+    if (!id) return of(null);
+    
+    return this.basketService.applyDiscount(id, code).pipe(
+      tap({
+        next: b => this.basketSignal.set(b),
+        error: err => this.ui.error(err.error?.message || 'Failed to apply discount')
+      })
+    );
   }
 
   private createUUID() {
@@ -162,46 +207,5 @@ export class BasketStateService {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
-  }
-
-  removeItem(itemId: string) {
-      const id = this.basketSignal()?.id;
-      if (!id) return;
-      this.basketService.removeItem(id, itemId).subscribe({
-          next: b => this.basketSignal.set(b),
-          error: err => this.ui.error(err.error?.message || 'Failed to remove item')
-      });
-  }
-  
-  increaseItem(itemId: string) {
-       const id = this.basketSignal()?.id;
-      if (!id) return;
-      this.basketService.increaseItem(id, itemId).subscribe({
-          next: b => {
-             this.basketSignal.set(b);
-             this.ui.success('The item has been added to your cart successfully.', 'Added to Cart');
-          },
-          error: err => this.ui.error(err.error?.message || 'Failed to increase quantity')
-      });
-  }
-  
-   decreaseItem(itemId: string) {
-       const id = this.basketSignal()?.id;
-      if (!id) return;
-      this.basketService.decreaseItem(id, itemId).subscribe({
-          next: b => this.basketSignal.set(b),
-          error: err => this.ui.error(err.error?.message || 'Failed to decrease quantity')
-      });
-  }
-  
-  applyDiscount(code: string): import('rxjs').Observable<Basket | null> {
-       const id = this.basketSignal()?.id;
-       if (!id) return of(null);
-       return this.basketService.applyDiscount(id, code).pipe(
-           tap({
-               next: b => this.basketSignal.set(b),
-               error: err => this.ui.error(err.error?.message || 'Failed to apply discount')
-           })
-       );
   }
 }

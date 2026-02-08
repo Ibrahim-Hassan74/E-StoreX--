@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { AccountService } from '../../../core/services/account/account.service';
+import { BasketStateService } from '../../../core/services/cart/basket-state.service';
 import { AuthResponse } from '../../../shared/models/auth';
 
 @Component({
@@ -23,6 +24,7 @@ export class OAuthCallbackComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private accountService = inject(AccountService);
+  private basketState = inject(BasketStateService);
 
   ngOnInit(): void {
     const params = this.route.snapshot.queryParams;
@@ -41,6 +43,7 @@ export class OAuthCallbackComponent implements OnInit {
 
       this.accountService.setSession(authResponse);
       this.accountService.loadCurrentUser().subscribe(() => {
+        this.basketState.handleLoginBasketSync();
         this.router.navigate(['/']);
       });
     } else {

@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AccountService } from '../../../core/services/account/account.service';
+import { BasketStateService } from '../../../core/services/cart/basket-state.service';
 import { UiFeedbackService } from '../../../core/services/ui-feedback.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
+  private basketState = inject(BasketStateService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private uiFeedback = inject(UiFeedbackService);
@@ -32,6 +34,7 @@ export class LoginComponent {
             statusCode: 200 
          });
          this.accountService.loadCurrentUser().subscribe(async () => {
+            this.basketState.handleLoginBasketSync();
             await this.uiFeedback.success('You have signed in successfully.', 'Welcome back!');
             this.router.navigateByUrl(this.returnUrl);
          });
@@ -73,6 +76,7 @@ export class LoginComponent {
         this.isLoading.set(false);
         if (res.success) {
           await this.uiFeedback.success('You have signed in successfully.', 'Welcome back!');
+          this.basketState.handleLoginBasketSync();
           this.router.navigateByUrl(this.returnUrl);
         } else {
            this.handleLoginError(res.message);

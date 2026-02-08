@@ -27,7 +27,7 @@ export class CartComponent {
   }
 
   get basketTotal() {
-    return this.basketState.basketTotal() - (this.basket?.discountValue || 0);
+    return this.basketState.basketTotal();
   }
   
   get discountInfo() {
@@ -38,7 +38,7 @@ export class CartComponent {
   }
 
   get subtotal() {
-      return (this.basket?.total || 0);
+      return this.basketState.basketSubTotal();
   }
 
   private ui = inject(UiFeedbackService);
