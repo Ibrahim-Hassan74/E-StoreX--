@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ProductsService } from '../../core/services/products/products.service';
 import { BrandsService } from '../../core/services/brands/brands.service';
 import { CategoriesService } from '../../core/services/categories/categories.service';
-import { Product } from '../../shared/models/product';
+import { Product } from '../../shared/models/product.model';
 import { Brand } from '../../shared/models/brand';
 import { Categories } from '../../shared/models/categories';
 import { ProductQuery } from '../../shared/models/product-query';

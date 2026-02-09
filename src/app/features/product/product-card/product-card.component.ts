@@ -10,7 +10,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Product } from '../../../shared/models/product';
+import { Product } from '../../../shared/models/product.model';
 import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';

@@ -3,7 +3,7 @@ import { map, Observable } from 'rxjs';
 import { ProductQuery } from '../../../shared/models/product-query';
 import { Pagination } from '../../../shared/models/pagination';
 import { Slide } from '../../../shared/models/slide';
-import { Product } from '../../../shared/models/product';
+import { Product } from '../../../shared/models/product.model';
 import { ResourceService } from '../resource.service';
 import { HttpParams } from '@angular/common/http';
 

@@ -1,5 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, input, computed } from '@angular/core';
-import { Product } from '../../../shared/models/product';
+import { Product } from '../../../shared/models/product.model';
 import { ProductCardComponent } from '../../product/product-card/product-card.component';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';

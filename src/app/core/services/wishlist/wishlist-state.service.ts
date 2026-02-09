@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { WishlistService } from './wishlist.service';
 import { UiFeedbackService } from '../ui-feedback.service';
-import { Product } from '../../../shared/models/product';
+import { Product } from '../../../shared/models/product.model';
 import { AccountService } from '../../services/account/account.service';
 
 @Injectable({

@@ -15,7 +15,7 @@ import { BrandsService } from '../../core/services/brands/brands.service';
 import { Slide } from '../../shared/models/slide';
 import { Brand } from '../../shared/models/brand';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
-import { Product } from '../../shared/models/product';
+import { Product } from '../../shared/models/product.model';
 import { HomeFeaturedProductsComponent } from './home-featured-products/home-featured-products.component';
 import { CategoriesService } from '../../core/services/categories/categories.service';
 import { CategoriesBrands } from '../../shared/models/categories-brands';

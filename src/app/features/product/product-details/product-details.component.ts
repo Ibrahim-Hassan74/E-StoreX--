@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { Meta } from '@angular/platform-browser';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { Product } from '../../../shared/models/product';
+import { Product } from '../../../shared/models/product.model';
 import { BasketStateService } from '../../../core/services/cart/basket-state.service';
 import { WishlistStateService } from '../../../core/services/wishlist/wishlist-state.service';
 import { BasketItem } from '../../../shared/models/basket';
