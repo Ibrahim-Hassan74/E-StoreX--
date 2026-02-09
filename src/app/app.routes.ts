@@ -51,13 +51,13 @@ export const routes: Routes = [
         path: 'login', 
         loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent),
         canActivate: [nonAuthGuard],
-        title: 'Login'
+        title: 'Sign in'
       },
       { 
         path: 'register', 
         loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent),
         canActivate: [nonAuthGuard],
-        title: 'Register'
+        title: 'Sign up'
       },
       { 
         path: 'forgot-password', 

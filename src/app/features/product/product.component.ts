@@ -32,18 +32,9 @@ export class ProductComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit() {
+    this.state.initialize();
     this.route.queryParams.subscribe((params: Params) => {
-      const updates: any = {};
-      if (params['brandId']) {
-        updates.brandId = params['brandId'];
-      }
-      if (params['categoryId']) {
-        updates.categoryId = params['categoryId'];
-      }
-      if (Object.keys(updates).length > 0) {
-        this.state.updateQuery(updates);
-      }
-      this.state.initialize();
+      this.state.setQueryFromUrl(params);
     });
   }
 }

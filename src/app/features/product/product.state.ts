@@ -53,7 +53,6 @@ export class ProductStateService {
   }
 
   initialize() {
-    this.loadProducts();
     this.brandsService.getBrands().subscribe((data) => this.brands.set(data));
     this.categoriesService.getCategories().subscribe((data) => this.categories.set(data));
   }
@@ -66,6 +65,15 @@ export class ProductStateService {
         next: (response: Pagination<Product>) => {
           this.products.set(response?.data || []);
           this.pagination.set(response);
+
+          const totalCount = response?.totalCount || 0;
+          const pageSize = this.query().pageSize || 12;
+          const totalPages = Math.ceil(totalCount / pageSize);
+          const currentPage = this.query().pageNumber || 1;
+
+          if (currentPage > 1 && (totalCount === 0 || currentPage > totalPages)) {
+            this.updateQuery({ pageNumber: 1 });
+          }
         },
         error: () => {
           this.products.set([]);
@@ -74,8 +82,37 @@ export class ProductStateService {
   }
 
   updateQuery(changes: Partial<ProductQuery>) {
-    this.query.update((current) => ({ ...current, ...changes }));
-    this.loadProducts();
+    const nextQuery = { ...this.query(), ...changes };
+    const queryParams: any = {};
+    
+    if (nextQuery.searchString) queryParams.searchString = nextQuery.searchString;
+    if (nextQuery.pageNumber && nextQuery.pageNumber > 1) queryParams.pageNumber = nextQuery.pageNumber;
+    if (nextQuery.pageSize && nextQuery.pageSize !== 12) queryParams.pageSize = nextQuery.pageSize;
+    if (nextQuery.minPrice) queryParams.minPrice = nextQuery.minPrice;
+    if (nextQuery.maxPrice) queryParams.maxPrice = nextQuery.maxPrice;
+    if (nextQuery.categoryId) queryParams.categoryId = nextQuery.categoryId;
+    if (nextQuery.brandId) queryParams.brandId = nextQuery.brandId;
+    if (nextQuery.sortBy) queryParams.sortBy = nextQuery.sortBy;
+    if (nextQuery.sortOrder) queryParams.sortOrder = nextQuery.sortOrder;
+
+    this.router.navigate([], { queryParams });
+  }
+
+  setQueryFromUrl(params: any) {
+      const newQuery: ProductQuery = {
+          pageNumber: Number(params['pageNumber']) || 1,
+          pageSize: Number(params['pageSize']) || 12,
+          searchString: params['searchString'] || '',
+          minPrice: params['minPrice'] ? Number(params['minPrice']) : undefined,
+          maxPrice: params['maxPrice'] ? Number(params['maxPrice']) : undefined,
+          categoryId: params['categoryId'] || undefined,
+          brandId: params['brandId'] || undefined,
+          sortBy: params['sortBy'] || 'price',
+          sortOrder: (params['sortOrder'] as SortOrderOptions) || SortOrderOptions.DESC
+      };
+      
+      this.query.set(newQuery);
+      this.loadProducts();
   }
 
   setSearch(val: string) {
@@ -83,26 +120,14 @@ export class ProductStateService {
   }
 
   clearSearch() {
-      this.query.update((q) => ({ ...q, searchString: '' }));
+      this.updateQuery({ searchString: '' });
       this.setSearch('');
   }
 
 
   resetFilters() {
-    this.query.set({
-      pageNumber: 1,
-      pageSize: 12,
-      sortBy: 'price',
-      sortOrder: SortOrderOptions.DESC,
-      searchString: '',
-      minPrice: undefined,
-      maxPrice: undefined,
-      categoryId: undefined,
-      brandId: undefined,
-    });
-    this.setSearch('');
     this.router.navigate([], { queryParams: {} });
-    this.loadProducts();
+    this.setSearch('');
   }
   
   toggleMobileFilters() {
