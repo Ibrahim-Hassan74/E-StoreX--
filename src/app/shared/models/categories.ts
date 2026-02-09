@@ -1,4 +1,4 @@
-import { Photo } from './photo';
+import { Photo } from './photo.model';
 
 export interface Categories {
   id: string;
