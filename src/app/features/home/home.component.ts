@@ -5,6 +5,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { HomeBannerComponent } from './home-banner/home-banner.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { HomeBrandsComponent } from './home-brands/home-brands.component';
@@ -44,7 +45,16 @@ export class HomeComponent implements OnInit {
   private productsService = inject(ProductsService);
   private brandsService = inject(BrandsService);
   private categoriesService = inject(CategoriesService);
+  private meta = inject(Meta);
   ngOnInit(): void {
+    // SEO: Set default Meta Tags
+
+    this.meta.updateTag({ name: 'description', content: 'Welcome to E-StoreX, your best place for electronics and more.' });
+    this.meta.updateTag({ property: 'og:title', content: 'Home | E-StoreX' });
+    this.meta.updateTag({ property: 'og:description', content: 'Welcome to E-StoreX, your best place for electronics and more.' });
+    this.meta.updateTag({ property: 'og:image', content: 'https://e-store-x.web.app/assets/logo.png' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://e-store-x.web.app/home' });
+
     this.isLoading.set(true);
     forkJoin({
       banner: this.productsService.getBestSellerSlides(5),

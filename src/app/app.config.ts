@@ -5,8 +5,9 @@ import {
   provideZoneChangeDetection,
   APP_INITIALIZER
 } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withInMemoryScrolling, TitleStrategy } from '@angular/router';
 import { routes } from './app.routes';
+import { PageTitleStrategy } from './core/strategies/page-title.strategy';
 import {
   provideClientHydration,
   withEventReplay,
@@ -16,6 +17,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiKeyInterceptor } from './core/interceptors/api-key.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
+import { transferStateInterceptor } from './core/interceptors/transfer-state.interceptor';
+
 function initializeApp(accountService: AccountService) {
   return () => accountService.initializeUser();
 }
@@ -24,7 +27,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
-    provideHttpClient(withInterceptors([apiKeyInterceptor, authInterceptor])),
+    provideHttpClient(withInterceptors([apiKeyInterceptor, authInterceptor, transferStateInterceptor])),
 
     provideClientHydration(withEventReplay()),
     {
@@ -32,6 +35,10 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeApp,
       multi: true,
       deps: [AccountService],
+    },
+    {
+      provide: TitleStrategy,
+      useClass: PageTitleStrategy,
     },
     importProvidersFrom(lucideIconsConfig),
   ],

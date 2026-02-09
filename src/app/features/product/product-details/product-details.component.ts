@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
+import { Meta } from '@angular/platform-browser';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { Product } from '../../../shared/models/product';
 import { BasketStateService } from '../../../core/services/cart/basket-state.service';
@@ -19,6 +20,7 @@ import { RatingsComponent } from './ratings/ratings.component';
 export class ProductDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private productsService = inject(ProductsService);
+  private meta = inject(Meta);
 
   product = signal<Product | null>(null);
   loading = signal<boolean>(true);
@@ -45,6 +47,19 @@ export class ProductDetailsComponent implements OnInit {
         if (product.photos && product.photos.length > 0) {
           this.selectedImage.set(product.photos[0].imageName);
         }
+        
+        // SEO: Update Meta Tags
+        this.meta.updateTag({ name: 'description', content: product.description });
+        
+        // OpenGraph Tags
+        this.meta.updateTag({ property: 'og:title', content: product.name });
+        this.meta.updateTag({ property: 'og:description', content: product.description });
+        this.meta.updateTag({ property: 'og:type', content: 'product' });
+        this.meta.updateTag({ property: 'og:url', content: `https://e-store-x.web.app/product/${product.id}` }); // Adjust base URL if needed
+        if (product.photos && product.photos.length > 0) {
+           this.meta.updateTag({ property: 'og:image', content: `https://estorex.runasp.net/${product.photos[0].imageName}` });
+        }
+
         this.loading.set(false);
       },
       error: (err) => {

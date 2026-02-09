@@ -65,7 +65,7 @@ export class CheckoutAddressComponent implements OnInit {
 
   isFieldInvalid(field: string): boolean {
     const control = this.addressForm.get(field);
-    return !!(control && control.invalid && (control.dirty || control.touched));
+    return !!(control && control.invalid && (control.dirty && control.touched));
   }
 
   saveAddress() {
