@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, inject, signal, computed, input } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { RouterModule, Router } from '@angular/router';
@@ -108,15 +109,29 @@ export class RatingsComponent implements OnInit {
       this.ratingsService.updateRating(currentRating.id, request).subscribe({
         next: () => {
           this.isActionLoading.set(false);
-          this.loadAllData();
+          this.uiFeedback.success('Review updated successfully');
+          
+          const updatedRating = { ...currentRating, score: data.score, comment: data.comment };
+          this.userRating.set(updatedRating);
+          
+          this.ratings.update(ratings => 
+            ratings.map(r => r.id === currentRating.id ? updatedRating : r)
+          );
+          
+          this.recalculateSummary('update', currentRating, request);
         },
         error: (err) => this.handleError(err)
       });
     } else {
       this.ratingsService.createRating(request).subscribe({
-        next: () => {
+        next: (newRating) => {
           this.isActionLoading.set(false);
-          this.loadAllData();
+          this.uiFeedback.success('Review submitted successfully');
+
+          this.userRating.set(newRating);
+          this.ratings.update(ratings => [newRating, ...ratings]);
+          
+          this.recalculateSummary('create', null, request);
         },
         error: (err) => this.handleError(err)
       });
@@ -133,15 +148,59 @@ export class RatingsComponent implements OnInit {
     this.isActionLoading.set(true);
     this.ratingsService.deleteRating(currentRating.id).subscribe({
       next: () => {
+        this.ratings.update(ratings => ratings.filter(r => r.id !== currentRating.id));
         this.userRating.set(null);
+        
+        this.recalculateSummary('delete', currentRating, null);
+        
         this.isActionLoading.set(false);
-        this.loadAllData(); 
         this.uiFeedback.success('Your review has been deleted.');
       },
       error: (err) => {
         this.isActionLoading.set(false);
         this.errorMessage.set(err.error?.message || 'Failed to delete rating');
       }
+    });
+  }
+
+  private recalculateSummary(action: 'create' | 'update' | 'delete', oldRating: Rating | null, newRating: RatingRequest | null) {
+    this.summary.update(current => {
+      if (!current) {
+        if (action === 'create' && newRating) {
+           return {
+             averageScore: newRating.score,
+             totalRatings: 1,
+             scoreDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, [newRating.score]: 1 }
+           } as RatingSummary;
+        }
+        return current;
+      }
+
+      let { averageScore, totalRatings, scoreDistribution } = current;
+      let sum = averageScore * totalRatings;
+      const dist = { ...scoreDistribution };
+
+      if (action === 'create' && newRating) {
+        totalRatings++;
+        sum += newRating.score;
+        dist[newRating.score as keyof typeof dist] = (dist[newRating.score as keyof typeof dist] || 0) + 1;
+      } else if (action === 'update' && oldRating && newRating) {
+        sum = sum - oldRating.score + newRating.score;
+        dist[oldRating.score as keyof typeof dist]--;
+        dist[newRating.score as keyof typeof dist] = (dist[newRating.score as keyof typeof dist] || 0) + 1;
+      } else if (action === 'delete' && oldRating) {
+        totalRatings--;
+        sum -= oldRating.score;
+        dist[oldRating.score as keyof typeof dist]--;
+      }
+
+      averageScore = totalRatings > 0 ? sum / totalRatings : 0;
+
+      return {
+        averageScore,
+        totalRatings,
+        scoreDistribution: dist
+      };
     });
   }
 
