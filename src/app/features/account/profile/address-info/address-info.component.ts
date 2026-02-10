@@ -51,15 +51,31 @@ export class AddressInfoComponent implements OnInit {
   onUpdateAddress(): void {
     if (this.addressForm.invalid) return;
 
+    let id = this.addressId();
+
+    if (!id || id === '0' || Number(id) === 0) {
+      id = this.createUUID();
+      this.addressId.set(id);
+    }
+
     const payload = {
-      id: this.addressId(),
+      id: id,
       ...this.addressForm.value
     };
+
+    console.log(payload);
 
     this.handleRequest(
       this.accountService.updateAddress(payload as any),
       'Address updated successfully.'
     );
+  }
+
+  private createUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   private handleRequest(

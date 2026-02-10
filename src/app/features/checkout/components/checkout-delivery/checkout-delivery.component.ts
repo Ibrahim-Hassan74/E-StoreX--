@@ -2,6 +2,8 @@ import { Component, OnInit, inject, signal, Output, EventEmitter } from '@angula
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CheckoutService } from '../../../../core/services/checkout/checkout.service';
+import { PaymentService } from '../../../../core/services/payment/payment.service';
+import { BasketStateService } from '../../../../core/services/cart/basket-state.service';
 import { DeliveryMethod } from '../../../../shared/models/order';
 
 @Component({
@@ -12,6 +14,8 @@ import { DeliveryMethod } from '../../../../shared/models/order';
 })
 export class CheckoutDeliveryComponent implements OnInit {
   private checkoutService = inject(CheckoutService);
+  private paymentService = inject(PaymentService);
+  private basketState = inject(BasketStateService);
   private fb = inject(FormBuilder);
 
   deliveryMethods = signal<DeliveryMethod[]>([]);
@@ -47,7 +51,7 @@ export class CheckoutDeliveryComponent implements OnInit {
     });
   }
 
-  selectMethod(id: number) {
+  selectMethod(id: string) {
     this.deliveryForm.patchValue({ deliveryMethod: id });
     const method = this.deliveryMethods().find(m => m.id === id);
     if (method) {
@@ -57,7 +61,26 @@ export class CheckoutDeliveryComponent implements OnInit {
 
   proceed() {
     if (this.deliveryForm.valid) {
-      this.next.emit();
+      this.createPaymentIntent();
+    }
+  }
+
+  createPaymentIntent() {
+    const basket = this.basketState.basket();
+    const deliveryMethodId = this.deliveryForm.get('deliveryMethod')?.value;
+    
+    if (basket && deliveryMethodId) {
+      this.loading.set(true);
+      this.paymentService.createPaymentIntent(basket.id, deliveryMethodId).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.next.emit();
+        },
+        error: (error) => {
+          this.loading.set(false);
+          console.error(error);
+        }
+      });
     }
   }
 }

@@ -1,36 +1,37 @@
 
+import { UUID } from 'crypto';
 import { Address } from './auth';
 import { BasketItem } from './basket';
 
 export interface OrderToCreate {
   basketId: string;
-  deliveryMethodId: number;
-  shipToAddress: Address;
+  deliveryMethodId: string;
+  shippingAddress: Address;
 }
 
 export interface Order {
-  id: number;
+  id: string;
   buyerEmail: string;
   orderDate: string;
-  shipToAddress: Address;
+  shippingAddress: Address;
   deliveryMethod: string;
-  shippingPrice: number;
   orderItems: OrderItem[];
-  subtotal: number;
+  subTotal: number;
   total: number;
   status: string;
+  paymentIntentId: string;
 }
 
 export interface OrderItem {
-  productId: number;
+  productItemId: UUID;
   productName: string;
-  pictureUrl: string;
+  mainImage: string;
   price: number;
   quantity: number;
 }
 
 export interface DeliveryMethod {
-  id: number;
+  id: string;
   shortName: string;
   deliveryTime: string;
   description: string;

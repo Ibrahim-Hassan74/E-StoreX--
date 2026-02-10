@@ -1,0 +1,59 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { Order } from '../../../shared/models/order';
+import { OrdersService } from '../../../core/services/orders/orders.service';
+
+@Component({
+  selector: 'app-orders',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './orders.component.html',
+  styleUrl: './orders.component.scss'
+})
+export class OrdersComponent implements OnInit {
+  private ordersService = inject(OrdersService);
+  
+  orders = signal<Order[]>([]);
+  loading = signal(true);
+
+  getImageUrl(url: string): string {
+    return url ? url.replace(/\\/g, '/') : '';
+  }
+
+  getStatusLabel(status: string): string {
+    switch (status) {
+      case 'Pending': return 'Pending';
+      case 'PaymentReceived': return 'Payment Received';
+      case 'PaymentFailed': return 'Payment Failed';
+      default: return status;
+    }
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+      case 'PaymentReceived': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+      case 'PaymentFailed': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    }
+  }
+
+  ngOnInit(): void {
+    this.loadOrders();
+  }
+
+  loadOrders() {
+    this.ordersService.getOrders().subscribe({
+      next: (orders) => {
+        this.orders.set(orders);
+        console.log(this.orders());
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.loading.set(false);
+      }
+    });
+  }
+}

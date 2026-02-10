@@ -75,7 +75,12 @@ export class CheckoutAddressComponent implements OnInit {
     }
 
     this.isSaving.set(true);
-    const address: Address = this.addressForm.value;
+    let address: Address = this.addressForm.value;
+
+    if (!address.id || address.id === '0' || Number(address.id) === 0) {
+      address.id = this.createUUID();
+      this.addressForm.patchValue({ id: address.id });
+    }
 
     this.accountService.updateAddress(address).subscribe({
       next: () => {
@@ -88,6 +93,13 @@ export class CheckoutAddressComponent implements OnInit {
         this.ui.error(err.error?.message || 'Failed to save address');
         this.isSaving.set(false);
       }
+    });
+  }
+
+  private createUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
     });
   }
   

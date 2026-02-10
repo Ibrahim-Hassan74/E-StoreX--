@@ -18,11 +18,15 @@ export class OrdersService extends ResourceService<Order> {
   }
 
   createOrder(order: OrderToCreate): Observable<Order> {
+    console.log(order);
     return this.post<Order>('', order);
   }
 
-  createPaymentIntent(basketId: string, deliveryMethodId: number): Observable<PaymentIntentResponse> {
-    const url = `${this.baseUrl}/Payments?basketId=${basketId}&deliveryMethodId=${deliveryMethodId}`;
-    return this.http.post<PaymentIntentResponse>(url, {});
+  getOrders(): Observable<Order[]> {
+    return this.get<Order[]>();
+  }
+
+  getOrder(id: string): Observable<Order> {
+    return this.getById<Order>(id);
   }
 }

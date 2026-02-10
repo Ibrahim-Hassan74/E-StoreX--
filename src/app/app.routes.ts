@@ -100,6 +100,16 @@ export const routes: Routes = [
         loadComponent: () => import('./features/account/profile/profile.component').then(m => m.ProfileComponent),
         canActivate: [authGuard],
         title: 'My Profile'
+      },
+      { path: 'orders',
+        loadComponent: () => import('./features/orders/orders/orders.component').then(m => m.OrdersComponent),
+        canActivate: [authGuard],
+        title: 'Order History'
+      },
+      { path: 'orders/:id',
+        loadComponent: () => import('./features/orders/order-details/order-details.component').then(m => m.OrderDetailsComponent),
+        canActivate: [authGuard],
+        title: 'Order Details'
       }
     ]
   },
@@ -147,8 +157,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
-    pathMatch: 'full',
+    loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent),
     title: 'Page Not Found'
   }
 ];

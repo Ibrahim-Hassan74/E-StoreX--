@@ -69,7 +69,8 @@ import {
   Gift,
   MessageCircle,
   HeartOff,
-  XCircle
+  XCircle,
+  Package
 } from 'lucide-angular';
 
 export const lucideIconsConfig = LucideAngularModule.pick({
@@ -142,5 +143,6 @@ export const lucideIconsConfig = LucideAngularModule.pick({
   Gift,
   MessageCircle,
   HeartOff,
-  XCircle
+  XCircle,
+  Package
 });

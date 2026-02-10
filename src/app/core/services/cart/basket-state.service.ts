@@ -39,8 +39,6 @@ export class BasketStateService {
     effect(() => {
       const user = this.accountService.currentUser();
       if (user) {
-        // Only load if sync is NOT in progress. 
-        // If sync is in progress, it will handle the loading/merging itself.
         if (!this.loginBasketSyncInProgress) {
            this.handleAuthUser(user.id!);
         }
@@ -100,7 +98,6 @@ export class BasketStateService {
               },
               error: (err) => {
                   console.error('Merge failed', err);
-                  // Safety: Clear guest ID to prevent infinite loops, then load user basket
                   this.guestBasketId = null;
                   this.loadUserBasket(user.id!);
                   this.loginBasketSyncInProgress = false;
@@ -200,6 +197,11 @@ export class BasketStateService {
         error: err => this.ui.error(err.error?.message || 'Failed to apply discount')
       })
     );
+  }
+
+  clearBasket() {
+    this.basketSignal.set(null);
+    this.guestBasketId = null;
   }
 
   private createUUID() {

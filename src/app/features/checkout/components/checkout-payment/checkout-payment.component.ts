@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { loadStripe, Stripe, StripeCardElement, StripeElements } from '@stripe/stripe-js';
 import { CheckoutService } from '../../../../core/services/checkout/checkout.service';
+import { PaymentService } from '../../../../core/services/payment/payment.service';
 import { UiFeedbackService } from '../../../../core/services/ui-feedback.service';
 import { BasketStateService } from '../../../../core/services/cart/basket-state.service';
 import { ConfigService } from '../../../../core/services/configurations/config.service';
@@ -18,6 +19,7 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
   @Output() back = new EventEmitter<void>();
 
   checkoutService = inject(CheckoutService);
+  paymentService = inject(PaymentService);
   basketState = inject(BasketStateService);
   ui = inject(UiFeedbackService);
   router = inject(Router);
@@ -111,7 +113,7 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
              });
         });
 
-        const clientSecret = this.checkoutService.clientSecret();
+        const clientSecret = this.paymentService.clientSecret();
         if (!clientSecret || !this.stripe || !this.cardNumber) {
             throw new Error('Payment intent not initialized or Stripe not loaded');
         }
@@ -130,6 +132,7 @@ export class CheckoutPaymentComponent implements OnInit, OnDestroy {
             this.loading.set(false);
         } else {
             if (result.paymentIntent.status === 'succeeded') {
+                this.basketState.clearBasket();
                 this.router.navigate(['/checkout/success']);
             } else {
                 this.ui.error('Payment verification failed');

@@ -17,13 +17,8 @@ export class CheckoutService {
 
   private _shippingAddress = signal<Address | null>(null);
   private _deliveryMethod = signal<DeliveryMethod | null>(null);
-  private _paymentIntent = signal<string | null>(null);
-  private _clientSecret = signal<string | null>(null);
-
   shippingAddress = computed(() => this._shippingAddress());
   deliveryMethod = computed(() => this._deliveryMethod());
-  paymentIntent = computed(() => this._paymentIntent());
-  clientSecret = computed(() => this._clientSecret());
   
   total = computed(() => {
     const basketTotal = this.basketState.basketTotal();
@@ -40,26 +35,10 @@ export class CheckoutService {
 
   updateDeliveryMethod(method: DeliveryMethod) {
     this._deliveryMethod.set(method);
-    this.createPaymentIntent();
   }
 
   getDeliveryMethods() {
     return this.ordersService.getDeliveryMethods();
-  }
-
-  createPaymentIntent() {
-    const basket = this.basketState.basket();
-    const deliveryMethod = this._deliveryMethod();
-
-    if (basket && deliveryMethod) {
-      this.ordersService.createPaymentIntent(basket.id, deliveryMethod.id).subscribe({
-        next: (response) => {
-          this._paymentIntent.set(response.paymentIntentId);
-          this._clientSecret.set(response.clientSecret);
-        },
-        error: (error) => console.error('Failed to create payment intent', error)
-      });
-    }
   }
 
   createOrder() {
@@ -74,7 +53,7 @@ export class CheckoutService {
     const orderToCreate: OrderToCreate = {
       basketId: basket.id,
       deliveryMethodId: deliveryMethod.id,
-      shipToAddress: address
+      shippingAddress: address
     };
 
     return this.ordersService.createOrder(orderToCreate);
