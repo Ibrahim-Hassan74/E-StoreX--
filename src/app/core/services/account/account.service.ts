@@ -125,7 +125,7 @@ export class AccountService extends ResourceService<User> {
   }
 
   updateProfile(data: UpdateProfileRequest): Observable<AuthResponse> {
-    return this.http.put<AuthResponse>(this.buildUrl('update-profile'), data).pipe(
+    return this.http.patch<AuthResponse>(this.buildUrl('update-profile'), data).pipe(
       tap(() => {
         this.getMe().subscribe(user => this.currentUserSignal.set(user));
       })
@@ -161,7 +161,7 @@ export class AccountService extends ResourceService<User> {
   }
 
   changePassword(data: ChangePasswordRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.buildUrl('change-password'), data);
+    return this.http.patch<AuthResponse>(this.buildUrl('update-profile'), data);
   }
 
   getAddress(): Observable<Address> {

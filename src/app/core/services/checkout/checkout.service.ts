@@ -21,10 +21,10 @@ export class CheckoutService {
   deliveryMethod = computed(() => this._deliveryMethod());
   
   total = computed(() => {
-    const basketTotal = this.basketState.basketTotal();
+    const subTotal = this.basketState.basketSubTotal();
     const shippingPrice = this._deliveryMethod()?.price ?? 0;
     const discount = this.basketState.basket()?.discountValue ?? 0;
-    return basketTotal + shippingPrice - discount;
+    return subTotal + shippingPrice - discount;
   });
 
   constructor() { }

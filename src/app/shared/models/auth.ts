@@ -51,14 +51,16 @@ export interface User {
 }
 
 export interface UpdateProfileRequest {
+  userId?: string;
   displayName: string;
   phoneNumber: string;
 }
 
 export interface ChangePasswordRequest {
+  userId?: string;
   currentPassword?: string;
   newPassword?: string;
-  confirmPassword?: string;
+  confirmNewPassword?: string;
 }
 
 export interface Address {

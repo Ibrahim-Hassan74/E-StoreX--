@@ -20,7 +20,7 @@
     <div class="border-t border-gray-100 dark:border-gray-700 pt-6 mt-6 space-y-3">
       <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
         <span>Subtotal</span>
-        <span class="font-medium text-gray-900 dark:text-white">{{basketState.basketTotal() | currency}}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{basketState.basketSubTotal() | currency}}</span>
       </div>
       
       @if (basketState.basket()?.discountValue! > 0) {

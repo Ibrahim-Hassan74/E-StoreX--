@@ -47,9 +47,20 @@ export class ProfileInfoComponent {
   onUpdateProfile(): void {
     if (this.profileForm.invalid) return;
 
+    const user = this.currentUser();
+    const userId = user?.id;
+
+    const requestData = {
+      ...this.profileForm.value,
+      userId: userId
+    };
+
     this.handleRequest(
-      this.accountService.updateProfile(this.profileForm.value as any),
-      'Profile updated successfully.'
+      this.accountService.updateProfile(requestData as any),
+      'Profile updated successfully.',
+      () => {
+        this.ui.successPopup('Profile updated successfully.');
+      }
     );
   }
 
